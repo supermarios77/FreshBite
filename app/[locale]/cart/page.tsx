@@ -97,7 +97,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 lg:py-12">
         {/* Header */}
         <div className="mb-8 lg:mb-12">
@@ -113,7 +113,7 @@ export default function CartPage() {
 
         {isCartEmpty ? (
           /* Empty Cart State */
-          <div className="bg-white rounded-xl lg:rounded-2xl shadow-soft border border-border p-12 lg:p-16 text-center">
+          <div className="bg-card rounded-xl lg:rounded-2xl shadow-soft border border-border p-12 lg:p-16 text-center">
             <div className="max-w-md mx-auto">
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-accent/20 flex items-center justify-center">
                 <ShoppingCart className="w-12 h-12 text-accent" />
@@ -138,7 +138,7 @@ export default function CartPage() {
               {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-xl lg:rounded-2xl shadow-soft border border-border p-6 lg:p-8"
+                  className="bg-card rounded-xl lg:rounded-2xl shadow-soft border border-border p-6 lg:p-8"
                 >
                   <div className="flex flex-col sm:flex-row gap-6">
                     {/* Item Image */}
@@ -223,7 +223,7 @@ export default function CartPage() {
 
             {/* Order Summary Sidebar */}
             <div className="lg:sticky lg:top-8 lg:self-start">
-              <div className="bg-white rounded-xl lg:rounded-2xl shadow-soft border border-border p-6 lg:p-8">
+              <div className="bg-card rounded-xl lg:rounded-2xl shadow-soft border border-border p-6 lg:p-8">
                 <h2 className="text-2xl font-bold text-foreground mb-6">
                   {t("orderSummary")}
                 </h2>

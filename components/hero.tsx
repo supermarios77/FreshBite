@@ -29,7 +29,7 @@ export function Hero({
   const displayCtaText = ctaText || t("browseMenu");
   const displayImageAlt = imageAlt || displayHeadline;
   return (
-    <section className="bg-white py-16 lg:py-24 xl:py-32">
+    <section className="bg-background py-16 lg:py-24 xl:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
           {/* Left Column - Content */}

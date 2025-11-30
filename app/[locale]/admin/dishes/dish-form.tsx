@@ -176,7 +176,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-white rounded-xl shadow-soft border border-border p-6 lg:p-8 space-y-6">
+      <div className="bg-card rounded-xl shadow-soft border border-border p-6 lg:p-8 space-y-6">
         {/* Image Upload */}
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
@@ -194,7 +194,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-secondary transition-colors"
+                  className="absolute top-2 right-2 p-2 bg-background rounded-full shadow-md hover:bg-secondary transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -233,7 +233,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
               value={formData.nameEn}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
             />
           </div>
           <div>
@@ -246,7 +246,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
               value={formData.nameNl}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
             />
           </div>
           <div>
@@ -259,7 +259,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
               value={formData.nameFr}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
             />
           </div>
         </div>
@@ -318,7 +318,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
               step="0.01"
               min="0"
               required
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
             />
           </div>
           <div>
@@ -329,7 +329,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
               name="categoryId"
               value={formData.categoryId}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
             >
               <option value="">{t("noCategory")}</option>
               {categories.map((category) => (
@@ -351,7 +351,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
               step="0.1"
               min="0"
               max="5"
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
             />
           </div>
         </div>

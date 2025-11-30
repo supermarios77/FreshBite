@@ -88,7 +88,7 @@ export function DishesList({ initialDishes }: DishesListProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-soft border border-border overflow-hidden">
+    <div className="bg-card rounded-xl shadow-soft border border-border overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-secondary">

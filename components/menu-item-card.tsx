@@ -52,7 +52,7 @@ export function MenuItemCard({
     <Link
       href={`/menu/${id}`}
       className={cn(
-        "group bg-white rounded-xl lg:rounded-2xl shadow-soft overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer block",
+        "group bg-card rounded-xl lg:rounded-2xl shadow-soft overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer block",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}

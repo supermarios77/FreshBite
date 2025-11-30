@@ -42,7 +42,7 @@ export default function CheckoutSuccessPage() {
 
   if (isLoading) {
     return (
-      <div className="bg-white min-h-screen flex items-center justify-center">
+      <div className="bg-background min-h-screen flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
         <p className="text-text-secondary">{t("processing")}</p>
@@ -52,7 +52,7 @@ export default function CheckoutSuccessPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl py-16 lg:py-24">
         <div className="text-center space-y-6">
           <div className="flex justify-center">

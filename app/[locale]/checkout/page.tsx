@@ -149,7 +149,7 @@ export default function CheckoutPage() {
 
   if (isLoading) {
     return (
-      <div className="bg-white min-h-screen flex items-center justify-center">
+      <div className="bg-background min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
           <p className="text-text-secondary">Loading...</p>
@@ -160,7 +160,7 @@ export default function CheckoutPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="bg-white min-h-screen">
+      <div className="bg-background min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 lg:py-12 text-center">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
             {t("title")}
@@ -177,7 +177,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 lg:py-12">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 lg:mb-12">
           {t("title")}
@@ -208,7 +208,7 @@ export default function CheckoutPage() {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
                       placeholder="John"
                     />
                   </div>
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
                       placeholder="Doe"
                     />
                   </div>
@@ -308,7 +308,7 @@ export default function CheckoutPage() {
                       value={formData.city}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
                       placeholder="Brussels"
                     />
                   </div>
@@ -326,7 +326,7 @@ export default function CheckoutPage() {
                       value={formData.postalCode}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
                       placeholder="1000"
                     />
                   </div>

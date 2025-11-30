@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 import "../globals.css";
 
 const inter = Inter({
@@ -32,14 +33,16 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={inter.variable}>
-      <body className="antialiased bg-white">
-        <NextIntlClientProvider messages={messages}>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-          </div>
-        </NextIntlClientProvider>
+    <html lang={locale} className={inter.variable} suppressHydrationWarning>
+      <body className="antialiased bg-background text-foreground">
+        <ThemeProvider>
+          <NextIntlClientProvider messages={messages}>
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+            </div>
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

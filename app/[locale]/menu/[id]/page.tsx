@@ -100,7 +100,7 @@ export default function MenuItemDetailPage({
   };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 lg:py-12">
         {/* Main Content - Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 mb-12 lg:mb-16">
@@ -186,7 +186,7 @@ export default function MenuItemDetailPage({
                       className={`px-6 py-3 rounded-lg border-2 transition-all duration-200 ${
                         selectedSize === size.id
                           ? "border-accent bg-accent/10 text-foreground"
-                          : "border-border bg-white text-text-secondary hover:border-accent/50"
+                          : "border-border bg-background text-text-secondary hover:border-accent/50"
                       }`}
                     >
                       <div className="font-medium">{size.label}</div>

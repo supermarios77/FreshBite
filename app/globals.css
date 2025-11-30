@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Design tokens - Colors */
+  /* Design tokens - Colors (Light Mode) */
   --color-background: #FFFFFF;
   --color-foreground: #1A1A1A;
   --color-text-primary: #1A1A1A;
@@ -10,7 +10,7 @@
   --color-accent-muted: #F7C66A;
   --color-border: #EDEDED;
   
-  /* Shadcn UI compatibility */
+  /* Shadcn UI compatibility (Light Mode) */
   --color-card: #FFFFFF;
   --color-card-foreground: #1A1A1A;
   --color-popover: #FFFFFF;
@@ -31,8 +31,38 @@
   --radius-md: 12px;
   --radius-lg: 20px;
   
-  /* Shadows */
+  /* Shadows (Light Mode) */
   --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* Dark Mode Theme */
+.dark {
+  --color-background: #0F0F0F;
+  --color-foreground: #F5F5F5;
+  --color-text-primary: #F5F5F5;
+  --color-text-secondary: #A0A0A0;
+  --color-accent: #F9D97F;
+  --color-accent-muted: #F7C66A;
+  --color-border: #2A2A2A;
+  
+  /* Shadcn UI compatibility (Dark Mode) */
+  --color-card: #1A1A1A;
+  --color-card-foreground: #F5F5F5;
+  --color-popover: #1A1A1A;
+  --color-popover-foreground: #F5F5F5;
+  --color-primary: #F5F5F5;
+  --color-primary-foreground: #0F0F0F;
+  --color-secondary: #2A2A2A;
+  --color-secondary-foreground: #F5F5F5;
+  --color-muted: #2A2A2A;
+  --color-muted-foreground: #A0A0A0;
+  --color-input: #2A2A2A;
+  --color-ring: #F9D97F;
+  --color-destructive: hsl(0, 72%, 51%);
+  --color-destructive-foreground: hsl(0, 0%, 98%);
+  
+  /* Shadows (Dark Mode) */
+  --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 @layer base {
@@ -47,6 +77,7 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     letter-spacing: -0.01em;
     line-height: 1.6;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
   
   h1, h2, h3, h4, h5, h6 {

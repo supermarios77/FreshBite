@@ -56,7 +56,7 @@ export function CheckoutSummary({
 
   return (
     <div
-      className={`bg-white rounded-xl lg:rounded-2xl shadow-soft p-6 lg:p-8 ${className || ""}`}
+      className={`bg-card rounded-xl lg:rounded-2xl shadow-soft p-6 lg:p-8 ${className || ""}`}
     >
       {/* Products List */}
       <div className="mb-6 lg:mb-8">
