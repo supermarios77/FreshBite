@@ -1,43 +1,48 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: #FFFFFF;
-    --text-primary: #1A1A1A;
-    --text-secondary: #6B6B6B;
-    --accent: #F9D97F;
-    --accent-muted: #F7C66A;
-    --border: #EDEDED;
-    --shadow: rgba(0, 0, 0, 0.04);
-    /* Shadcn UI compatibility */
-    --foreground: #1A1A1A;
-    --card: #FFFFFF;
-    --card-foreground: #1A1A1A;
-    --popover: #FFFFFF;
-    --popover-foreground: #1A1A1A;
-    --primary: #1A1A1A;
-    --primary-foreground: #FFFFFF;
-    --secondary: #F5F5F5;
-    --secondary-foreground: #1A1A1A;
-    --muted: #F5F5F5;
-    --muted-foreground: #6B6B6B;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --input: #EDEDED;
-    --ring: #F9D97F;
-    --radius: 12px;
-  }
+@theme {
+  /* Design tokens - Colors */
+  --color-background: #FFFFFF;
+  --color-foreground: #1A1A1A;
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #6B6B6B;
+  --color-accent: #F9D97F;
+  --color-accent-muted: #F7C66A;
+  --color-border: #EDEDED;
+  
+  /* Shadcn UI compatibility */
+  --color-card: #FFFFFF;
+  --color-card-foreground: #1A1A1A;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #1A1A1A;
+  --color-primary: #1A1A1A;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #F5F5F5;
+  --color-secondary-foreground: #1A1A1A;
+  --color-muted: #F5F5F5;
+  --color-muted-foreground: #6B6B6B;
+  --color-input: #EDEDED;
+  --color-ring: #F9D97F;
+  --color-destructive: hsl(0, 84.2%, 60.2%);
+  --color-destructive-foreground: hsl(0, 0%, 98%);
+  
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  /* Shadows */
+  --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
 }
 
 @layer base {
   * {
-    border-color: var(--border);
+    border-color: var(--color-border);
   }
+  
   body {
-    background-color: var(--background);
-    color: var(--text-primary);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
     font-family: "Inter", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     letter-spacing: -0.01em;
@@ -45,27 +50,27 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.2;
   }
   
   p {
-    color: var(--text-primary);
+    color: var(--color-text-primary);
   }
 }
 
 @layer utilities {
   .shadow-soft {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+    box-shadow: var(--shadow-soft);
   }
   
   .text-primary {
-    color: var(--text-primary);
+    color: var(--color-text-primary);
   }
   
   .text-secondary {
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
   }
 }
