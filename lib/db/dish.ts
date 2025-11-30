@@ -67,20 +67,23 @@ export async function getDishById(id: string, locale: "en" | "nl" | "fr" = "en")
     return null;
   }
 
+  // Return raw data for admin editing, or localized for public display
   return {
     id: dish.id,
-    name: locale === "en" ? dish.nameEn : locale === "nl" ? dish.nameNl : dish.nameFr,
-    description:
-      locale === "en"
-        ? dish.descriptionEn
-        : locale === "nl"
-        ? dish.descriptionNl
-        : dish.descriptionFr,
+    name: dish.name,
+    nameEn: dish.nameEn,
+    nameNl: dish.nameNl,
+    nameFr: dish.nameFr,
+    description: dish.description,
+    descriptionEn: dish.descriptionEn,
+    descriptionNl: dish.descriptionNl,
+    descriptionFr: dish.descriptionFr,
     price: dish.price,
     imageUrl: dish.imageUrl,
     rating: dish.rating || 0,
     allergens: dish.allergens,
     ingredients: dish.ingredients,
+    categoryId: dish.categoryId,
     category: dish.category
       ? {
           id: dish.category.id,
