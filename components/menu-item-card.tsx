@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 interface MenuItemCardProps {
@@ -40,8 +41,10 @@ export function MenuItemCard({
     onWishlistToggle?.(id);
   };
 
+  const router = useRouter();
+  
   const handleCardClick = () => {
-    onOrderClick?.(id);
+    router.push(`/menu/${id}`);
   };
 
   // Calculate star display (0-5 stars)
