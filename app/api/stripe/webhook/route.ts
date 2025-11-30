@@ -2,11 +2,44 @@ import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { updateOrderStatus, getOrderByStripeSessionId } from "@/lib/db/order";
+import { OrderStatus } from "@prisma/client";
+
+// Mock mode for development
+const isMockMode = process.env.NODE_ENV === "development" && !process.env.STRIPE_SECRET_KEY;
 
 export async function POST(req: Request) {
+  // Mock mode: skip webhook verification
+  if (isMockMode) {
+    const body = await req.json();
+    const { orderId, type } = body;
+
+    if (type === "checkout.session.completed" && orderId) {
+      await updateOrderStatus(orderId, OrderStatus.PAID);
+      return NextResponse.json({ received: true, mock: true });
+    }
+
+    return NextResponse.json({ received: true, mock: true });
+  }
+
+  // Production: verify webhook signature
+  if (!stripe || !process.env.STRIPE_WEBHOOK_SECRET) {
+    return NextResponse.json(
+      { error: "Stripe webhook is not configured" },
+      { status: 500 }
+    );
+  }
+
   const body = await req.text();
   const headersList = await headers();
-  const signature = headersList.get("stripe-signature")!;
+  const signature = headersList.get("stripe-signature");
+
+  if (!signature) {
+    return NextResponse.json(
+      { error: "Missing stripe-signature header" },
+      { status: 400 }
+    );
+  }
 
   let event: Stripe.Event;
 
@@ -14,9 +47,10 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err: any) {
+    console.error("Webhook signature verification failed:", err.message);
     return NextResponse.json(
       { error: `Webhook Error: ${err.message}` },
       { status: 400 }
@@ -24,19 +58,49 @@ export async function POST(req: Request) {
   }
 
   // Handle the event
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      // Update order status in database
-      // await prisma.order.update({
-      //   where: { stripePaymentIntentId: paymentIntent.id },
-      //   data: { status: "paid" },
-      // });
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
+  try {
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const orderId = session.metadata?.orderId;
 
-  return NextResponse.json({ received: true });
+        if (orderId) {
+          await updateOrderStatus(orderId, OrderStatus.PAID, session.id);
+          console.log(`Order ${orderId} marked as paid`);
+        } else {
+          // Fallback: try to find order by session ID
+          const order = await getOrderByStripeSessionId(session.id);
+          if (order) {
+            await updateOrderStatus(order.id, OrderStatus.PAID, session.id);
+            console.log(`Order ${order.id} marked as paid (found by session ID)`);
+          } else {
+            console.warn(`Order not found for session ${session.id}`);
+          }
+        }
+        break;
+      }
+
+      case "payment_intent.succeeded": {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        // If using Payment Intents directly (not Checkout Sessions)
+        const order = await getOrderByStripeSessionId(paymentIntent.id);
+        if (order) {
+          await updateOrderStatus(order.id, OrderStatus.PAID, paymentIntent.id);
+        }
+        break;
+      }
+
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
+    }
+
+    return NextResponse.json({ received: true });
+  } catch (error: any) {
+    console.error("Error processing webhook:", error);
+    return NextResponse.json(
+      { error: "Webhook processing failed" },
+      { status: 500 }
+    );
+  }
 }
 

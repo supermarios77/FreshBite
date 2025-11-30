@@ -54,14 +54,53 @@ export default function CheckoutPage() {
   };
 
   const handleProceedToPayment = async () => {
+    // Validate required fields
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.postalCode) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
     setIsSubmitting(true);
-    // TODO: Validate form and proceed to payment
-    console.log("Form data:", formData);
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      // Get locale from URL or default to 'en'
+      const locale = window.location.pathname.split('/')[1] || 'en';
+
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: mockCartItems.map((item) => ({
+            dishId: item.id,
+            quantity: item.quantity,
+            price: item.price,
+            size: item.size,
+          })),
+          userId: "temp-user-id", // TODO: Get from auth/session
+          deliveryInfo: formData,
+          locale,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create checkout session");
+      }
+
+      // Redirect to Stripe Checkout or success page (mock mode)
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL received");
+      }
+    } catch (error: any) {
+      console.error("Checkout error:", error);
+      alert(error.message || "Failed to proceed to payment. Please try again.");
       setIsSubmitting(false);
-      // TODO: Redirect to payment page
-    }, 1000);
+    }
   };
 
   return (

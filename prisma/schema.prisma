@@ -22,34 +22,66 @@ model User {
   @@map("users")
 }
 
-model Meal {
+model Category {
   id          String   @id @default(cuid())
   name        String
   nameEn      String
   nameNl      String
   nameFr      String
+  slug        String   @unique
   description String?  @db.Text
-  descriptionEn String? @db.Text
-  descriptionNl String? @db.Text
-  descriptionFr String? @db.Text
-  price       Float
   imageUrl    String?
-  category    String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
-  orderItems  OrderItem[]
+  dishes      Dish[]
   
-  @@map("meals")
+  @@map("categories")
+}
+
+model Dish {
+  id            String   @id @default(cuid())
+  name          String
+  nameEn        String
+  nameNl        String
+  nameFr        String
+  description   String?  @db.Text
+  descriptionEn String?  @db.Text
+  descriptionNl String?  @db.Text
+  descriptionFr String?  @db.Text
+  price         Float
+  imageUrl      String?
+  categoryId    String?
+  rating        Float?   @default(0)
+  allergens     String[] // Array of allergen strings
+  ingredients   String[] // Array of ingredient strings
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  category      Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  orderItems    OrderItem[]
+  
+  @@map("dishes")
 }
 
 model Order {
   id            String   @id @default(cuid())
   userId        String
   totalAmount   Float
-  status        String   @default("pending") // pending, paid, preparing, shipped, delivered, cancelled
+  status        OrderStatus @default(PENDING)
   stripePaymentIntentId String?
+  // Delivery information
+  firstName     String?
+  lastName      String?
+  email         String?
+  phone         String?
+  address       String?
+  city          String?
+  postalCode    String?
+  country       String?
+  deliveryInstructions String? @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   
@@ -59,16 +91,26 @@ model Order {
   @@map("orders")
 }
 
+enum OrderStatus {
+  PENDING
+  PAID
+  PREPARING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
 model OrderItem {
   id        String   @id @default(cuid())
   orderId   String
-  mealId    String
+  dishId    String
   quantity  Int
   price     Float
+  size      String?  // e.g., "Regular", "Large"
   createdAt DateTime @default(now())
   
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  meal      Meal     @relation(fields: [mealId], references: [id])
+  dish      Dish     @relation(fields: [dishId], references: [id])
   
   @@map("order_items")
 }

@@ -1,0 +1,121 @@
+import { prisma } from "@/lib/prisma";
+
+export interface GetDishesParams {
+  categoryId?: string;
+  isActive?: boolean;
+  locale?: "en" | "nl" | "fr";
+}
+
+export async function getDishes(params: GetDishesParams = {}) {
+  const { categoryId, isActive = true, locale = "en" } = params;
+
+  const dishes = await prisma.dish.findMany({
+    where: {
+      ...(categoryId && { categoryId }),
+      ...(isActive !== undefined && { isActive }),
+    },
+    include: {
+      category: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  // Map to include localized names
+  return dishes.map((dish) => ({
+    id: dish.id,
+    name: locale === "en" ? dish.nameEn : locale === "nl" ? dish.nameNl : dish.nameFr,
+    description:
+      locale === "en"
+        ? dish.descriptionEn
+        : locale === "nl"
+        ? dish.descriptionNl
+        : dish.descriptionFr,
+    price: dish.price,
+    imageUrl: dish.imageUrl,
+    rating: dish.rating || 0,
+    allergens: dish.allergens,
+    ingredients: dish.ingredients,
+    category: dish.category
+      ? {
+          id: dish.category.id,
+          name:
+            locale === "en"
+              ? dish.category.nameEn
+              : locale === "nl"
+              ? dish.category.nameNl
+              : dish.category.nameFr,
+          slug: dish.category.slug,
+        }
+      : null,
+    isActive: dish.isActive,
+    createdAt: dish.createdAt,
+    updatedAt: dish.updatedAt,
+  }));
+}
+
+export async function getDishById(id: string, locale: "en" | "nl" | "fr" = "en") {
+  const dish = await prisma.dish.findUnique({
+    where: { id },
+    include: {
+      category: true,
+    },
+  });
+
+  if (!dish) {
+    return null;
+  }
+
+  return {
+    id: dish.id,
+    name: locale === "en" ? dish.nameEn : locale === "nl" ? dish.nameNl : dish.nameFr,
+    description:
+      locale === "en"
+        ? dish.descriptionEn
+        : locale === "nl"
+        ? dish.descriptionNl
+        : dish.descriptionFr,
+    price: dish.price,
+    imageUrl: dish.imageUrl,
+    rating: dish.rating || 0,
+    allergens: dish.allergens,
+    ingredients: dish.ingredients,
+    category: dish.category
+      ? {
+          id: dish.category.id,
+          name:
+            locale === "en"
+              ? dish.category.nameEn
+              : locale === "nl"
+              ? dish.category.nameNl
+              : dish.category.nameFr,
+          slug: dish.category.slug,
+        }
+      : null,
+    isActive: dish.isActive,
+    createdAt: dish.createdAt,
+    updatedAt: dish.updatedAt,
+  };
+}
+
+export async function getCategories(locale: "en" | "nl" | "fr" = "en") {
+  const categories = await prisma.category.findMany({
+    where: {
+      isActive: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  return categories.map((category) => ({
+    id: category.id,
+    name:
+      locale === "en" ? category.nameEn : locale === "nl" ? category.nameNl : category.nameFr,
+    slug: category.slug,
+    description: category.description,
+    imageUrl: category.imageUrl,
+  }));
+}
+
