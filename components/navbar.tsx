@@ -11,11 +11,11 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/menu", label: "Menu" },
-    { href: "/order", label: "Order" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
+    { href: "/", label: t("home") },
+    { href: "/menu", label: t("menu") },
+    { href: "/order", label: t("order") },
+    { href: "/about", label: t("about") },
+    { href: "/contact", label: t("contact") },
   ];
 
   return (
@@ -69,7 +69,7 @@ export function Navbar() {
               className="px-6 py-2.5 rounded-lg text-base font-medium text-foreground bg-white border border-border hover:bg-accent hover:border-accent transition-all duration-200 hidden sm:inline-flex items-center gap-2"
             >
               <User className="w-4 h-4" />
-              Sign In
+              {t("signIn")}
             </Link>
 
             {/* Mobile Menu Button */}
@@ -113,7 +113,7 @@ export function Navbar() {
               ))}
               <div className="pt-4 border-t border-border">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-text-secondary">Language</span>
+                  <span className="text-sm text-text-secondary">{t("language")}</span>
                   <LocaleSwitcher />
                 </div>
               </div>
@@ -123,7 +123,7 @@ export function Navbar() {
                 className="px-6 py-2.5 rounded-lg text-base font-medium text-foreground bg-white border border-border hover:bg-accent hover:border-accent transition-all duration-200 inline-flex items-center justify-center gap-2 mt-2"
               >
                 <User className="w-4 h-4" />
-                Sign In
+                {t("signIn")}
               </Link>
             </div>
           </div>

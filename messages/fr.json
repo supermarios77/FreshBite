@@ -4,7 +4,118 @@
     "order": "Commander",
     "cart": "Panier",
     "checkout": "Paiement",
-    "admin": "Administration"
+    "admin": "Administration",
+    "home": "Accueil",
+    "menu": "Menu",
+    "about": "À Propos",
+    "contact": "Contact",
+    "signIn": "Se Connecter",
+    "language": "Langue"
+  },
+  "hero": {
+    "headline": "Plats Surgelés Maison, Livrés Frais",
+    "subheadline": "Découvrez notre collection de plats préparés par des chefs, prêts à réchauffer. Fabriqués avec des ingrédients premium et livrés directement à votre porte.",
+    "browseMenu": "Voir le Menu"
+  },
+  "menu": {
+    "title": "Menu",
+    "itemsAvailable": "{count, plural, =1 {article} other {articles}} disponible",
+    "filter": "Filtrer",
+    "order48h": "Commander 48h à l'avance"
+  },
+  "checkout": {
+    "title": "Paiement",
+    "deliveryInformation": "Informations de Livraison",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Adresse E-mail",
+    "phone": "Numéro de Téléphone",
+    "address": "Adresse",
+    "city": "Ville",
+    "postalCode": "Code Postal",
+    "country": "Pays",
+    "deliveryInstructions": "Instructions de Livraison (Optionnel)",
+    "fillRequiredFields": "Veuillez remplir tous les champs obligatoires"
+  },
+  "checkoutSummary": {
+    "orderSummary": "Résumé de la Commande",
+    "emptyCart": "Votre panier est vide",
+    "subtotal": "Sous-total",
+    "discount": "Réduction",
+    "taxes": "Taxes (TVA)",
+    "total": "Total",
+    "proceedToPayment": "Procéder au Paiement",
+    "processing": "Traitement...",
+    "each": "chaque"
+  },
+  "dishDetail": {
+    "allergens": "Allergènes",
+    "size": "Taille",
+    "ingredients": "Ingrédients",
+    "addToCart": "Ajouter au Panier",
+    "adding": "Ajout..."
+  },
+  "checkoutSuccess": {
+    "title": "Commande Confirmée !",
+    "thankYou": "Merci pour votre commande.",
+    "mockMode": "(Mode Test)",
+    "orderId": "Votre numéro de commande est : {orderId}",
+    "confirmationEmail": "Vous recevrez sous peu un e-mail de confirmation avec les détails de votre commande et les informations de livraison.",
+    "continueShopping": "Continuer les Achats",
+    "backToHome": "Retour à l'Accueil",
+    "processing": "Traitement de votre commande..."
+  },
+  "admin": {
+    "login": {
+      "title": "Connexion Admin",
+      "subtitle": "Connectez-vous pour gérer les plats",
+      "email": "E-mail",
+      "password": "Mot de Passe",
+      "signingIn": "Connexion...",
+      "signIn": "Se Connecter"
+    },
+    "dishes": {
+      "title": "Gérer les Plats",
+      "subtitle": "Ajouter, modifier ou supprimer des plats du menu",
+      "addNew": "Ajouter un Nouveau Plat",
+      "addFirst": "Ajoutez Votre Premier Plat",
+      "noDishes": "Aucun plat trouvé.",
+      "image": "Image",
+      "name": "Nom",
+      "price": "Prix",
+      "status": "Statut",
+      "actions": "Actions",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "edit": "Modifier le plat",
+      "delete": "Supprimer le plat"
+    },
+    "dishForm": {
+      "addTitle": "Ajouter un Nouveau Plat",
+      "editTitle": "Modifier le Plat",
+      "subtitle": "Créer un nouveau plat pour le menu",
+      "editSubtitle": "Mettre à jour les informations du plat",
+      "dishImage": "Image du Plat",
+      "uploadImage": "Télécharger une Image",
+      "nameEn": "Nom (Anglais) *",
+      "nameNl": "Nom (Néerlandais) *",
+      "nameFr": "Nom (Français) *",
+      "descriptionEn": "Description (Anglais)",
+      "descriptionNl": "Description (Néerlandais)",
+      "descriptionFr": "Description (Français)",
+      "price": "Prix (€) *",
+      "category": "Catégorie",
+      "noCategory": "Aucune Catégorie",
+      "rating": "Note (0-5)",
+      "allergens": "Allergènes (séparés par des virgules)",
+      "allergensPlaceholder": "Poisson, Lait, Noix",
+      "ingredients": "Ingrédients (un par ligne)",
+      "ingredientsPlaceholder": "Filet de saumon\nAsperges\nTomates cerises",
+      "isActive": "Actif (visible dans le menu)",
+      "createDish": "Créer le Plat",
+      "updateDish": "Mettre à Jour le Plat",
+      "saving": "Enregistrement...",
+      "cancel": "Annuler"
+    }
   }
 }
-

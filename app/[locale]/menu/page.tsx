@@ -1,6 +1,7 @@
 "use client";
 
 import { MenuItemCard } from "@/components/menu-item-card";
+import { useTranslations } from "next-intl";
 
 // Mock data - will be replaced with Supabase integration later
 const mockMeals = [
@@ -79,6 +80,7 @@ const mockMeals = [
 ];
 
 export default function MenuPage() {
+  const t = useTranslations("menu");
   const itemCount = mockMeals.length;
 
   const handleWishlistToggle = (id: string) => {
@@ -98,17 +100,17 @@ export default function MenuPage() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 lg:mb-12">
           <div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-2">
-              Menu
+              {t("title")}
             </h1>
             <p className="text-base sm:text-lg text-text-secondary">
-              {itemCount} {itemCount === 1 ? "item" : "items"} available
+              {t("itemsAvailable", { count: itemCount })}
             </p>
           </div>
 
           {/* Filter Bar */}
           <div className="flex items-center gap-3">
             <button className="px-4 py-2 rounded-lg bg-accent text-foreground font-medium text-sm sm:text-base hover:bg-accent/90 transition-colors shadow-soft">
-              Filter
+              {t("filter")}
             </button>
           </div>
         </div>

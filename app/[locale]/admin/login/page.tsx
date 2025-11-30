@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLoginPage() {
+  const t = useTranslations("admin.login");
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,8 +47,8 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-xl shadow-soft p-8 space-y-6">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Admin Login</h1>
-            <p className="text-text-secondary">Sign in to manage dishes</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">{t("title")}</h1>
+            <p className="text-text-secondary">{t("subtitle")}</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
@@ -61,7 +63,7 @@ export default function AdminLoginPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Email
+                {t("email")}
               </label>
               <input
                 type="email"
@@ -79,7 +81,7 @@ export default function AdminLoginPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Password
+                {t("password")}
               </label>
               <input
                 type="password"
@@ -99,7 +101,7 @@ export default function AdminLoginPage() {
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? t("signingIn") : t("signIn")}
             </Button>
           </form>
         </div>

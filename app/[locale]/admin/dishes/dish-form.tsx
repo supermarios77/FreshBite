@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
@@ -37,6 +38,7 @@ interface DishFormProps {
 }
 
 export function DishForm({ dish, categories }: DishFormProps) {
+  const t = useTranslations("admin.dishForm");
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -178,7 +180,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
         {/* Image Upload */}
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
-            Dish Image
+            {t("dishImage")}
           </label>
           <div className="space-y-4">
             {imagePreview ? (
@@ -203,7 +205,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
                 className="w-48 h-48 border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-accent transition-colors"
               >
                 <Upload className="w-8 h-8 text-text-secondary mb-2" />
-                <span className="text-sm text-text-secondary">Upload Image</span>
+                <span className="text-sm text-text-secondary">{t("uploadImage")}</span>
               </div>
             )}
             <input
@@ -223,7 +225,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Name (English) *
+              {t("nameEn")}
             </label>
             <input
               type="text"
@@ -236,7 +238,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Name (Dutch) *
+              {t("nameNl")}
             </label>
             <input
               type="text"
@@ -249,7 +251,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Name (French) *
+              {t("nameFr")}
             </label>
             <input
               type="text"
@@ -266,7 +268,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Description (English)
+              {t("descriptionEn")}
             </label>
             <textarea
               name="descriptionEn"
@@ -278,7 +280,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Description (Dutch)
+              {t("descriptionNl")}
             </label>
             <textarea
               name="descriptionNl"
@@ -290,7 +292,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Description (French)
+              {t("descriptionFr")}
             </label>
             <textarea
               name="descriptionFr"
@@ -306,7 +308,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Price (€) *
+              {t("price")}
             </label>
             <input
               type="number"
@@ -321,7 +323,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Category
+              {t("category")}
             </label>
             <select
               name="categoryId"
@@ -329,7 +331,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
               onChange={handleInputChange}
               className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
             >
-              <option value="">No Category</option>
+              <option value="">{t("noCategory")}</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -339,7 +341,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Rating (0-5)
+              {t("rating")}
             </label>
             <input
               type="number"
@@ -357,14 +359,14 @@ export function DishForm({ dish, categories }: DishFormProps) {
         {/* Allergens */}
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
-            Allergens (comma-separated)
+            {t("allergens")}
           </label>
           <input
             type="text"
             name="allergens"
             value={formData.allergens}
             onChange={handleInputChange}
-            placeholder="Fish, Dairy, Nuts"
+            placeholder={t("allergensPlaceholder")}
             className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
           />
         </div>
@@ -372,14 +374,14 @@ export function DishForm({ dish, categories }: DishFormProps) {
         {/* Ingredients */}
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
-            Ingredients (one per line)
+            {t("ingredients")}
           </label>
           <textarea
             name="ingredients"
             value={formData.ingredients}
             onChange={handleInputChange}
             rows={6}
-            placeholder="Salmon fillet&#10;Asparagus&#10;Cherry tomatoes"
+            placeholder={t("ingredientsPlaceholder")}
             className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all resize-none"
           />
         </div>
@@ -397,7 +399,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
             className="w-4 h-4 rounded border-border text-accent focus:ring-accent"
           />
           <label htmlFor="isActive" className="text-sm font-medium text-foreground">
-            Active (visible on menu)
+            {t("isActive")}
           </label>
         </div>
       </div>
@@ -411,13 +413,13 @@ export function DishForm({ dish, categories }: DishFormProps) {
           disabled={isSubmitting}
           className="px-8"
         >
-          {isSubmitting ? "Saving..." : dish ? "Update Dish" : "Create Dish"}
+          {isSubmitting ? t("saving") : dish ? t("updateDish") : t("createDish")}
         </Button>
         <a
           href="/admin/dishes"
           className="px-6 py-3 rounded-lg border border-border text-foreground hover:bg-secondary transition-colors"
         >
-          Cancel
+          {t("cancel")}
         </a>
       </div>
     </form>

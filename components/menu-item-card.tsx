@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,7 @@ export function MenuItemCard({
   onOrderClick,
   className,
 }: MenuItemCardProps) {
+  const t = useTranslations("menu");
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlistActive, setIsWishlistActive] = useState(isWishlisted);
 
@@ -114,7 +116,7 @@ export function MenuItemCard({
         {/* Order 48h Label */}
         <div className="absolute bottom-3 left-3">
           <span className="px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-medium text-text-secondary">
-            Order 48h in advance
+            {t("order48h")}
           </span>
         </div>
       </div>

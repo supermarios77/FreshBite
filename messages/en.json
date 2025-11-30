@@ -4,7 +4,118 @@
     "order": "Order",
     "cart": "Cart",
     "checkout": "Checkout",
-    "admin": "Admin"
+    "admin": "Admin",
+    "home": "Home",
+    "menu": "Menu",
+    "about": "About",
+    "contact": "Contact",
+    "signIn": "Sign In",
+    "language": "Language"
+  },
+  "hero": {
+    "headline": "Homemade Frozen Meals, Delivered Fresh",
+    "subheadline": "Discover our collection of chef-prepared, ready-to-heat meals. Made with premium ingredients and delivered straight to your door.",
+    "browseMenu": "Browse Menu"
+  },
+  "menu": {
+    "title": "Menu",
+    "itemsAvailable": "{count, plural, =1 {item} other {items}} available",
+    "filter": "Filter",
+    "order48h": "Order 48h in advance"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "deliveryInformation": "Delivery Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "address": "Street Address",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "deliveryInstructions": "Delivery Instructions (Optional)",
+    "fillRequiredFields": "Please fill in all required fields"
+  },
+  "checkoutSummary": {
+    "orderSummary": "Order Summary",
+    "emptyCart": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "taxes": "Taxes (VAT)",
+    "total": "Total",
+    "proceedToPayment": "Proceed to Payment",
+    "processing": "Processing...",
+    "each": "each"
+  },
+  "dishDetail": {
+    "allergens": "Allergens",
+    "size": "Size",
+    "ingredients": "Ingredients",
+    "addToCart": "Add to Cart",
+    "adding": "Adding..."
+  },
+  "checkoutSuccess": {
+    "title": "Order Confirmed!",
+    "thankYou": "Thank you for your order.",
+    "mockMode": "(Mock Mode)",
+    "orderId": "Your order ID is: {orderId}",
+    "confirmationEmail": "You will receive a confirmation email shortly with your order details and delivery information.",
+    "continueShopping": "Continue Shopping",
+    "backToHome": "Back to Home",
+    "processing": "Processing your order..."
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "subtitle": "Sign in to manage dishes",
+      "email": "Email",
+      "password": "Password",
+      "signingIn": "Signing in...",
+      "signIn": "Sign In"
+    },
+    "dishes": {
+      "title": "Manage Dishes",
+      "subtitle": "Add, edit, or remove dishes from the menu",
+      "addNew": "Add New Dish",
+      "addFirst": "Add Your First Dish",
+      "noDishes": "No dishes found.",
+      "image": "Image",
+      "name": "Name",
+      "price": "Price",
+      "status": "Status",
+      "actions": "Actions",
+      "active": "Active",
+      "inactive": "Inactive",
+      "edit": "Edit dish",
+      "delete": "Delete dish"
+    },
+    "dishForm": {
+      "addTitle": "Add New Dish",
+      "editTitle": "Edit Dish",
+      "subtitle": "Create a new dish for the menu",
+      "editSubtitle": "Update dish information",
+      "dishImage": "Dish Image",
+      "uploadImage": "Upload Image",
+      "nameEn": "Name (English) *",
+      "nameNl": "Name (Dutch) *",
+      "nameFr": "Name (French) *",
+      "descriptionEn": "Description (English)",
+      "descriptionNl": "Description (Dutch)",
+      "descriptionFr": "Description (French)",
+      "price": "Price (€) *",
+      "category": "Category",
+      "noCategory": "No Category",
+      "rating": "Rating (0-5)",
+      "allergens": "Allergens (comma-separated)",
+      "allergensPlaceholder": "Fish, Dairy, Nuts",
+      "ingredients": "Ingredients (one per line)",
+      "ingredientsPlaceholder": "Salmon fillet\nAsparagus\nCherry tomatoes",
+      "isActive": "Active (visible on menu)",
+      "createDish": "Create Dish",
+      "updateDish": "Update Dish",
+      "saving": "Saving...",
+      "cancel": "Cancel"
+    }
   }
 }
-

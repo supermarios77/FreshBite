@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ interface DishesListProps {
 }
 
 export function DishesList({ initialDishes }: DishesListProps) {
+  const t = useTranslations("admin.dishes");
   const [dishes, setDishes] = useState(initialDishes);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -74,12 +76,12 @@ export function DishesList({ initialDishes }: DishesListProps) {
   if (dishes.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-text-secondary mb-4">No dishes found.</p>
+        <p className="text-text-secondary mb-4">{t("noDishes")}</p>
         <a
           href="/admin/dishes/new"
           className="px-6 py-3 rounded-lg bg-accent text-foreground font-medium hover:bg-accent/90 transition-colors inline-block"
         >
-          Add Your First Dish
+          {t("addFirst")}
         </a>
       </div>
     );
@@ -92,19 +94,19 @@ export function DishesList({ initialDishes }: DishesListProps) {
           <thead className="bg-secondary">
             <tr>
               <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                Image
+                {t("image")}
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                Name
+                {t("name")}
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                Price
+                {t("price")}
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                Status
+                {t("status")}
               </th>
               <th className="px-6 py-4 text-right text-sm font-semibold text-foreground">
-                Actions
+                {t("actions")}
               </th>
             </tr>
           </thead>
@@ -148,7 +150,7 @@ export function DishesList({ initialDishes }: DishesListProps) {
                         : "bg-secondary text-text-secondary"
                     }`}
                   >
-                    {dish.isActive ? "Active" : "Inactive"}
+                    {dish.isActive ? t("active") : t("inactive")}
                   </button>
                 </td>
                 <td className="px-6 py-4">

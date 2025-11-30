@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 
 export default function CheckoutSuccessPage() {
+  const t = useTranslations("checkoutSuccess");
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const orderId = searchParams.get("orderId");
@@ -41,10 +43,10 @@ export default function CheckoutSuccessPage() {
   if (isLoading) {
     return (
       <div className="bg-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-text-secondary">Processing your order...</p>
-        </div>
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+        <p className="text-text-secondary">{t("processing")}</p>
+      </div>
       </div>
     );
   }
@@ -60,28 +62,27 @@ export default function CheckoutSuccessPage() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-            Order Confirmed!
+            {t("title")}
           </h1>
 
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Thank you for your order. {isMock && "(Mock Mode)"}
-            {orderId && ` Your order ID is: ${orderId}`}
+            {t("thankYou")} {isMock && t("mockMode")}
+            {orderId && ` ${t("orderId", { orderId })}`}
           </p>
 
           <p className="text-base text-text-secondary">
-            You will receive a confirmation email shortly with your order details
-            and delivery information.
+            {t("confirmationEmail")}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
             <Link href="/menu">
               <Button variant="outline" size="lg" className="px-8">
-                Continue Shopping
+                {t("continueShopping")}
               </Button>
             </Link>
             <Link href="/">
               <Button variant="accent" size="lg" className="px-8">
-                Back to Home
+                {t("backToHome")}
               </Button>
             </Link>
           </div>

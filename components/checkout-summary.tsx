@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface CartItem {
   id: string;
@@ -43,6 +44,7 @@ export function CheckoutSummary({
   const subtotalAfterDiscount = subtotal - discountAmount;
   const taxes = subtotalAfterDiscount * taxRate;
   const total = subtotalAfterDiscount + taxes;
+  const t = useTranslations("checkoutSummary");
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
     if (newQuantity <= 0) {
@@ -59,12 +61,12 @@ export function CheckoutSummary({
       {/* Products List */}
       <div className="mb-6 lg:mb-8">
         <h2 className="text-xl lg:text-2xl font-bold text-foreground mb-4 lg:mb-6">
-          Order Summary
+          {t("orderSummary")}
         </h2>
         <div className="space-y-4">
           {items.length === 0 ? (
             <p className="text-text-secondary text-center py-8">
-              Your cart is empty
+              {t("emptyCart")}
             </p>
           ) : (
             items.map((item) => (
@@ -125,7 +127,7 @@ export function CheckoutSummary({
                       </p>
                       {item.quantity > 1 && (
                         <p className="text-xs text-text-secondary">
-                          €{item.price.toFixed(2)} each
+                          €{item.price.toFixed(2)} {t("each")}
                         </p>
                       )}
                     </div>
@@ -153,7 +155,7 @@ export function CheckoutSummary({
         <div className="space-y-3 lg:space-y-4 mb-6 lg:mb-8 pt-4 lg:pt-6 border-t border-border">
           {/* Subtotal */}
           <div className="flex justify-between text-base lg:text-lg">
-            <span className="text-text-secondary">Subtotal</span>
+            <span className="text-text-secondary">{t("subtotal")}</span>
             <span className="text-foreground font-medium">
               €{subtotal.toFixed(2)}
             </span>
@@ -162,7 +164,7 @@ export function CheckoutSummary({
           {/* Discount */}
           {discountAmount > 0 && (
             <div className="flex justify-between text-base lg:text-lg">
-              <span className="text-text-secondary">Discount</span>
+              <span className="text-text-secondary">{t("discount")}</span>
               <span className="text-foreground font-medium text-accent">
                 -€{discountAmount.toFixed(2)}
               </span>
@@ -171,7 +173,7 @@ export function CheckoutSummary({
 
           {/* Taxes */}
           <div className="flex justify-between text-base lg:text-lg">
-            <span className="text-text-secondary">Taxes (VAT)</span>
+            <span className="text-text-secondary">{t("taxes")}</span>
             <span className="text-foreground font-medium">
               €{taxes.toFixed(2)}
             </span>
@@ -179,7 +181,7 @@ export function CheckoutSummary({
 
           {/* Total */}
           <div className="flex justify-between text-xl lg:text-2xl font-bold pt-3 lg:pt-4 border-t border-border">
-            <span className="text-foreground">Total</span>
+            <span className="text-foreground">{t("total")}</span>
             <span className="text-foreground">€{total.toFixed(2)}</span>
           </div>
         </div>
@@ -194,7 +196,7 @@ export function CheckoutSummary({
           size="lg"
           className="w-full text-base lg:text-lg px-8 py-6 rounded-lg shadow-soft hover:shadow-md transition-all duration-200"
         >
-          {isLoading ? "Processing..." : "Proceed to Payment"}
+          {isLoading ? t("processing") : t("proceedToPayment")}
         </Button>
       )}
     </div>

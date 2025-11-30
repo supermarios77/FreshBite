@@ -1,6 +1,9 @@
+"use client";
+
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface HeroProps {
   headline?: string;
@@ -12,13 +15,19 @@ interface HeroProps {
 }
 
 export function Hero({
-  headline = "Homemade Frozen Meals, Delivered Fresh",
-  subheadline = "Discover our collection of chef-prepared, ready-to-heat meals. Made with premium ingredients and delivered straight to your door.",
-  ctaText = "Browse Menu",
+  headline,
+  subheadline,
+  ctaText,
   ctaHref = "/menu",
   imageSrc = "/placeholder-dish.jpg",
-  imageAlt = "Delicious frozen meal",
+  imageAlt,
 }: HeroProps = {}) {
+  const t = useTranslations("hero");
+  
+  const displayHeadline = headline || t("headline");
+  const displaySubheadline = subheadline || t("subheadline");
+  const displayCtaText = ctaText || t("browseMenu");
+  const displayImageAlt = imageAlt || displayHeadline;
   return (
     <section className="bg-white py-16 lg:py-24 xl:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -27,10 +36,10 @@ export function Hero({
           <div className="space-y-8 lg:space-y-10">
             <div className="space-y-6">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight tracking-tight">
-                {headline}
+                {displayHeadline}
               </h1>
               <p className="text-lg sm:text-xl lg:text-2xl text-text-secondary leading-relaxed max-w-2xl">
-                {subheadline}
+                {displaySubheadline}
               </p>
             </div>
 
@@ -42,7 +51,7 @@ export function Hero({
                   variant="accent"
                   className="text-base sm:text-lg px-8 py-6 rounded-lg shadow-soft hover:shadow-md transition-all duration-200"
                 >
-                  {ctaText}
+                  {displayCtaText}
                 </Button>
               </Link>
             </div>
@@ -54,7 +63,7 @@ export function Hero({
               {imageSrc && imageSrc !== "/placeholder-dish.jpg" ? (
                 <Image
                   src={imageSrc}
-                  alt={imageAlt}
+                  alt={displayImageAlt}
                   fill
                   className="object-cover"
                   priority

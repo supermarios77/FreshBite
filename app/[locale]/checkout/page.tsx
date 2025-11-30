@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { CheckoutSummary } from "@/components/checkout-summary";
 
 // Mock cart data - will be replaced with actual cart state/context
@@ -22,6 +23,7 @@ const mockCartItems = [
 ];
 
 export default function CheckoutPage() {
+  const t = useTranslations("checkout");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -56,7 +58,7 @@ export default function CheckoutPage() {
   const handleProceedToPayment = async () => {
     // Validate required fields
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.postalCode) {
-      alert("Please fill in all required fields");
+      alert(t("fillRequiredFields"));
       return;
     }
 
@@ -107,7 +109,7 @@ export default function CheckoutPage() {
     <div className="bg-white min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 lg:py-12">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 lg:mb-12">
-          Checkout
+          {t("title")}
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16">
@@ -115,7 +117,7 @@ export default function CheckoutPage() {
           <div className="space-y-6 lg:space-y-8">
             <div>
               <h2 className="text-xl lg:text-2xl font-semibold text-foreground mb-6">
-                Delivery Information
+                {t("deliveryInformation")}
               </h2>
 
               <form className="space-y-5">
@@ -126,7 +128,7 @@ export default function CheckoutPage() {
                       htmlFor="firstName"
                       className="block text-sm font-medium text-foreground mb-2"
                     >
-                      First Name
+                      {t("firstName")}
                     </label>
                     <input
                       type="text"
@@ -144,7 +146,7 @@ export default function CheckoutPage() {
                       htmlFor="lastName"
                       className="block text-sm font-medium text-foreground mb-2"
                     >
-                      Last Name
+                      {t("lastName")}
                     </label>
                     <input
                       type="text"
@@ -165,7 +167,7 @@ export default function CheckoutPage() {
                     htmlFor="email"
                     className="block text-sm font-medium text-foreground mb-2"
                   >
-                    Email Address
+                    {t("email")}
                   </label>
                   <input
                     type="email"
@@ -185,7 +187,7 @@ export default function CheckoutPage() {
                     htmlFor="phone"
                     className="block text-sm font-medium text-foreground mb-2"
                   >
-                    Phone Number
+                    {t("phone")}
                   </label>
                   <input
                     type="tel"
@@ -205,7 +207,7 @@ export default function CheckoutPage() {
                     htmlFor="address"
                     className="block text-sm font-medium text-foreground mb-2"
                   >
-                    Street Address
+                    {t("address")}
                   </label>
                   <input
                     type="text"
@@ -226,7 +228,7 @@ export default function CheckoutPage() {
                       htmlFor="city"
                       className="block text-sm font-medium text-foreground mb-2"
                     >
-                      City
+                      {t("city")}
                     </label>
                     <input
                       type="text"
@@ -244,7 +246,7 @@ export default function CheckoutPage() {
                       htmlFor="postalCode"
                       className="block text-sm font-medium text-foreground mb-2"
                     >
-                      Postal Code
+                      {t("postalCode")}
                     </label>
                     <input
                       type="text"
@@ -265,7 +267,7 @@ export default function CheckoutPage() {
                     htmlFor="country"
                     className="block text-sm font-medium text-foreground mb-2"
                   >
-                    Country
+                    {t("country")}
                   </label>
                   <input
                     type="text"
@@ -284,7 +286,7 @@ export default function CheckoutPage() {
                     htmlFor="deliveryInstructions"
                     className="block text-sm font-medium text-foreground mb-2"
                   >
-                    Delivery Instructions (Optional)
+                    {t("deliveryInstructions")}
                   </label>
                   <textarea
                     id="deliveryInstructions"

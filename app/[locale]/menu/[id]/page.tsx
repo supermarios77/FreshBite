@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
@@ -37,6 +38,7 @@ export default function MenuItemDetailPage({
 }: {
   params: Promise<{ id: string; locale: string }>;
 }) {
+  const t = useTranslations("dishDetail");
   const [selectedSize, setSelectedSize] = useState(mockMealData.sizeOptions[0].id);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -152,7 +154,7 @@ export default function MenuItemDetailPage({
             {mockMealData.sizeOptions.length > 1 && (
               <div>
                 <h3 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
-                  Size
+                  {t("size")}
                 </h3>
                 <div className="flex gap-3">
                   {mockMealData.sizeOptions.map((size) => (
@@ -218,7 +220,7 @@ export default function MenuItemDetailPage({
                 className="flex-1 text-base sm:text-lg px-8 py-6 rounded-lg shadow-soft hover:shadow-md transition-all duration-200"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                {isLoading ? "Adding..." : "Add to Cart"}
+                {isLoading ? t("adding") : t("addToCart")}
               </Button>
             </div>
           </div>
@@ -228,7 +230,7 @@ export default function MenuItemDetailPage({
         <div className="border-t border-border pt-8 lg:pt-12">
           <div className="max-w-4xl">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-6 lg:mb-8">
-              Ingredients
+              {t("ingredients")}
             </h2>
             <div className="bg-white rounded-xl lg:rounded-2xl border border-border shadow-soft p-6 lg:p-8">
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">

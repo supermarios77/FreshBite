@@ -4,7 +4,118 @@
     "order": "Bestellen",
     "cart": "Winkelwagen",
     "checkout": "Afrekenen",
-    "admin": "Beheer"
+    "admin": "Beheer",
+    "home": "Home",
+    "menu": "Menu",
+    "about": "Over Ons",
+    "contact": "Contact",
+    "signIn": "Inloggen",
+    "language": "Taal"
+  },
+  "hero": {
+    "headline": "Zelfgemaakte Diepvriesmaaltijden, Vers Bezorgd",
+    "subheadline": "Ontdek onze collectie van door chef-koks bereide, klaar om op te warmen maaltijden. Gemaakt met premium ingrediënten en rechtstreeks bij u thuis bezorgd.",
+    "browseMenu": "Bekijk Menu"
+  },
+  "menu": {
+    "title": "Menu",
+    "itemsAvailable": "{count, plural, =1 {item} other {items}} beschikbaar",
+    "filter": "Filteren",
+    "order48h": "Bestel 48u van tevoren"
+  },
+  "checkout": {
+    "title": "Afrekenen",
+    "deliveryInformation": "Bezorggegevens",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "email": "E-mailadres",
+    "phone": "Telefoonnummer",
+    "address": "Straatadres",
+    "city": "Stad",
+    "postalCode": "Postcode",
+    "country": "Land",
+    "deliveryInstructions": "Bezorginstructies (Optioneel)",
+    "fillRequiredFields": "Vul alle verplichte velden in"
+  },
+  "checkoutSummary": {
+    "orderSummary": "Besteloverzicht",
+    "emptyCart": "Uw winkelwagen is leeg",
+    "subtotal": "Subtotaal",
+    "discount": "Korting",
+    "taxes": "Belastingen (BTW)",
+    "total": "Totaal",
+    "proceedToPayment": "Doorgaan naar Betaling",
+    "processing": "Verwerken...",
+    "each": "per stuk"
+  },
+  "dishDetail": {
+    "allergens": "Allergenen",
+    "size": "Grootte",
+    "ingredients": "Ingrediënten",
+    "addToCart": "Toevoegen aan Winkelwagen",
+    "adding": "Toevoegen..."
+  },
+  "checkoutSuccess": {
+    "title": "Bestelling Bevestigd!",
+    "thankYou": "Bedankt voor uw bestelling.",
+    "mockMode": "(Testmodus)",
+    "orderId": "Uw bestelnummer is: {orderId}",
+    "confirmationEmail": "U ontvangt binnenkort een bevestigingsmail met uw bestelgegevens en bezorginformatie.",
+    "continueShopping": "Verder Winkelen",
+    "backToHome": "Terug naar Home",
+    "processing": "Uw bestelling verwerken..."
+  },
+  "admin": {
+    "login": {
+      "title": "Beheer Login",
+      "subtitle": "Log in om gerechten te beheren",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "signingIn": "Inloggen...",
+      "signIn": "Inloggen"
+    },
+    "dishes": {
+      "title": "Gerechten Beheren",
+      "subtitle": "Voeg gerechten toe, bewerk of verwijder ze uit het menu",
+      "addNew": "Nieuw Gerecht Toevoegen",
+      "addFirst": "Voeg Uw Eerste Gerecht Toe",
+      "noDishes": "Geen gerechten gevonden.",
+      "image": "Afbeelding",
+      "name": "Naam",
+      "price": "Prijs",
+      "status": "Status",
+      "actions": "Acties",
+      "active": "Actief",
+      "inactive": "Inactief",
+      "edit": "Gerecht bewerken",
+      "delete": "Gerecht verwijderen"
+    },
+    "dishForm": {
+      "addTitle": "Nieuw Gerecht Toevoegen",
+      "editTitle": "Gerecht Bewerken",
+      "subtitle": "Maak een nieuw gerecht voor het menu",
+      "editSubtitle": "Update gerechtinformatie",
+      "dishImage": "Gerechtafbeelding",
+      "uploadImage": "Afbeelding Uploaden",
+      "nameEn": "Naam (Engels) *",
+      "nameNl": "Naam (Nederlands) *",
+      "nameFr": "Naam (Frans) *",
+      "descriptionEn": "Beschrijving (Engels)",
+      "descriptionNl": "Beschrijving (Nederlands)",
+      "descriptionFr": "Beschrijving (Frans)",
+      "price": "Prijs (€) *",
+      "category": "Categorie",
+      "noCategory": "Geen Categorie",
+      "rating": "Beoordeling (0-5)",
+      "allergens": "Allergenen (komma-gescheiden)",
+      "allergensPlaceholder": "Vis, Zuivel, Noten",
+      "ingredients": "Ingrediënten (één per regel)",
+      "ingredientsPlaceholder": "Zalmfilet\nAsperges\nCherrytomaatjes",
+      "isActive": "Actief (zichtbaar in menu)",
+      "createDish": "Gerecht Aanmaken",
+      "updateDish": "Gerecht Bijwerken",
+      "saving": "Opslaan...",
+      "cancel": "Annuleren"
+    }
   }
 }
-
