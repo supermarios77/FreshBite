@@ -50,15 +50,38 @@ export function Hero({
 
           {/* Right Column - Image */}
           <div className="relative w-full aspect-square lg:aspect-[4/5] max-w-lg mx-auto lg:max-w-none">
-            <div className="relative w-full h-full rounded-2xl lg:rounded-3xl overflow-hidden shadow-soft">
-              <Image
-                src={imageSrc}
-                alt={imageAlt}
-                fill
-                className="object-cover"
-                priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
-              />
+            <div className="relative w-full h-full rounded-2xl lg:rounded-3xl overflow-hidden shadow-soft bg-secondary">
+              {imageSrc && imageSrc !== "/placeholder-dish.jpg" ? (
+                <Image
+                  src={imageSrc}
+                  alt={imageAlt}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary to-muted">
+                  <div className="text-center p-8">
+                    <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-accent/30 flex items-center justify-center">
+                      <svg
+                        className="w-12 h-12 text-accent"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-text-secondary text-sm">Dish Image</p>
+                  </div>
+                </div>
+              )}
             </div>
             {/* Decorative accent - optional */}
             <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-accent/20 rounded-full blur-2xl -z-10 hidden lg:block" />
