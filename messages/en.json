@@ -37,6 +37,23 @@
     "deliveryInstructions": "Delivery Instructions (Optional)",
     "fillRequiredFields": "Please fill in all required fields"
   },
+  "cart": {
+    "title": "Shopping Cart",
+    "emptyCart": "Your cart is empty",
+    "emptyTitle": "Your cart is empty",
+    "emptyDescription": "Add some delicious meals to get started!",
+    "itemCount": "{count, plural, =1 {# item} other {# items}} in your cart",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "taxes": "Taxes (VAT)",
+    "total": "Total",
+    "proceedToCheckout": "Proceed to Checkout",
+    "continueShopping": "Continue Shopping",
+    "browseMenu": "Browse Menu",
+    "each": "each",
+    "noImage": "No Image",
+    "removeItem": "Remove {name}"
+  },
   "checkoutSummary": {
     "orderSummary": "Order Summary",
     "emptyCart": "Your cart is empty",

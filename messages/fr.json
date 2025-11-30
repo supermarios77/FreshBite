@@ -37,6 +37,23 @@
     "deliveryInstructions": "Instructions de Livraison (Optionnel)",
     "fillRequiredFields": "Veuillez remplir tous les champs obligatoires"
   },
+  "cart": {
+    "title": "Panier",
+    "emptyCart": "Votre panier est vide",
+    "emptyTitle": "Votre panier est vide",
+    "emptyDescription": "Ajoutez de délicieux plats pour commencer !",
+    "itemCount": "{count, plural, =1 {# article} other {# articles}} dans votre panier",
+    "orderSummary": "Résumé de la Commande",
+    "subtotal": "Sous-total",
+    "taxes": "Taxes (TVA)",
+    "total": "Total",
+    "proceedToCheckout": "Procéder au Paiement",
+    "continueShopping": "Continuer les Achats",
+    "browseMenu": "Voir le Menu",
+    "each": "chaque",
+    "noImage": "Pas d'Image",
+    "removeItem": "Retirer {name}"
+  },
   "checkoutSummary": {
     "orderSummary": "Résumé de la Commande",
     "emptyCart": "Votre panier est vide",

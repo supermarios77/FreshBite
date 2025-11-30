@@ -37,6 +37,23 @@
     "deliveryInstructions": "Bezorginstructies (Optioneel)",
     "fillRequiredFields": "Vul alle verplichte velden in"
   },
+  "cart": {
+    "title": "Winkelwagen",
+    "emptyCart": "Uw winkelwagen is leeg",
+    "emptyTitle": "Uw winkelwagen is leeg",
+    "emptyDescription": "Voeg heerlijke maaltijden toe om te beginnen!",
+    "itemCount": "{count, plural, =1 {# item} other {# items}} in uw winkelwagen",
+    "orderSummary": "Besteloverzicht",
+    "subtotal": "Subtotaal",
+    "taxes": "Belastingen (BTW)",
+    "total": "Totaal",
+    "proceedToCheckout": "Doorgaan naar Afrekenen",
+    "continueShopping": "Verder Winkelen",
+    "browseMenu": "Bekijk Menu",
+    "each": "per stuk",
+    "noImage": "Geen Afbeelding",
+    "removeItem": "{name} verwijderen"
+  },
   "checkoutSummary": {
     "orderSummary": "Besteloverzicht",
     "emptyCart": "Uw winkelwagen is leeg",
