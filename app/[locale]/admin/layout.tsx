@@ -9,7 +9,7 @@ export default async function AdminLayout({
   const session = await getSession();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {session && (
         <div className="border-b border-border">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
