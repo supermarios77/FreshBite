@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { ShoppingCart, User } from "lucide-react";
 import { LocaleSwitcher } from "./locale-switcher";
+import { CartBadge } from "./cart-badge";
 import { useState } from "react";
 
 export function Navbar() {
@@ -57,10 +58,7 @@ export function Navbar() {
               aria-label="Shopping cart"
             >
               <ShoppingCart className="w-6 h-6" />
-              {/* Cart badge - optional, can be dynamic */}
-              {/* <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent rounded-full text-xs flex items-center justify-center text-foreground">
-                0
-              </span> */}
+              <CartBadge />
             </Link>
 
             {/* Sign In Button */}

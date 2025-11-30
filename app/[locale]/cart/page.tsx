@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Plus, Minus, Trash2, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 interface CartItem {
   id: string;
+  dishId: string;
   name: string;
   price: number;
   quantity: number;
@@ -16,40 +17,65 @@ interface CartItem {
   size?: string;
 }
 
-// Mock cart data - will be replaced with actual cart state/context
-const mockCartItems: CartItem[] = [
-  {
-    id: "1",
-    name: "Grilled Salmon with Seasonal Vegetables",
-    price: 18.99,
-    quantity: 2,
-    size: "Regular",
-  },
-  {
-    id: "2",
-    name: "Beef Bourguignon with Mashed Potatoes",
-    price: 22.50,
-    quantity: 1,
-    size: "Large",
-  },
-];
-
 export default function CartPage() {
   const t = useTranslations("cart");
-  const [cartItems, setCartItems] = useState(mockCartItems);
+  const router = useRouter();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleRemoveItem = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  // Fetch cart on mount
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const fetchCart = async () => {
+    try {
+      const response = await fetch("/api/cart");
+      if (response.ok) {
+        const data = await response.json();
+        setCartItems(data.cart || []);
+      }
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleUpdateQuantity = (id: string, newQuantity: number) => {
+  const handleRemoveItem = async (id: string) => {
+    try {
+      const response = await fetch(`/api/cart?itemId=${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setCartItems(data.cart || []);
+      }
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
+  };
+
+  const handleUpdateQuantity = async (id: string, newQuantity: number) => {
     if (newQuantity <= 0) {
       handleRemoveItem(id);
       return;
     }
-    setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item))
-    );
+    try {
+      const response = await fetch("/api/cart", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ itemId: id, quantity: newQuantity }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setCartItems(data.cart || []);
+      }
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -58,6 +84,17 @@ export default function CartPage() {
   const total = subtotal + taxes;
 
   const isCartEmpty = cartItems.length === 0;
+
+  if (isLoading) {
+    return (
+      <div className="bg-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-text-secondary">{t("loading")}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white min-h-screen">

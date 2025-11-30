@@ -52,7 +52,8 @@
     "browseMenu": "Browse Menu",
     "each": "each",
     "noImage": "No Image",
-    "removeItem": "Remove {name}"
+    "removeItem": "Remove {name}",
+    "loading": "Loading cart..."
   },
   "checkoutSummary": {
     "orderSummary": "Order Summary",

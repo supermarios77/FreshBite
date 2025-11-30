@@ -1,29 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
 import { CheckoutSummary } from "@/components/checkout-summary";
 
-// Mock cart data - will be replaced with actual cart state/context
-const mockCartItems = [
-  {
-    id: "1",
-    name: "Grilled Salmon with Seasonal Vegetables",
-    price: 18.99,
-    quantity: 2,
-    size: "Regular",
-  },
-  {
-    id: "2",
-    name: "Beef Bourguignon with Mashed Potatoes",
-    price: 22.50,
-    quantity: 1,
-    size: "Large",
-  },
-];
+interface CartItem {
+  id: string;
+  dishId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  imageSrc?: string;
+  size?: string;
+}
 
 export default function CheckoutPage() {
   const t = useTranslations("checkout");
+  const router = useRouter();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -38,6 +34,29 @@ export default function CheckoutPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Fetch cart on mount
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const fetchCart = async () => {
+    try {
+      const response = await fetch("/api/cart");
+      if (response.ok) {
+        const data = await response.json();
+        setCartItems(data.cart || []);
+        if (data.cart.length === 0) {
+          // Redirect to cart if empty
+          router.push("/cart");
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -45,14 +64,36 @@ export default function CheckoutPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleRemoveItem = (id: string) => {
-    // TODO: Remove item from cart
-    console.log("Remove item:", id);
+  const handleRemoveItem = async (id: string) => {
+    try {
+      const response = await fetch(`/api/cart?itemId=${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setCartItems(data.cart || []);
+      }
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
   };
 
-  const handleUpdateQuantity = (id: string, quantity: number) => {
-    // TODO: Update item quantity in cart
-    console.log("Update quantity:", id, quantity);
+  const handleUpdateQuantity = async (id: string, quantity: number) => {
+    try {
+      const response = await fetch("/api/cart", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ itemId: id, quantity }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setCartItems(data.cart || []);
+      }
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
   };
 
   const handleProceedToPayment = async () => {
@@ -73,17 +114,17 @@ export default function CheckoutPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          items: mockCartItems.map((item) => ({
-            dishId: item.id,
-            quantity: item.quantity,
-            price: item.price,
-            size: item.size,
-          })),
-          userId: "temp-user-id", // TODO: Get from auth/session
-          deliveryInfo: formData,
-          locale,
-        }),
+          body: JSON.stringify({
+            items: cartItems.map((item) => ({
+              dishId: item.dishId,
+              quantity: item.quantity,
+              price: item.price,
+              size: item.size,
+            })),
+            userId: "temp-user-id", // TODO: Get from auth/session
+            deliveryInfo: formData,
+            locale,
+          }),
       });
 
       const data = await response.json();

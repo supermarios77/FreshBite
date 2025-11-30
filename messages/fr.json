@@ -52,7 +52,8 @@
     "browseMenu": "Voir le Menu",
     "each": "chaque",
     "noImage": "Pas d'Image",
-    "removeItem": "Retirer {name}"
+    "removeItem": "Retirer {name}",
+    "loading": "Chargement du panier..."
   },
   "checkoutSummary": {
     "orderSummary": "Résumé de la Commande",

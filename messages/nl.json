@@ -52,7 +52,8 @@
     "browseMenu": "Bekijk Menu",
     "each": "per stuk",
     "noImage": "Geen Afbeelding",
-    "removeItem": "{name} verwijderen"
+    "removeItem": "{name} verwijderen",
+    "loading": "Winkelwagen laden..."
   },
   "checkoutSummary": {
     "orderSummary": "Besteloverzicht",

@@ -55,18 +55,40 @@ export default function MenuItemDetailPage({
 
   const handleAddToCart = async () => {
     setIsLoading(true);
-    // TODO: Integrate with cart/Supabase
-    console.log("Add to cart:", {
-      id: mockMealData.id,
-      size: selectedSize,
-      quantity,
-      price: totalPrice,
-    });
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const selectedSizeOption = mockMealData.sizeOptions.find(
+        (size) => size.id === selectedSize
+      );
+      const sizeLabel = selectedSizeOption?.label || "Regular";
+
+      const response = await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          dishId: mockMealData.id,
+          name: mockMealData.name,
+          price: currentPrice,
+          quantity,
+          imageSrc: mockMealData.imageSrc,
+          size: sizeLabel,
+        }),
+      });
+
+      if (response.ok) {
+        // Show success feedback
+        setIsLoading(false);
+        // Optionally redirect to cart or show toast
+        // router.push("/cart");
+      } else {
+        throw new Error("Failed to add to cart");
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
       setIsLoading(false);
-      // TODO: Show success toast/notification
-    }, 500);
+      alert("Failed to add item to cart. Please try again.");
+    }
   };
 
   const incrementQuantity = () => {
