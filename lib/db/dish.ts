@@ -7,7 +7,7 @@ export interface GetDishesParams {
 }
 
 export async function getDishes(params: GetDishesParams = {}) {
-  const { categoryId, isActive = true, locale = "en" } = params;
+  const { categoryId, isActive, locale = "en" } = params;
 
   const dishes = await prisma.dish.findMany({
     where: {
