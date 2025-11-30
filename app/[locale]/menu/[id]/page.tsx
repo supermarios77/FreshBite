@@ -35,11 +35,15 @@ const mockMealData = {
 export default function MenuItemDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }) {
   const [selectedSize, setSelectedSize] = useState(mockMealData.sizeOptions[0].id);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Note: In a real implementation, you would await params and fetch meal data based on id
+  // const { id, locale } = await params;
+  // const mealData = await fetchMealById(id);
 
   // Get current price based on selected size
   const currentPrice =
