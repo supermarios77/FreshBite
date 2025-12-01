@@ -68,6 +68,7 @@
     "each": "per stuk"
   },
   "dishDetail": {
+    "description": "Beschrijving",
     "allergens": "Allergenen",
     "size": "Grootte",
     "ingredients": "Ingrediënten",

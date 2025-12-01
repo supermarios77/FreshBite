@@ -68,6 +68,7 @@
     "each": "each"
   },
   "dishDetail": {
+    "description": "Description",
     "allergens": "Allergens",
     "size": "Size",
     "ingredients": "Ingredients",
