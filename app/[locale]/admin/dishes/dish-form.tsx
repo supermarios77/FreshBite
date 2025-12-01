@@ -209,26 +209,40 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </label>
           <div className="space-y-4">
             {imagePreview ? (
-              <div className="relative w-48 h-48 rounded-lg overflow-hidden bg-secondary border border-border">
-                <Image
-                  src={imagePreview}
-                  alt="Dish preview"
-                  fill
-                  className="object-cover"
-                  unoptimized={imagePreview.startsWith("http")}
-                  onError={() => {
-                    // Fallback if image fails to load
-                    setImagePreview(null);
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  className="absolute top-2 right-2 p-2 bg-background/90 backdrop-blur-sm rounded-full shadow-md hover:bg-background transition-colors z-10"
-                  aria-label="Remove image"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+              <div className="space-y-2">
+                <div className="relative w-48 h-48 rounded-lg overflow-hidden bg-secondary border border-border group">
+                  <Image
+                    src={imagePreview}
+                    alt="Dish preview"
+                    fill
+                    className="object-cover"
+                    unoptimized={imagePreview.startsWith("http")}
+                    onError={() => {
+                      // Fallback if image fails to load
+                      console.error("Failed to load image:", imagePreview);
+                      setImagePreview(null);
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100"
+                    aria-label="Replace image"
+                  >
+                    <Upload className="w-6 h-6 text-white" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute top-2 right-2 p-2 bg-background/90 backdrop-blur-sm rounded-full shadow-md hover:bg-background transition-colors z-10"
+                    aria-label="Remove image"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <p className="text-xs text-text-secondary">
+                  Click image to replace or use X to remove
+                </p>
               </div>
             ) : (
               <div
