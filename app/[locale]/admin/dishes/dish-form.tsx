@@ -27,6 +27,8 @@ interface Dish {
   imageUrl?: string | null;
   categoryId?: string | null;
   rating?: number;
+  quantity?: string | null;
+  weight?: string | null;
   allergens: string[];
   ingredients: string[];
   isActive: boolean;
@@ -57,6 +59,8 @@ export function DishForm({ dish, categories }: DishFormProps) {
     price: dish?.price || 0,
     categoryId: dish?.categoryId || "",
     rating: dish?.rating || 0,
+    quantity: dish?.quantity || "",
+    weight: dish?.weight || "",
     allergens: dish?.allergens?.join(", ") || "",
     ingredients: dish?.ingredients?.join("\n") || "",
     isActive: dish?.isActive ?? true,
@@ -75,6 +79,8 @@ export function DishForm({ dish, categories }: DishFormProps) {
         price: dish.price || 0,
         categoryId: dish.categoryId || "",
         rating: dish.rating || 0,
+        quantity: dish.quantity || "",
+        weight: dish.weight || "",
         allergens: dish.allergens?.join(", ") || "",
         ingredients: dish.ingredients?.join("\n") || "",
         isActive: dish.isActive ?? true,

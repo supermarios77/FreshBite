@@ -12,6 +12,8 @@ interface Dish {
   description?: string | null;
   price: number;
   imageUrl?: string | null;
+  quantity?: string | null;
+  weight?: string | null;
   allergens: string[];
   ingredients: string[];
   rating: number;
@@ -123,6 +125,24 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
             <div className="text-3xl lg:text-4xl font-normal text-foreground tracking-widest">
               €{dish.price.toFixed(2)}
             </div>
+
+            {/* Quantity and Weight */}
+            {(dish.quantity || dish.weight) && (
+              <div className="flex flex-wrap gap-4 text-sm text-text-secondary tracking-wide">
+                {dish.quantity && (
+                  <div className="flex items-center gap-2">
+                    <span className="uppercase">{t("quantity")}:</span>
+                    <span>{dish.quantity}</span>
+                  </div>
+                )}
+                {dish.weight && (
+                  <div className="flex items-center gap-2">
+                    <span className="uppercase">{t("weight")}:</span>
+                    <span>{dish.weight}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Description */}
             {dish.description && (

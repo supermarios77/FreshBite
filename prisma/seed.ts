@@ -34,6 +34,8 @@ async function main() {
         descriptionFr: "Pâtisseries triangulaires croustillantes farcies de pommes de terre épicées et de pois, servies avec chutney à la menthe.",
         price: 8.50,
         rating: 4.7,
+        quantity: "6 pieces",
+        weight: "300g",
         allergens: ["Gluten", "Wheat"],
         ingredients: [
           "All-purpose flour",
@@ -74,6 +76,8 @@ async function main() {
         descriptionFr: "Rouleaux de printemps dorés et croustillants farcis de légumes frais, servis avec une sauce aigre-douce.",
         price: 7.50,
         rating: 4.5,
+        quantity: "8 pieces",
+        weight: "400g",
         allergens: ["Gluten", "Wheat", "Soy"],
         ingredients: [
           "Spring roll wrappers",

@@ -55,6 +55,8 @@ model Dish {
   imageUrl      String?
   categoryId    String?
   rating        Float?   @default(0)
+  quantity      String?  // e.g., "6 pieces", "10 pieces"
+  weight        String?  // e.g., "500g", "1kg"
   allergens     String[] // Array of allergen strings
   ingredients   String[] // Array of ingredient strings
   isActive      Boolean  @default(true)

@@ -71,6 +71,8 @@
     "description": "Description",
     "allergens": "Allergens",
     "size": "Size",
+    "quantity": "Quantity",
+    "weight": "Weight",
     "ingredients": "Ingredients",
     "addToCart": "Add to Cart",
     "adding": "Adding..."
