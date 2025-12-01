@@ -407,6 +407,36 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </div>
         </div>
 
+        {/* Quantity and Weight */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              {t("quantity")}
+            </label>
+            <input
+              type="text"
+              name="quantity"
+              value={formData.quantity}
+              onChange={handleInputChange}
+              placeholder={t("quantityPlaceholder")}
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              {t("weight")}
+            </label>
+            <input
+              type="text"
+              name="weight"
+              value={formData.weight}
+              onChange={handleInputChange}
+              placeholder={t("weightPlaceholder")}
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+            />
+          </div>
+        </div>
+
         {/* Allergens */}
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
