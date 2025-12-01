@@ -36,14 +36,10 @@ export async function POST(req: NextRequest) {
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
     const filePath = `dishes/${fileName}`;
 
-    // Convert File to ArrayBuffer for Supabase
-    const arrayBuffer = await file.arrayBuffer();
-    const fileBuffer = Buffer.from(arrayBuffer);
-
-    // Upload to Supabase Storage
+    // Upload to Supabase Storage - File object works directly with @supabase/ssr
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("dish-images")
-      .upload(filePath, fileBuffer, {
+      .upload(filePath, file, {
         cacheControl: "3600",
         upsert: false,
         contentType: file.type,
