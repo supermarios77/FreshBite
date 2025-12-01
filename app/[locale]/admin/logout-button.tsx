@@ -1,18 +1,20 @@
 "use client";
 
-import { useRouter } from "@/i18n/routing";
+import { useRouter, usePathname } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export function AdminLogoutButton() {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/admin/login");
-    router.refresh();
+    // Get locale from current pathname
+    const locale = pathname.split("/")[1] || "en";
+    window.location.href = `/${locale}/admin/login`;
   };
 
   return (
