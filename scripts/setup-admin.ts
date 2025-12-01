@@ -72,7 +72,10 @@ async function setupAdmin() {
     console.log("   Email:    " + adminEmail);
     console.log("   Password: " + adminPassword);
     console.log("\n⚠️  IMPORTANT: Change the password after first login!");
-    console.log("   Login at: /admin/login\n");
+    console.log("   Login URLs (localized):");
+    console.log("   - English: /en/admin/login");
+    console.log("   - Dutch:   /nl/admin/login");
+    console.log("   - French: /fr/admin/login\n");
   } catch (error: any) {
     console.error("❌ Unexpected error:", error.message);
     process.exit(1);

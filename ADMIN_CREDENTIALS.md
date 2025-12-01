@@ -24,7 +24,10 @@ After running the setup script, you can log in with:
 
 3. The script will create the admin user in Supabase.
 
-4. Log in at: `/admin/login`
+4. Log in at one of these localized URLs:
+   - English: `/en/admin/login`
+   - Dutch: `/nl/admin/login`
+   - French: `/fr/admin/login`
 
 ## Changing the Password
 
