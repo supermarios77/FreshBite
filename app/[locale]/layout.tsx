@@ -2,15 +2,16 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import "../globals.css";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-dm-sans",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export function generateStaticParams() {
@@ -33,7 +34,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={inter.variable} suppressHydrationWarning>
+    <html lang={locale} className={dmSans.variable} suppressHydrationWarning>
       <body className="antialiased bg-background text-foreground">
         <ThemeProvider>
           <NextIntlClientProvider messages={messages}>
