@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
