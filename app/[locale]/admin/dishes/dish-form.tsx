@@ -165,8 +165,10 @@ export function DishForm({ dish, categories }: DishFormProps) {
         throw new Error(error.error || "Failed to save dish");
       }
 
-      router.push("/admin/dishes");
-      router.refresh();
+      // Get locale from current pathname
+      const currentPath = window.location.pathname;
+      const locale = currentPath.split("/")[1] || "en";
+      window.location.href = `/${locale}/admin/dishes`;
     } catch (error: any) {
       console.error("Error saving dish:", error);
       alert(error.message || "Failed to save dish. Please try again.");

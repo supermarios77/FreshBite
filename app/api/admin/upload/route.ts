@@ -36,18 +36,24 @@ export async function POST(req: NextRequest) {
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
     const filePath = `dishes/${fileName}`;
 
+    // Convert File to ArrayBuffer for Supabase
+    const arrayBuffer = await file.arrayBuffer();
+    const fileBuffer = Buffer.from(arrayBuffer);
+
     // Upload to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("dish-images")
-      .upload(filePath, file, {
+      .upload(filePath, fileBuffer, {
         cacheControl: "3600",
         upsert: false,
+        contentType: file.type,
       });
 
     if (uploadError) {
       console.error("Upload error:", uploadError);
+      // Provide more detailed error message
       return NextResponse.json(
-        { error: "Failed to upload image" },
+        { error: uploadError.message || "Failed to upload image. Make sure the 'dish-images' bucket exists in Supabase Storage." },
         { status: 500 }
       );
     }
@@ -60,6 +66,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: publicUrl, path: filePath });
   } catch (error: any) {
     console.error("Upload error:", error);
+    // Check if it's an auth error
+    if (error.message?.includes("redirect")) {
+      return NextResponse.json(
+        { error: "Authentication required. Please log in again." },
+        { status: 401 }
+      );
+    }
     return NextResponse.json(
       { error: error.message || "Failed to upload image" },
       { status: 500 }
