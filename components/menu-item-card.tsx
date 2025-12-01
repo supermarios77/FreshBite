@@ -52,7 +52,7 @@ export function MenuItemCard({
     <Link
       href={`/menu/${id}`}
       className={cn(
-        "group bg-card rounded-xl lg:rounded-2xl shadow-soft overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer block",
+        "group bg-card rounded-lg overflow-hidden transition-all duration-200 hover:opacity-90 cursor-pointer block border border-border",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -65,10 +65,7 @@ export function MenuItemCard({
             src={imageSrc}
             alt={imageAlt || name}
             fill
-            className={cn(
-              "object-cover transition-transform duration-300",
-              isHovered && "scale-105"
-            )}
+            className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
           />
         ) : (
@@ -97,25 +94,25 @@ export function MenuItemCard({
         <button
           onClick={handleWishlistClick}
           className={cn(
-            "absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-sm transition-all duration-200",
-            "hover:bg-white hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
+            "absolute top-3 right-3 p-2 rounded-full bg-card/90 backdrop-blur-sm transition-colors",
+            "hover:bg-card focus:outline-none",
             isWishlistActive && "bg-accent/20"
           )}
           aria-label={isWishlistActive ? "Remove from wishlist" : "Add to wishlist"}
         >
           <Heart
             className={cn(
-              "w-5 h-5 transition-colors duration-200",
+              "w-4 h-4 transition-colors",
               isWishlistActive
                 ? "fill-accent text-accent"
-                : "text-text-secondary group-hover:text-accent"
+                : "text-text-secondary"
             )}
           />
         </button>
 
         {/* Order 48h Label */}
         <div className="absolute bottom-3 left-3">
-          <span className="px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-medium text-text-secondary">
+          <span className="px-2 py-1 bg-card/90 backdrop-blur-sm rounded text-xs font-normal text-text-secondary">
             {t("order48h")}
           </span>
         </div>
@@ -124,7 +121,7 @@ export function MenuItemCard({
       {/* Content */}
       <div className="p-4 lg:p-5 space-y-3">
         {/* Dish Name */}
-        <h3 className="text-lg lg:text-xl font-semibold text-foreground line-clamp-2">
+        <h3 className="text-lg lg:text-xl font-normal text-foreground line-clamp-2">
           {name}
         </h3>
 

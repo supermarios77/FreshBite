@@ -27,7 +27,7 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="text-2xl lg:text-3xl font-bold text-foreground hover:opacity-80 transition-opacity"
+            className="text-2xl lg:text-3xl font-normal text-foreground hover:text-accent transition-colors"
           >
             FreshBite
           </Link>
@@ -38,7 +38,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-foreground hover:text-accent transition-colors text-base font-medium"
+                className="text-foreground hover:text-accent transition-colors text-base font-normal"
               >
                 {link.label}
               </Link>
