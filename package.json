@@ -11,7 +11,8 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "setup:admin": "bun run scripts/setup-admin.ts"
+    "setup:admin": "bun run scripts/setup-admin.ts",
+    "setup:rls": "bun run scripts/setup-rls.ts"
   },
   "dependencies": {
     "@prisma/client": "6.19.0",
