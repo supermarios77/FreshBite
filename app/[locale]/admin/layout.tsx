@@ -11,6 +11,7 @@ export default async function AdminLayout({
   const session = await getSession();
 
   // Get the current pathname to check if we're on the login page
+  // Only call headers() once
   let isLoginPage = false;
   let locale = "en";
   
@@ -30,8 +31,10 @@ export default async function AdminLayout({
     if (pathMatch) {
       locale = pathMatch[1];
     }
-  } catch {
+  } catch (error) {
     // If we can't determine, assume we're not on login page
+    // This can happen if headers() is called multiple times
+    console.error("Error getting headers in admin layout:", error);
   }
 
   // Redirect to login if not authenticated (but not if we're already on login page)
