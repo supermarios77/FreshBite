@@ -31,17 +31,17 @@ export function Hero({
   
   return (
     <section className="bg-background">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl py-16 lg:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="container mx-auto px-8 py-16 max-w-4xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
           <div className="space-y-8 text-center lg:text-left">
-            {/* Headline - modern typography */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-foreground leading-[1.2] tracking-tight">
+            {/* Headline - monospace uppercase */}
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-normal text-foreground leading-[1.2] tracking-widest uppercase">
               {displayHeadline}
             </h1>
 
-            {/* Subheadline - modern and clean */}
-            <p className="text-lg sm:text-xl text-text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0">
+            {/* Subheadline - monospace */}
+            <p className="text-sm text-text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0 tracking-wide">
               {displaySubheadline}
             </p>
 
@@ -51,22 +51,17 @@ export function Hero({
                 <Button
                   size="lg"
                   variant="accent"
-                  className="text-base px-8 py-6 rounded-lg hover:opacity-90 transition-opacity"
+                  className="text-xs px-6 py-3 border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background transition-all tracking-widest uppercase rounded-none"
                 >
                   {displayCtaText}
                 </Button>
               </Link>
             </div>
-
-            {/* Minimal note */}
-            <p className="text-sm text-text-secondary pt-4">
-              Made with care, delivered fresh
-            </p>
           </div>
 
           {/* Right Column - Image - simpler presentation */}
           <div className="relative w-full aspect-square max-w-md mx-auto lg:max-w-none">
-            <div className="relative w-full h-full rounded-lg overflow-hidden bg-secondary">
+            <div className="relative w-full h-full overflow-hidden bg-secondary border border-border">
               <Image
                 src={imageSrc || "/placeholder-dish.jpg"}
                 alt={displayImageAlt}

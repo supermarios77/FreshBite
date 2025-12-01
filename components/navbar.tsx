@@ -22,23 +22,23 @@ export function Navbar() {
 
   return (
     <nav className="bg-background border-b border-border sticky top-0 z-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <div className="flex items-center justify-between h-20 lg:h-24">
+      <div className="container mx-auto px-8 py-6 max-w-7xl">
+        <div className="flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="text-2xl lg:text-3xl font-medium text-foreground hover:text-accent transition-colors"
+            className="text-xl font-normal text-foreground hover:opacity-70 transition-opacity tracking-widest uppercase"
           >
             FreshBite
           </Link>
 
           {/* Desktop Navigation Links - Center */}
-          <div className="hidden lg:flex items-center gap-8 xl:gap-12">
+          <div className="hidden lg:flex items-center gap-12">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-foreground hover:text-accent transition-colors text-base font-medium"
+                className="text-foreground hover:text-text-secondary transition-colors text-xs font-normal tracking-widest uppercase"
               >
                 {link.label}
               </Link>
@@ -60,10 +60,10 @@ export function Navbar() {
             {/* Cart Icon */}
             <Link
               href="/cart"
-              className="relative p-2 text-foreground hover:text-accent transition-colors"
+              className="relative text-foreground hover:text-text-secondary transition-colors"
               aria-label="Shopping cart"
             >
-              <ShoppingCart className="w-6 h-6" />
+              <ShoppingCart className="w-4 h-4" />
               <CartBadge />
             </Link>
 
@@ -101,7 +101,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-foreground hover:text-accent transition-colors text-base font-medium py-2"
+                  className="text-foreground hover:text-text-secondary transition-colors text-xs font-normal tracking-widest uppercase py-2"
                 >
                   {link.label}
                 </Link>
