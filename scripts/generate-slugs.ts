@@ -15,21 +15,20 @@ async function generateSlugsForExistingDishes() {
   console.log("🔧 Generating slugs for existing dishes...\n");
 
   try {
-    // Get all dishes without slugs
-    const dishes = await prisma.dish.findMany({
-      where: {
-        slug: null,
-      },
-    });
+    // Get all dishes (we'll check for null slugs in the loop)
+    const dishes = await prisma.dish.findMany();
 
-    if (dishes.length === 0) {
+    // Filter dishes without slugs
+    const dishesWithoutSlugs = dishes.filter(dish => !dish.slug);
+
+    if (dishesWithoutSlugs.length === 0) {
       console.log("✅ All dishes already have slugs!");
       return;
     }
 
-    console.log(`Found ${dishes.length} dish(es) without slugs.\n`);
+    console.log(`Found ${dishesWithoutSlugs.length} dish(es) without slugs.\n`);
 
-    for (const dish of dishes) {
+    for (const dish of dishesWithoutSlugs) {
       // Generate slug from English name
       const baseSlug = generateSlug(dish.nameEn);
       
