@@ -84,6 +84,26 @@
     "backToHome": "Terug naar Home",
     "processing": "Uw bestelling verwerken..."
   },
+  "order": {
+    "title": "Uw Bestellingen",
+    "enterEmail": "Voer uw e-mailadres in om uw bestelgeschiedenis te bekijken",
+    "emailPlaceholder": "uw.email@voorbeeld.nl",
+    "viewOrders": "Bestellingen Bekijken",
+    "noOrders": "Geen bestellingen gevonden voor dit e-mailadres.",
+    "orderCount": "{count, plural, =1 {# bestelling} other {# bestellingen}} gevonden",
+    "orderId": "Bestelnummer",
+    "items": "Artikelen",
+    "quantity": "Hoeveelheid",
+    "size": "Grootte",
+    "deliveryAddress": "Bezorgadres",
+    "statusPending": "In Afwachting",
+    "statusPaid": "Betaald",
+    "statusPreparing": "Wordt Bereid",
+    "statusShipped": "Verzonden",
+    "statusDelivered": "Afgeleverd",
+    "statusCancelled": "Geannuleerd",
+    "browseMenu": "Bekijk Menu"
+  },
   "admin": {
     "login": {
       "title": "Beheer Login",

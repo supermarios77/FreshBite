@@ -105,3 +105,39 @@ export async function getOrderByStripeSessionId(sessionId: string) {
   });
 }
 
+export async function getOrdersByEmail(email: string) {
+  return await prisma.order.findMany({
+    where: {
+      email: email,
+    },
+    include: {
+      items: {
+        include: {
+          dish: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
+
+export async function getOrdersByUserId(userId: string) {
+  return await prisma.order.findMany({
+    where: {
+      userId: userId,
+    },
+    include: {
+      items: {
+        include: {
+          dish: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
+

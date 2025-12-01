@@ -84,6 +84,26 @@
     "backToHome": "Back to Home",
     "processing": "Processing your order..."
   },
+  "order": {
+    "title": "Your Orders",
+    "enterEmail": "Enter your email address to view your order history",
+    "emailPlaceholder": "your.email@example.com",
+    "viewOrders": "View Orders",
+    "noOrders": "No orders found for this email address.",
+    "orderCount": "{count, plural, =1 {# order} other {# orders}} found",
+    "orderId": "Order ID",
+    "items": "Items",
+    "quantity": "Quantity",
+    "size": "Size",
+    "deliveryAddress": "Delivery Address",
+    "statusPending": "Pending",
+    "statusPaid": "Paid",
+    "statusPreparing": "Preparing",
+    "statusShipped": "Shipped",
+    "statusDelivered": "Delivered",
+    "statusCancelled": "Cancelled",
+    "browseMenu": "Browse Menu"
+  },
   "admin": {
     "login": {
       "title": "Admin Login",

@@ -84,6 +84,26 @@
     "backToHome": "Retour à l'Accueil",
     "processing": "Traitement de votre commande..."
   },
+  "order": {
+    "title": "Vos Commandes",
+    "enterEmail": "Entrez votre adresse e-mail pour voir l'historique de vos commandes",
+    "emailPlaceholder": "votre.email@exemple.fr",
+    "viewOrders": "Voir les Commandes",
+    "noOrders": "Aucune commande trouvée pour cette adresse e-mail.",
+    "orderCount": "{count, plural, =1 {# commande} other {# commandes}} trouvée",
+    "orderId": "Numéro de Commande",
+    "items": "Articles",
+    "quantity": "Quantité",
+    "size": "Taille",
+    "deliveryAddress": "Adresse de Livraison",
+    "statusPending": "En Attente",
+    "statusPaid": "Payée",
+    "statusPreparing": "En Préparation",
+    "statusShipped": "Expédiée",
+    "statusDelivered": "Livrée",
+    "statusCancelled": "Annulée",
+    "browseMenu": "Voir le Menu"
+  },
   "admin": {
     "login": {
       "title": "Connexion Admin",
