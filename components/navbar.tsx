@@ -2,7 +2,7 @@
 
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { ShoppingCart, User } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { LocaleSwitcher } from "./locale-switcher";
 import { ThemeSwitcher } from "./theme-switcher";
 import { CartBadge } from "./cart-badge";
@@ -67,15 +67,6 @@ export function Navbar() {
               <CartBadge />
             </Link>
 
-            {/* Sign In Button */}
-            <Link
-              href="/sign-in"
-              className="px-6 py-2.5 rounded-lg text-base font-medium text-foreground bg-background border border-border hover:bg-accent hover:border-accent transition-all duration-200 hidden sm:inline-flex items-center gap-2"
-            >
-              <User className="w-4 h-4" />
-              {t("signIn")}
-            </Link>
-
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -125,14 +116,6 @@ export function Navbar() {
                   <LocaleSwitcher />
                 </div>
               </div>
-              <Link
-                href="/sign-in"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="px-6 py-2.5 rounded-lg text-base font-medium text-foreground bg-background border border-border hover:bg-accent hover:border-accent transition-all duration-200 inline-flex items-center justify-center gap-2 mt-2"
-              >
-                <User className="w-4 h-4" />
-                {t("signIn")}
-              </Link>
             </div>
           </div>
         )}

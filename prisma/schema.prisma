@@ -115,3 +115,14 @@ model OrderItem {
   @@map("order_items")
 }
 
+model CartSession {
+  id        String   @id @default(cuid())
+  sessionId String   @unique // Cookie session ID
+  items     Json     // Array of CartItem objects
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime // Session expiration
+  
+  @@map("cart_sessions")
+}
+

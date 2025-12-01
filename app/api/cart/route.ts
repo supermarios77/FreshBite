@@ -6,7 +6,7 @@ import {
   removeFromCart,
   clearCart,
   type CartItem,
-} from "@/lib/cart";
+} from "@/lib/cart-supabase";
 
 export const runtime = "nodejs";
 
