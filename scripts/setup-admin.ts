@@ -34,10 +34,17 @@ async function setupAdmin() {
   console.log("🔧 Setting up admin user...\n");
 
   try {
-    // Check if user already exists
-    const { data: existingUser } = await supabase.auth.admin.getUserByEmail(adminEmail);
+    // Try to list users and check if admin exists
+    const { data: users, error: listError } = await supabase.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error("❌ Error checking users:", listError.message);
+      process.exit(1);
+    }
 
-    if (existingUser?.user) {
+    const existingUser = users?.users?.find((user: any) => user.email === adminEmail);
+
+    if (existingUser) {
       console.log("⚠️  Admin user already exists!");
       console.log(`   Email: ${adminEmail}`);
       console.log("\n💡 To reset password, use Supabase Dashboard or delete the user first.");
