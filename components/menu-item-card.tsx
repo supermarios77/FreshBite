@@ -52,7 +52,7 @@ export function MenuItemCard({
     <Link
       href={`/menu/${id}`}
       className={cn(
-        "group bg-card rounded-lg overflow-hidden transition-all duration-200 hover:opacity-90 cursor-pointer block border border-border",
+        "group bg-card overflow-hidden transition-all duration-200 hover:opacity-90 cursor-pointer block border border-border",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -121,7 +121,7 @@ export function MenuItemCard({
       {/* Content */}
       <div className="p-4 lg:p-5 space-y-3">
         {/* Dish Name */}
-        <h3 className="text-lg lg:text-xl font-medium text-foreground line-clamp-2">
+        <h3 className="text-sm font-normal text-foreground line-clamp-2 tracking-wide">
           {name}
         </h3>
 
