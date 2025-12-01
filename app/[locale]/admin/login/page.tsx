@@ -36,12 +36,8 @@ export default function AdminLoginPage() {
       if (data.session) {
         // Get locale from current pathname
         const locale = pathname.split("/")[1] || "en";
-        // Use router.push with locale to maintain context
-        router.push(`/${locale}/admin/dishes`);
-        // Force a hard refresh to ensure session is recognized
-        setTimeout(() => {
-          window.location.href = `/${locale}/admin/dishes`;
-        }, 100);
+        // Use hard redirect to ensure session is recognized
+        window.location.href = `/${locale}/admin/dishes`;
       }
     } catch (err: any) {
       setError(err.message || "An error occurred");
