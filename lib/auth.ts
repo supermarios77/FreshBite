@@ -4,6 +4,16 @@ import { headers } from "next/headers";
 
 export async function getSession() {
   const supabase = await createClient();
+  // Use getUser() instead of getSession() for better reliability
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  
+  if (!user) {
+    return null;
+  }
+  
+  // Get the session after confirming user exists
   const {
     data: { session },
   } = await supabase.auth.getSession();
