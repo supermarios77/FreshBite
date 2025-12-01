@@ -10,8 +10,18 @@ export default async function AdminLayout({
 }) {
   const session = await getSession();
 
-  // Redirect to login if not authenticated
-  if (!session) {
+  // Get the current pathname to check if we're on the login page
+  let isLoginPage = false;
+  try {
+    const headersList = await headers();
+    const pathname = headersList.get("x-pathname") || headersList.get("referer") || "";
+    isLoginPage = pathname.includes("/admin/login");
+  } catch {
+    // If we can't determine, assume we're not on login page
+  }
+
+  // Redirect to login if not authenticated (but not if we're already on login page)
+  if (!session && !isLoginPage) {
     // Get locale from headers/pathname
     try {
       const headersList = await headers();
