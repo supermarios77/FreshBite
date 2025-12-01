@@ -4,8 +4,13 @@ import { getTranslations } from "next-intl/server";
 import { DishesList } from "./dishes-list";
 import { Link } from "@/i18n/routing";
 
-export default async function AdminDishesPage() {
-  await requireAuth();
+export default async function AdminDishesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  await requireAuth(locale);
   const t = await getTranslations("admin.dishes");
   const dishes = await getDishes({ isActive: undefined }); // Get all dishes
 

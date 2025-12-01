@@ -10,14 +10,22 @@ export async function getSession() {
   return session;
 }
 
-export async function requireAuth() {
+export async function requireAuth(locale?: string) {
   const session = await getSession();
   if (!session) {
-    // Get locale from headers/pathname
-    const headersList = await headers();
-    const pathname = headersList.get("x-pathname") || headersList.get("referer") || "";
-    const locale = pathname.split("/")[1] || "en";
-    redirect(`/${locale}/admin/login`);
+    // Get locale from parameter or try to extract from headers
+    let detectedLocale = locale;
+    if (!detectedLocale) {
+      try {
+        const headersList = await headers();
+        const referer = headersList.get("referer") || "";
+        const pathMatch = referer.match(/\/(en|nl|fr)\//);
+        detectedLocale = pathMatch ? pathMatch[1] : "en";
+      } catch {
+        detectedLocale = "en";
+      }
+    }
+    redirect(`/${detectedLocale}/admin/login`);
   }
   return session;
 }
