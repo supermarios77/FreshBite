@@ -44,7 +44,7 @@ export async function getCart(): Promise<CartItem[]> {
     const { data, error } = await supabase
       .from("cart_sessions")
       .select("items")
-      .eq("sessionId", sessionId)
+      .eq("session_id", sessionId)
       .single();
 
     if (error && error.code !== "PGRST116") {
@@ -76,12 +76,12 @@ export async function saveCart(items: CartItem[]): Promise<void> {
       .from("cart_sessions")
       .upsert(
         {
-          sessionId,
+          session_id: sessionId,
           items,
-          expiresAt,
+          expires_at: expiresAt.toISOString(),
         },
         {
-          onConflict: "sessionId",
+          onConflict: "session_id",
         }
       );
 
@@ -156,7 +156,7 @@ export async function clearCart(): Promise<void> {
     const { error } = await supabase
       .from("cart_sessions")
       .delete()
-      .eq("sessionId", sessionId);
+      .eq("session_id", sessionId);
 
     if (error) {
       console.error("Error clearing cart:", error);
