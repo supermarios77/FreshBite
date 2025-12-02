@@ -154,7 +154,7 @@ export function OrderList({ orders, locale, email }: OrderListProps) {
                 name="email"
                 placeholder={t("emailPlaceholder")}
                 required
-                className="flex-1 px-4 py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground transition-all text-sm tracking-wide"
+                className="flex-1 px-4 py-3 border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
               />
               <Button
                 type="submit"
