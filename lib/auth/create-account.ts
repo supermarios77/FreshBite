@@ -118,7 +118,7 @@ export async function createAccountForUser(
         data: {
           email: email,
           name: fullName,
-          role: "CUSTOMER", // Default role for regular users
+          role: "CUSTOMER" as any, // Default role for regular users
         },
       });
     } else {
