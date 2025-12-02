@@ -99,6 +99,16 @@ export async function DELETE(
 ) {
   try {
     await requireAuth();
+  } catch (error) {
+    logError(error, { operation: "deleteDish", reason: "auth" });
+    const sanitized = sanitizeError(error);
+    return NextResponse.json(
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
+    );
+  }
+
+  try {
     const { id } = await params;
 
     await prisma.dish.delete({
@@ -106,11 +116,12 @@ export async function DELETE(
     });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error("Error deleting dish:", error);
+  } catch (error) {
+    logError(error, { operation: "deleteDish", dishId: id });
+    const sanitized = sanitizeError(error);
     return NextResponse.json(
-      { error: error.message || "Failed to delete dish" },
-      { status: 500 }
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
     );
   }
 }
