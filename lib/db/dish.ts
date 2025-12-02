@@ -10,18 +10,25 @@ export interface GetDishesParams {
 export async function getDishes(params: GetDishesParams = {}) {
   const { categoryId, isActive, locale = "en" } = params;
 
-  const dishes = await prisma.dish.findMany({
-    where: {
-      ...(categoryId && { categoryId }),
-      ...(isActive !== undefined && { isActive }),
-    },
-    include: {
-      category: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  try {
+    const dishes = await prisma.dish.findMany({
+      where: {
+        ...(categoryId && { categoryId }),
+        ...(isActive !== undefined && { isActive }),
+      },
+      include: {
+        category: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    // Log query results in production for debugging
+    if (process.env.NODE_ENV === "production") {
+      console.log(`[getDishes] Query params:`, { categoryId, isActive, locale });
+      console.log(`[getDishes] Found ${dishes.length} dishes from database`);
+    }
 
   // Map to include localized names
   return dishes.map((dish) => ({
