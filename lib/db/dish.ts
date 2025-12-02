@@ -30,8 +30,8 @@ export async function getDishes(params: GetDishesParams = {}) {
       console.log(`[getDishes] Found ${dishes.length} dishes from database`);
     }
 
-  // Map to include localized names
-  return dishes.map((dish) => ({
+    // Map to include localized names
+    return dishes.map((dish) => ({
     id: dish.id,
     slug: dish.slug,
     name: locale === "en" ? dish.nameEn : locale === "nl" ? dish.nameNl : dish.nameFr,
