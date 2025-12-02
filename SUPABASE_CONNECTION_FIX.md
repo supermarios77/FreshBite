@@ -10,7 +10,7 @@ This happens because:
 
 ## Solution
 
-### Option 1: Use Supabase Connection Pooler (Recommended)
+### Option 1: Use Supabase Connection Pooler (Recommended - EASIEST)
 
 Supabase provides a connection pooler that's optimized for serverless environments.
 
@@ -21,22 +21,34 @@ Supabase provides a connection pooler that's optimized for serverless environmen
 4. It should look like: `postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true`
 
 **Update Vercel Environment Variable:**
-- Replace `DATABASE_URL` with the pooler connection string
-- The code will automatically detect and use it
+- Go to Vercel Dashboard → Settings → Environment Variables
+- Find `DATABASE_URL`
+- Replace it with the pooler connection string from Supabase
+- Save and redeploy
 
-### Option 2: Manual Configuration
+**This is the recommended approach - just copy/paste from Supabase dashboard!**
 
-If you want to manually set it, update your `DATABASE_URL` in Vercel:
+### Option 2: Manual Conversion (If you can't access dashboard)
 
-**Direct connection (not recommended for serverless):**
+If you need to manually convert your direct connection:
+
+**Your current direct connection:**
 ```
-postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres?sslmode=require
+postgresql://postgres:[PASSWORD]@db.hswosgybsmkugpdgwwvl.supabase.co:5432/postgres
 ```
 
-**Pooler connection (recommended):**
+**Converted pooler connection:**
 ```
-postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
+postgresql://postgres.hswosgybsmkugpdgwwvl:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
 ```
+
+**Changes:**
+- `postgres` → `postgres.hswosgybsmkugpdgwwvl` (add project ref to username)
+- `db.hswosgybsmkugpdgwwvl.supabase.co:5432` → `aws-0-[REGION].pooler.supabase.com:6543` (use pooler)
+- Add `?pgbouncer=true&sslmode=require` parameters
+
+**⚠️ Important:** Replace `[REGION]` with your actual region (e.g., `eu-central-1`, `us-east-1`, etc.)
+**Better:** Just get it from Supabase Dashboard - it's guaranteed to be correct!
 
 ### Important Notes
 

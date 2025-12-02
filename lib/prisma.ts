@@ -9,22 +9,31 @@ const databaseUrl = process.env.DATABASE_URL;
 let finalDatabaseUrl = databaseUrl;
 
 if (databaseUrl && databaseUrl.includes("supabase.co")) {
-  // For Supabase, we need to use the connection pooler URL in production
-  // Direct connection URL: postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres
-  // Pooler URL: postgresql://postgres.[PROJECT]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres
-  
   // Check if it's already a pooler URL
   const isPoolerUrl = databaseUrl.includes("pooler.supabase.com") || databaseUrl.includes(":6543");
   
   if (!isPoolerUrl && process.env.NODE_ENV === "production") {
-    // Convert direct connection to pooler URL for better connection management
-    // Format: postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
+    // For serverless (Vercel), we MUST use the connection pooler
+    // Direct connections (port 5432) get closed between function invocations
+    // Pooler connections (port 6543) are designed for serverless
+    
+    // Try to convert direct connection to pooler URL
+    // Direct: postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+    // Pooler: postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
     const urlMatch = databaseUrl.match(/postgresql:\/\/([^:]+):([^@]+)@db\.([^.]+)\.supabase\.co:5432\/(.+)/);
     if (urlMatch) {
       const [, user, password, projectRef, database] = urlMatch;
-      // Use pooler URL - this is more reliable for serverless environments
-      finalDatabaseUrl = `postgresql://${user}.${projectRef}:${password}@aws-0-eu-central-1.pooler.supabase.com:6543/${database}?pgbouncer=true&sslmode=require`;
-      console.log("[Prisma] Using Supabase connection pooler for production");
+      
+      // Common Supabase regions - try to detect or default to eu-central-1
+      // You can override by setting SUPABASE_REGION env var
+      const region = process.env.SUPABASE_REGION || "eu-central-1";
+      
+      // Convert to pooler URL
+      finalDatabaseUrl = `postgresql://${user}.${projectRef}:${password}@aws-0-${region}.pooler.supabase.com:6543/${database}?pgbouncer=true&sslmode=require`;
+      console.log(`[Prisma] Converted direct connection to pooler URL (region: ${region})`);
+      console.log(`[Prisma] IMPORTANT: If this fails, get the exact pooler URL from Supabase Dashboard → Settings → Database → Connection Pooling`);
+    } else {
+      console.warn("[Prisma] Could not auto-convert to pooler URL. Please use pooler URL from Supabase Dashboard.");
     }
   }
   
