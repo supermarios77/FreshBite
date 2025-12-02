@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateSlug } from "@/lib/utils";
+import { sanitizeError, logError, ValidationError, UnauthorizedError } from "@/lib/errors"; "@/lib/utils";
 
 // Use Node.js runtime for Prisma compatibility
 export const runtime = "nodejs";
@@ -9,7 +10,16 @@ export const runtime = "nodejs";
 export async function POST(req: NextRequest) {
   try {
     await requireAuth();
+  } catch (error) {
+    logError(error, { operation: "createDish", reason: "auth" });
+    const sanitized = sanitizeError(error);
+    return NextResponse.json(
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
+    );
+  }
 
+  try {
     const body = await req.json();
     const {
       nameEn,
@@ -31,10 +41,11 @@ export async function POST(req: NextRequest) {
 
     // Validate required fields
     if (!nameEn || !nameNl || !nameFr || price === undefined) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      throw new ValidationError("Missing required fields: nameEn, nameNl, nameFr, and price are required");
+    }
+
+    if (isNaN(parseFloat(price)) || parseFloat(price) < 0) {
+      throw new ValidationError("Price must be a valid positive number");
     }
 
     // Generate slug from English name
@@ -71,11 +82,12 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(dish);
-  } catch (error: any) {
-    console.error("Error creating dish:", error);
+  } catch (error) {
+    logError(error, { operation: "createDish" });
+    const sanitized = sanitizeError(error);
     return NextResponse.json(
-      { error: error.message || "Failed to create dish" },
-      { status: 500 }
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
     );
   }
 }

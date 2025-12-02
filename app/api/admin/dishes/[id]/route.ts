@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateSlug } from "@/lib/utils";
+import { sanitizeError, logError, ValidationError, NotFoundError } from "@/lib/errors"; "@/lib/utils";
 
 // Use Node.js runtime for Prisma compatibility
 export const runtime = "nodejs";
@@ -82,11 +83,12 @@ export async function PUT(
     });
 
     return NextResponse.json(dish);
-  } catch (error: any) {
-    console.error("Error updating dish:", error);
+  } catch (error) {
+    logError(error, { operation: "updateDish", dishId: id });
+    const sanitized = sanitizeError(error);
     return NextResponse.json(
-      { error: error.message || "Failed to update dish" },
-      { status: 500 }
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
     );
   }
 }
