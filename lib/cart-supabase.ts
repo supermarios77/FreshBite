@@ -71,19 +71,37 @@ export async function saveCart(items: CartItem[]): Promise<void> {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 30); // 30 days from now
 
+    // Check if cart session already exists
+    const { data: existingCart, error: fetchError } = await supabase
+      .from("cart_sessions")
+      .select("id")
+      .eq("session_id", sessionId)
+      .single();
+
+    if (fetchError && fetchError.code !== "PGRST116") {
+      // PGRST116 = no rows returned, which is fine
+      console.error("Error checking existing cart:", fetchError);
+    }
+
+    // Prepare the data object
+    const cartData: any = {
+      session_id: sessionId,
+      items,
+      expires_at: expiresAt.toISOString(),
+    };
+
+    // If cart doesn't exist, we need to provide an ID
+    // Generate a CUID-like ID (similar to Prisma's cuid())
+    if (!existingCart) {
+      cartData.id = `cart_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+    }
+
     // Upsert cart session
     const { error } = await supabase
       .from("cart_sessions")
-      .upsert(
-        {
-          session_id: sessionId,
-          items,
-          expires_at: expiresAt.toISOString(),
-        },
-        {
-          onConflict: "session_id",
-        }
-      );
+      .upsert(cartData, {
+        onConflict: "session_id",
+      });
 
     if (error) {
       console.error("Error saving cart:", error);
