@@ -39,13 +39,18 @@ postgresql://postgres:[PASSWORD]@db.hswosgybsmkugpdgwwvl.supabase.co:5432/postgr
 
 **Converted pooler connection:**
 ```
-postgresql://postgres.hswosgybsmkugpdgwwvl:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
+postgresql://postgres.hswosgybsmkugpdgwwvl:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&sslmode=require
 ```
 
 **Changes:**
 - `postgres` → `postgres.hswosgybsmkugpdgwwvl` (add project ref to username)
 - `db.hswosgybsmkugpdgwwvl.supabase.co:5432` → `aws-0-[REGION].pooler.supabase.com:6543` (use pooler)
-- Add `?pgbouncer=true&sslmode=require` parameters
+- Add `?pgbouncer=true&connection_limit=1&sslmode=require` parameters
+
+**Why `connection_limit=1`?**
+- Prisma uses prepared statements by default
+- pgBouncer in transaction mode doesn't support prepared statements
+- `connection_limit=1` disables prepared statements, fixing the "prepared statement already exists" error
 
 **⚠️ Important:** Replace `[REGION]` with your actual region (e.g., `eu-central-1`, `us-east-1`, etc.)
 **Better:** Just get it from Supabase Dashboard - it's guaranteed to be correct!

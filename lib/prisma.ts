@@ -29,7 +29,9 @@ if (databaseUrl && databaseUrl.includes("supabase.co")) {
       const region = process.env.SUPABASE_REGION || "eu-central-1";
       
       // Convert to pooler URL
-      finalDatabaseUrl = `postgresql://${user}.${projectRef}:${password}@aws-0-${region}.pooler.supabase.com:6543/${database}?pgbouncer=true&sslmode=require`;
+      // Use ?pgbouncer=true&connection_limit=1 to disable prepared statements
+      // This is required for pgBouncer in transaction mode
+      finalDatabaseUrl = `postgresql://${user}.${projectRef}:${password}@aws-0-${region}.pooler.supabase.com:6543/${database}?pgbouncer=true&connection_limit=1&sslmode=require`;
       console.log(`[Prisma] Converted direct connection to pooler URL (region: ${region})`);
       console.log(`[Prisma] IMPORTANT: If this fails, get the exact pooler URL from Supabase Dashboard → Settings → Database → Connection Pooling`);
     } else {
@@ -44,6 +46,9 @@ if (databaseUrl && databaseUrl.includes("supabase.co")) {
   }
 }
 
+// Check if we're using pgBouncer (pooler)
+const isUsingPooler = finalDatabaseUrl?.includes("pgbouncer=true") || databaseUrl?.includes("pgbouncer=true");
+
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
@@ -55,6 +60,15 @@ export const prisma =
           },
         }
       : undefined,
+    // Disable prepared statements when using pgBouncer
+    // pgBouncer in transaction mode doesn't support prepared statements
+    ...(isUsingPooler && {
+      __internal: {
+        engine: {
+          connectTimeout: 10000,
+        },
+      },
+    }),
   });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
