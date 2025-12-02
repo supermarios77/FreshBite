@@ -11,7 +11,7 @@ export async function MenuSection({ locale }: MenuSectionProps) {
   const t = await getTranslations("menu");
   
   // Get all active dishes with error handling
-  let dishes = [];
+  let dishes: Awaited<ReturnType<typeof getDishes>> = [];
   try {
     dishes = await getDishes({ isActive: true, locale: locale as "en" | "nl" | "fr" });
   } catch (error: any) {
