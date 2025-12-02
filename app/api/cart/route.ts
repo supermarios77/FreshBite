@@ -7,6 +7,7 @@ import {
   clearCart,
   type CartItem,
 } from "@/lib/cart-supabase";
+import { sanitizeError, logError, ValidationError } from "@/lib/errors";
 
 export const runtime = "nodejs";
 
@@ -15,11 +16,12 @@ export async function GET() {
   try {
     const cart = await getCart();
     return NextResponse.json({ cart });
-  } catch (error: any) {
-    console.error("Error getting cart:", error);
+  } catch (error) {
+    logError(error, { operation: "getCart" });
+    const sanitized = sanitizeError(error);
     return NextResponse.json(
-      { error: "Failed to get cart" },
-      { status: 500 }
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
     );
   }
 }
@@ -31,10 +33,15 @@ export async function POST(req: NextRequest) {
     const { dishId, name, price, quantity, imageSrc, size } = body;
 
     if (!dishId || !name || price === undefined || !quantity) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      throw new ValidationError("Missing required fields: dishId, name, price, and quantity are required");
+    }
+
+    if (isNaN(parseFloat(price)) || parseFloat(price) < 0) {
+      throw new ValidationError("Invalid price value");
+    }
+
+    if (isNaN(parseInt(quantity)) || parseInt(quantity) <= 0) {
+      throw new ValidationError("Quantity must be a positive number");
     }
 
     const cart = await addToCart({
@@ -47,11 +54,12 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ cart, success: true });
-  } catch (error: any) {
-    console.error("Error adding to cart:", error);
+  } catch (error) {
+    logError(error, { operation: "addToCart" });
+    const sanitized = sanitizeError(error);
     return NextResponse.json(
-      { error: "Failed to add item to cart" },
-      { status: 500 }
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
     );
   }
 }
@@ -63,19 +71,21 @@ export async function PUT(req: NextRequest) {
     const { itemId, quantity } = body;
 
     if (!itemId || quantity === undefined) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      throw new ValidationError("Missing required fields: itemId and quantity are required");
+    }
+
+    if (isNaN(parseInt(quantity)) || parseInt(quantity) <= 0) {
+      throw new ValidationError("Quantity must be a positive number");
     }
 
     const cart = await updateCartItemQuantity(itemId, parseInt(quantity));
     return NextResponse.json({ cart, success: true });
-  } catch (error: any) {
-    console.error("Error updating cart:", error);
+  } catch (error) {
+    logError(error, { operation: "updateCartItemQuantity" });
+    const sanitized = sanitizeError(error);
     return NextResponse.json(
-      { error: "Failed to update cart" },
-      { status: 500 }
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
     );
   }
 }
@@ -93,19 +103,17 @@ export async function DELETE(req: NextRequest) {
     }
 
     if (!itemId) {
-      return NextResponse.json(
-        { error: "Missing itemId parameter" },
-        { status: 400 }
-      );
+      throw new ValidationError("Missing itemId parameter");
     }
 
     const cart = await removeFromCart(itemId);
     return NextResponse.json({ cart, success: true });
-  } catch (error: any) {
-    console.error("Error removing from cart:", error);
+  } catch (error) {
+    logError(error, { operation: "removeFromCart" });
+    const sanitized = sanitizeError(error);
     return NextResponse.json(
-      { error: "Failed to remove item from cart" },
-      { status: 500 }
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
     );
   }
 }

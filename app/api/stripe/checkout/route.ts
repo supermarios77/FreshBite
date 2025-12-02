@@ -4,6 +4,7 @@ import { createOrder } from "@/lib/db/order";
 import { prisma } from "@/lib/prisma";
 import { createAccountForUser } from "@/lib/auth/create-account";
 import { sendOrderConfirmationEmail } from "@/lib/email/order-confirmation";
+import { sanitizeError, logError, ValidationError } from "@/lib/errors";
 
 // Use Node.js runtime for Prisma compatibility
 export const runtime = "nodejs";
@@ -44,7 +45,11 @@ export async function POST(req: NextRequest) {
     } = body;
 
     if (!items || items.length === 0) {
-      return NextResponse.json({ error: "No items in cart" }, { status: 400 });
+      throw new ValidationError("No items in cart");
+    }
+
+    if (!deliveryInfo?.email) {
+      throw new ValidationError("Email is required for delivery");
     }
 
     // Calculate total
@@ -186,11 +191,12 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: session.url, orderId: order.id });
-  } catch (error: any) {
-    console.error("Error creating checkout session:", error);
+  } catch (error) {
+    logError(error, { operation: "checkout", hasItems: !!items?.length });
+    const sanitized = sanitizeError(error);
     return NextResponse.json(
-      { error: error.message || "Failed to create checkout session" },
-      { status: 500 }
+      { error: sanitized.message, code: sanitized.code },
+      { status: sanitized.statusCode }
     );
   }
 }

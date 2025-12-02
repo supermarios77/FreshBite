@@ -238,5 +238,17 @@
     "sending": "Envoi...",
     "successMessage": "Merci pour votre message! Nous vous répondrons dans les plus brefs délais.",
     "errorMessage": "Échec de l'envoi du message. Veuillez réessayer ou nous contacter directement."
+  },
+  "error": {
+    "title": "Une Erreur Est Survenue",
+    "description": "Nous avons rencontré une erreur inattendue. Veuillez réessayer ou contacter le support si le problème persiste.",
+    "tryAgain": "Réessayer",
+    "goHome": "Retour à l'Accueil"
+  },
+  "notFound": {
+    "title": "Page Non Trouvée",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "goHome": "Retour à l'Accueil",
+    "browseMenu": "Voir le Menu"
   }
 }

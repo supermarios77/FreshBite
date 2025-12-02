@@ -236,5 +236,17 @@
     "sending": "Sending...",
     "successMessage": "Thank you for your message! We'll get back to you as soon as possible.",
     "errorMessage": "Failed to send message. Please try again or contact us directly."
+  },
+  "error": {
+    "title": "Something Went Wrong",
+    "description": "We encountered an unexpected error. Please try again or contact support if the problem persists.",
+    "tryAgain": "Try Again",
+    "goHome": "Go Home"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "goHome": "Go Home",
+    "browseMenu": "Browse Menu"
   }
 }

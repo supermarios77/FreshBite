@@ -238,5 +238,17 @@
     "sending": "Verzenden...",
     "successMessage": "Bedankt voor uw bericht! We nemen zo snel mogelijk contact met u op.",
     "errorMessage": "Bericht verzenden mislukt. Probeer het opnieuw of neem rechtstreeks contact met ons op."
+  },
+  "error": {
+    "title": "Er Ging Iets Mis",
+    "description": "We hebben een onverwachte fout tegengekomen. Probeer het opnieuw of neem contact op met de ondersteuning als het probleem aanhoudt.",
+    "tryAgain": "Probeer Opnieuw",
+    "goHome": "Ga naar Home"
+  },
+  "notFound": {
+    "title": "Pagina Niet Gevonden",
+    "description": "De pagina die u zoekt bestaat niet of is verplaatst.",
+    "goHome": "Ga naar Home",
+    "browseMenu": "Bekijk Menu"
   }
 }
