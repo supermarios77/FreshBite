@@ -38,7 +38,7 @@ if (databaseUrl && databaseUrl.includes("supabase.co")) {
   }
   
   // Add SSL parameter if not already present
-  if (!finalDatabaseUrl.includes("sslmode=")) {
+  if (finalDatabaseUrl && !finalDatabaseUrl.includes("sslmode=")) {
     const separator = finalDatabaseUrl.includes("?") ? "&" : "?";
     finalDatabaseUrl = `${finalDatabaseUrl}${separator}sslmode=require`;
   }
@@ -48,18 +48,13 @@ export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
     log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-    datasources: finalDatabaseUrl !== databaseUrl
+    datasources: finalDatabaseUrl && finalDatabaseUrl !== databaseUrl
       ? {
           db: {
             url: finalDatabaseUrl,
           },
         }
       : undefined,
-    // Connection pool configuration for serverless
-    ...(process.env.NODE_ENV === "production" && {
-      // Use connection pooling settings optimized for serverless
-      // These prevent connection exhaustion
-    }),
   });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
