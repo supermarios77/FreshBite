@@ -109,7 +109,10 @@
     "checkingSession": "Checking session...",
     "sessionTimeout": "Session check timed out. Please try signing in again.",
     "signOut": "Sign Out",
-    "signingOut": "Signing Out..."
+    "signingOut": "Signing Out...",
+    "orderAgain": "Order Again",
+    "addingToCart": "Adding to Cart...",
+    "reorderError": "Failed to add items to cart. Please try again.",
     "orderId": "Order ID",
     "items": "Items",
     "quantity": "Quantity",
