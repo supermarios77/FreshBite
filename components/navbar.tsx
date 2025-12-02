@@ -60,10 +60,10 @@ export function Navbar() {
             {/* Cart Icon */}
             <Link
               href="/cart"
-              className="relative text-foreground hover:text-text-secondary transition-colors"
+              className="relative p-2 text-foreground hover:text-accent transition-colors"
               aria-label="Shopping cart"
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="w-5 h-5" />
               <CartBadge />
             </Link>
 
