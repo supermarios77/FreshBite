@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
       customer_email: deliveryInfo?.email,
       metadata: {
         orderId: order.id,
-        userId,
+        userId: finalUserId,
       },
       shipping_address_collection: {
         allowed_countries: ["BE"], // Belgium only
