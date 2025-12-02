@@ -117,7 +117,9 @@
     "emailRequired": "L'e-mail est requis",
     "signInError": "Échec de l'envoi du lien de connexion. Veuillez réessayer.",
     "checkingSession": "Vérification de la session...",
-    "sessionTimeout": "Vérification de session expirée. Veuillez vous reconnecter."
+    "sessionTimeout": "Vérification de session expirée. Veuillez vous reconnecter.",
+    "signOut": "Se Déconnecter",
+    "signingOut": "Déconnexion..."
   },
   "admin": {
     "login": {

@@ -117,7 +117,9 @@
     "emailRequired": "E-mailadres is verplicht",
     "signInError": "Verzenden van inloglink mislukt. Probeer het opnieuw.",
     "checkingSession": "Sessie controleren...",
-    "sessionTimeout": "Sessiecontrole verlopen. Probeer opnieuw in te loggen."
+    "sessionTimeout": "Sessiecontrole verlopen. Probeer opnieuw in te loggen.",
+    "signOut": "Uitloggen",
+    "signingOut": "Uitloggen..."
   },
   "admin": {
     "login": {

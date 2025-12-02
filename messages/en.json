@@ -108,6 +108,8 @@
     "signInError": "Failed to send sign-in link. Please try again.",
     "checkingSession": "Checking session...",
     "sessionTimeout": "Session check timed out. Please try signing in again.",
+    "signOut": "Sign Out",
+    "signingOut": "Signing Out..."
     "orderId": "Order ID",
     "items": "Items",
     "quantity": "Quantity",

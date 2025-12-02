@@ -5,6 +5,7 @@ import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Package, Calendar, MapPin, Mail, Phone } from "lucide-react";
 import Image from "next/image";
+import { OrderLogoutButton } from "./order-logout-button";
 
 interface OrderItem {
   id: string;
@@ -154,13 +155,16 @@ export function OrderList({ orders, locale, email }: OrderListProps) {
     <div className="bg-background min-h-screen py-16">
       <div className="container mx-auto px-8 max-w-4xl">
         <div className="space-y-8">
-          <div>
-            <h1 className="text-3xl lg:text-4xl font-normal text-foreground tracking-widest uppercase mb-2">
-              {t("title")}
-            </h1>
-            <p className="text-sm text-text-secondary tracking-wide">
-              {t("orderCount", { count: orders.length })}
-            </p>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl lg:text-4xl font-normal text-foreground tracking-widest uppercase mb-2">
+                {t("title")}
+              </h1>
+              <p className="text-sm text-text-secondary tracking-wide">
+                {t("orderCount", { count: orders.length })}
+              </p>
+            </div>
+            <OrderLogoutButton />
           </div>
 
           <div className="space-y-6">

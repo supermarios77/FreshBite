@@ -19,9 +19,21 @@ export function OrderSignIn({ onSignInSuccess, locale }: OrderSignInProps) {
   const [emailSent, setEmailSent] = useState(false);
   const [checkingSession, setCheckingSession] = useState(false);
 
-  // Check for existing session on mount
+  // Check for existing session on mount and listen for auth state changes
   useEffect(() => {
     checkSession();
+    
+    // Listen for auth state changes (e.g., when user clicks magic link)
+    const supabase = createClient();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        onSignInSuccess();
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const checkSession = async () => {
