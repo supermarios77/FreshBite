@@ -6,8 +6,8 @@ export default async function AdminPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  await requireAuth();
   const { locale } = await params;
+  await requireAuth(locale);
   redirect(`/${locale}/admin/dishes`);
 }
 
