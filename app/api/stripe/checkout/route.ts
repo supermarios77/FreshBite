@@ -80,6 +80,50 @@ export async function POST(req: NextRequest) {
       deliveryInfo,
     });
 
+    // Fetch dish details for email and Stripe
+    const dishIds = items.map((item) => item.dishId);
+    const dishes = await prisma.dish.findMany({
+      where: { id: { in: dishIds } },
+    });
+
+    // Send order confirmation email (in both mock and production mode)
+    if (deliveryInfo?.email) {
+      try {
+        await sendOrderConfirmationEmail({
+          orderId: order.id,
+          email: deliveryInfo.email,
+          firstName: deliveryInfo.firstName,
+          lastName: deliveryInfo.lastName,
+          totalAmount,
+          items: items.map((item) => {
+            const dish = dishes.find((d) => d.id === item.dishId);
+            const name =
+              locale === "en"
+                ? dish?.nameEn
+                : locale === "nl"
+                ? dish?.nameNl
+                : dish?.nameFr || dish?.name || "Dish";
+            return {
+              name,
+              quantity: item.quantity,
+              price: item.price,
+              size: item.size,
+            };
+          }),
+          deliveryInfo: {
+            address: deliveryInfo.address,
+            city: deliveryInfo.city,
+            postalCode: deliveryInfo.postalCode,
+            country: deliveryInfo.country,
+          },
+          locale,
+        });
+      } catch (error: any) {
+        console.error("Failed to send order confirmation email:", error);
+        // Don't fail the checkout if email fails
+      }
+    }
+
     // Mock mode for development
     if (isMockMode) {
       return NextResponse.json({
