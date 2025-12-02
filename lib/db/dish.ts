@@ -32,36 +32,50 @@ export async function getDishes(params: GetDishesParams = {}) {
 
     // Map to include localized names
     return dishes.map((dish) => ({
-    id: dish.id,
-    slug: dish.slug,
-    name: locale === "en" ? dish.nameEn : locale === "nl" ? dish.nameNl : dish.nameFr,
-    description:
-      locale === "en"
-        ? dish.descriptionEn
-        : locale === "nl"
-        ? dish.descriptionNl
-        : dish.descriptionFr,
-    price: dish.price,
-    imageUrl: dish.imageUrl,
-    rating: dish.rating || 0,
-    allergens: dish.allergens,
-    ingredients: dish.ingredients,
-    category: dish.category
-      ? {
-          id: dish.category.id,
-          name:
-            locale === "en"
-              ? dish.category.nameEn
-              : locale === "nl"
-              ? dish.category.nameNl
-              : dish.category.nameFr,
-          slug: dish.category.slug,
-        }
-      : null,
-    isActive: dish.isActive,
-    createdAt: dish.createdAt,
-    updatedAt: dish.updatedAt,
-  }));
+      id: dish.id,
+      slug: dish.slug,
+      name: locale === "en" ? dish.nameEn : locale === "nl" ? dish.nameNl : dish.nameFr,
+      description:
+        locale === "en"
+          ? dish.descriptionEn
+          : locale === "nl"
+          ? dish.descriptionNl
+          : dish.descriptionFr,
+      price: dish.price,
+      imageUrl: dish.imageUrl,
+      rating: dish.rating || 0,
+      allergens: dish.allergens,
+      ingredients: dish.ingredients,
+      category: dish.category
+        ? {
+            id: dish.category.id,
+            name:
+              locale === "en"
+                ? dish.category.nameEn
+                : locale === "nl"
+                ? dish.category.nameNl
+                : dish.category.nameFr,
+            slug: dish.category.slug,
+          }
+        : null,
+      isActive: dish.isActive,
+      createdAt: dish.createdAt,
+      updatedAt: dish.updatedAt,
+    }));
+  } catch (error: any) {
+    // Enhanced error logging
+    console.error("[getDishes] Database query failed:", {
+      message: error?.message,
+      code: error?.code,
+      name: error?.name,
+      params: { categoryId, isActive, locale },
+      // Check if it's a connection error
+      isConnectionError: error?.message?.includes("P1001") || 
+                        error?.message?.includes("Can't reach") ||
+                        error?.message?.includes("ECONNREFUSED"),
+    });
+    throw error; // Re-throw to be caught by caller
+  }
 }
 
 export async function getDishById(id: string, locale: "en" | "nl" | "fr" = "en") {
