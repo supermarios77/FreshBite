@@ -82,7 +82,7 @@ export function ContactForm() {
           value={formData.name}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground transition-all text-sm tracking-wide"
+          className="w-full px-4 py-3 border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
           placeholder={t("formNamePlaceholder")}
         />
       </div>
@@ -102,7 +102,7 @@ export function ContactForm() {
           value={formData.email}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground transition-all text-sm tracking-wide"
+          className="w-full px-4 py-3 border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
           placeholder={t("formEmailPlaceholder")}
         />
       </div>
@@ -121,7 +121,7 @@ export function ContactForm() {
           name="phone"
           value={formData.phone}
           onChange={handleInputChange}
-          className="w-full px-4 py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground transition-all text-sm tracking-wide"
+          className="w-full px-4 py-3 border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
           placeholder={t("formPhonePlaceholder")}
         />
       </div>
@@ -141,7 +141,7 @@ export function ContactForm() {
           value={formData.subject}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground transition-all text-sm tracking-wide"
+          className="w-full px-4 py-3 border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
           placeholder={t("formSubjectPlaceholder")}
         />
       </div>
@@ -161,7 +161,7 @@ export function ContactForm() {
           onChange={handleInputChange}
           required
           rows={6}
-          className="w-full px-4 py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground transition-all text-sm tracking-wide resize-none"
+          className="w-full px-4 py-3 border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide resize-none"
           placeholder={t("formMessagePlaceholder")}
         />
       </div>
