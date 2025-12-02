@@ -119,7 +119,10 @@
     "checkingSession": "Sessie controleren...",
     "sessionTimeout": "Sessiecontrole verlopen. Probeer opnieuw in te loggen.",
     "signOut": "Uitloggen",
-    "signingOut": "Uitloggen..."
+    "signingOut": "Uitloggen...",
+    "orderAgain": "Opnieuw Bestellen",
+    "addingToCart": "Toevoegen aan Winkelwagen...",
+    "reorderError": "Items toevoegen aan winkelwagen mislukt. Probeer het opnieuw."
   },
   "admin": {
     "login": {

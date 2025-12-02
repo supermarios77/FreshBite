@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Package, Calendar, MapPin, Mail, Phone } from "lucide-react";
+import { Package, Calendar, MapPin, Mail, Phone, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { OrderLogoutButton } from "./order-logout-button";
 
@@ -85,11 +86,51 @@ function getStatusLabel(status: string, t: any): string {
 
 export function OrderList({ orders, locale, email }: OrderListProps) {
   const t = useTranslations("order");
+  const router = useRouter();
+  const [reorderingOrderId, setReorderingOrderId] = useState<string | null>(null);
 
   const getDishName = (dish: OrderItem["dish"]) => {
     if (locale === "nl") return dish.nameNl;
     if (locale === "fr") return dish.nameFr;
     return dish.nameEn;
+  };
+
+  const handleOrderAgain = async (order: Order) => {
+    setReorderingOrderId(order.id);
+    
+    try {
+      // Add all items from the order to the cart
+      for (const item of order.items) {
+        const dishName = getDishName(item.dish);
+        
+        const response = await fetch("/api/cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            dishId: item.dishId,
+            name: dishName,
+            price: item.price,
+            quantity: item.quantity,
+            imageSrc: item.dish.imageUrl || undefined,
+            size: item.size || undefined,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || "Failed to add item to cart");
+        }
+      }
+
+      // Redirect to cart page
+      router.push("/cart");
+    } catch (error: any) {
+      console.error("Error reordering:", error);
+      alert(error.message || t("reorderError"));
+      setReorderingOrderId(null);
+    }
   };
 
   if (!email) {

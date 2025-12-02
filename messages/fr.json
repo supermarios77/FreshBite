@@ -119,7 +119,10 @@
     "checkingSession": "Vérification de la session...",
     "sessionTimeout": "Vérification de session expirée. Veuillez vous reconnecter.",
     "signOut": "Se Déconnecter",
-    "signingOut": "Déconnexion..."
+    "signingOut": "Déconnexion...",
+    "orderAgain": "Commander à Nouveau",
+    "addingToCart": "Ajout au Panier...",
+    "reorderError": "Échec de l'ajout des articles au panier. Veuillez réessayer."
   },
   "admin": {
     "login": {
