@@ -9,8 +9,16 @@ interface MenuSectionProps {
 
 export async function MenuSection({ locale }: MenuSectionProps) {
   const t = await getTranslations("menu");
-  // Get all active dishes
-  const dishes = await getDishes({ isActive: true, locale: locale as "en" | "nl" | "fr" });
+  
+  // Get all active dishes with error handling
+  let dishes = [];
+  try {
+    dishes = await getDishes({ isActive: true, locale: locale as "en" | "nl" | "fr" });
+  } catch (error: any) {
+    console.error("Error fetching dishes:", error);
+    // Return empty array on error to prevent page crash
+    // The UI will show "No dishes available" message
+  }
 
   return <MenuSectionClient dishes={dishes} locale={locale} />;
 }
