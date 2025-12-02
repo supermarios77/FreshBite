@@ -336,6 +336,28 @@ export function OrderList({ orders, locale, email }: OrderListProps) {
                     </div>
                   </div>
                 )}
+
+                {/* Order Again Button */}
+                <div className="pt-4 border-t-2 border-border">
+                  <Button
+                    variant="accent"
+                    onClick={() => handleOrderAgain(order)}
+                    disabled={reorderingOrderId === order.id}
+                    className="w-full text-xs tracking-widest uppercase flex items-center justify-center gap-2"
+                  >
+                    {reorderingOrderId === order.id ? (
+                      <>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-background"></div>
+                        {t("addingToCart")}
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-3 h-3" />
+                        {t("orderAgain")}
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
