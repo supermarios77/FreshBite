@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { requireAuth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
+import { sanitizeError, logError } from "@/lib/errors";
 
 // Use Node.js runtime for Supabase server client compatibility
 export const runtime = "nodejs";
