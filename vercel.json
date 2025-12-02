@@ -3,7 +3,7 @@
   "devCommand": "bun run dev",
   "installCommand": "bun install",
   "framework": "nextjs",
-  "regions": ["bru1"],
+  "regions": ["cdg1"],
   "env": {
     "NODE_ENV": "production"
   }
