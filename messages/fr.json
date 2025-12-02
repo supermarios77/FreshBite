@@ -105,7 +105,19 @@
     "statusShipped": "Expédiée",
     "statusDelivered": "Livrée",
     "statusCancelled": "Annulée",
-    "browseMenu": "Voir le Menu"
+    "browseMenu": "Voir le Menu",
+    "signInToViewOrders": "Connectez-vous pour voir l'historique de vos commandes",
+    "sendMagicLink": "Envoyer le Lien Magique",
+    "sending": "Envoi...",
+    "checkYourEmail": "Vérifiez Votre E-mail",
+    "magicLinkSent": "Nous avons envoyé un lien magique à {email}. Veuillez vérifier votre boîte de réception.",
+    "clickLinkToSignIn": "Cliquez sur le lien dans l'e-mail pour vous connecter et voir vos commandes.",
+    "useDifferentEmail": "Utiliser un Autre E-mail",
+    "magicLinkDescription": "Nous vous enverrons un lien sécurisé pour vous connecter. Aucun mot de passe requis.",
+    "emailRequired": "L'e-mail est requis",
+    "signInError": "Échec de l'envoi du lien de connexion. Veuillez réessayer.",
+    "checkingSession": "Vérification de la session...",
+    "sessionTimeout": "Vérification de session expirée. Veuillez vous reconnecter."
   },
   "admin": {
     "login": {

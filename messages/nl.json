@@ -105,7 +105,19 @@
     "statusShipped": "Verzonden",
     "statusDelivered": "Afgeleverd",
     "statusCancelled": "Geannuleerd",
-    "browseMenu": "Bekijk Menu"
+    "browseMenu": "Bekijk Menu",
+    "signInToViewOrders": "Log in om uw bestelgeschiedenis te bekijken",
+    "sendMagicLink": "Verstuur Magic Link",
+    "sending": "Verzenden...",
+    "checkYourEmail": "Controleer Uw E-mail",
+    "magicLinkSent": "We hebben een magic link gestuurd naar {email}. Controleer uw inbox.",
+    "clickLinkToSignIn": "Klik op de link in de e-mail om in te loggen en uw bestellingen te bekijken.",
+    "useDifferentEmail": "Gebruik Ander E-mailadres",
+    "magicLinkDescription": "We sturen u een veilige link om in te loggen. Geen wachtwoord nodig.",
+    "emailRequired": "E-mailadres is verplicht",
+    "signInError": "Verzenden van inloglink mislukt. Probeer het opnieuw.",
+    "checkingSession": "Sessie controleren...",
+    "sessionTimeout": "Sessiecontrole verlopen. Probeer opnieuw in te loggen."
   },
   "admin": {
     "login": {
