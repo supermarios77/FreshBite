@@ -31,6 +31,7 @@ export default function CheckoutPage() {
     postalCode: "",
     country: "Belgium",
     deliveryInstructions: "",
+    createAccount: false, // Optional account creation
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,8 +62,12 @@ export default function CheckoutPage() {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleRemoveItem = async (id: string) => {
@@ -123,7 +128,18 @@ export default function CheckoutPage() {
               size: item.size,
             })),
             userId: "temp-user-id", // TODO: Get from auth/session
-            deliveryInfo: formData,
+            deliveryInfo: {
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              email: formData.email,
+              phone: formData.phone,
+              address: formData.address,
+              city: formData.city,
+              postalCode: formData.postalCode,
+              country: formData.country,
+              deliveryInstructions: formData.deliveryInstructions,
+            },
+            createAccount: formData.createAccount,
             locale,
           }),
       });
@@ -369,6 +385,29 @@ export default function CheckoutPage() {
                     placeholder="Any special delivery instructions..."
                   />
                 </div>
+
+                {/* Create Account Checkbox */}
+                <div className="flex items-start gap-3 pt-2">
+                  <input
+                    type="checkbox"
+                    id="createAccount"
+                    name="createAccount"
+                    checked={formData.createAccount}
+                    onChange={handleInputChange}
+                    className="mt-1 w-4 h-4 text-accent bg-background border-border rounded focus:ring-accent focus:ring-2"
+                  />
+                  <label
+                    htmlFor="createAccount"
+                    className="text-sm text-foreground cursor-pointer"
+                  >
+                    {t("createAccount")}
+                  </label>
+                </div>
+                {formData.createAccount && (
+                  <p className="text-xs text-text-secondary -mt-2 ml-7">
+                    {t("createAccountDescription")}
+                  </p>
+                )}
               </form>
             </div>
           </div>

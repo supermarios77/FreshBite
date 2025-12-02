@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createOrder } from "@/lib/db/order";
 import { prisma } from "@/lib/prisma";
+import { createAccountForUser } from "@/lib/auth/create-account";
 
 // Use Node.js runtime for Prisma compatibility
 export const runtime = "nodejs";
@@ -16,6 +17,7 @@ export async function POST(req: NextRequest) {
       items,
       userId,
       deliveryInfo,
+      createAccount = false,
       locale = "en",
     }: {
       items: Array<{
@@ -36,6 +38,7 @@ export async function POST(req: NextRequest) {
         country?: string;
         deliveryInstructions?: string;
       };
+      createAccount?: boolean;
       locale?: string;
     } = body;
 
@@ -49,9 +52,28 @@ export async function POST(req: NextRequest) {
     const taxes = subtotal * taxRate;
     const totalAmount = subtotal + taxes;
 
+    // Create account if requested
+    let finalUserId = userId;
+    if (createAccount && deliveryInfo?.email) {
+      try {
+        const accountResult = await createAccountForUser({
+          email: deliveryInfo.email,
+          firstName: deliveryInfo.firstName,
+          lastName: deliveryInfo.lastName,
+          phone: deliveryInfo.phone,
+        });
+        finalUserId = accountResult.userId;
+        console.log(`Account created for ${deliveryInfo.email}, userId: ${finalUserId}`);
+      } catch (error: any) {
+        console.error("Failed to create account:", error);
+        // Continue with order creation even if account creation fails
+        // The order will still be created with temp-user-id
+      }
+    }
+
     // Create order in database
     const order = await createOrder({
-      userId,
+      userId: finalUserId,
       items,
       totalAmount,
       deliveryInfo,

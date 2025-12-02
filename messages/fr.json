@@ -36,7 +36,9 @@
     "postalCode": "Code Postal",
     "country": "Pays",
     "deliveryInstructions": "Instructions de Livraison (Optionnel)",
-    "fillRequiredFields": "Veuillez remplir tous les champs obligatoires"
+    "fillRequiredFields": "Veuillez remplir tous les champs obligatoires",
+    "createAccount": "Créer un compte pour suivre vos commandes",
+    "createAccountDescription": "Nous vous enverrons un lien magique pour configurer votre compte. Vous pouvez vous connecter à tout moment pour consulter votre historique de commandes."
   },
   "cart": {
     "title": "Panier",

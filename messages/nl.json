@@ -36,7 +36,9 @@
     "postalCode": "Postcode",
     "country": "Land",
     "deliveryInstructions": "Bezorginstructies (Optioneel)",
-    "fillRequiredFields": "Vul alle verplichte velden in"
+    "fillRequiredFields": "Vul alle verplichte velden in",
+    "createAccount": "Maak een account aan om uw bestellingen bij te houden",
+    "createAccountDescription": "We sturen u een magic link om uw account in te stellen. U kunt altijd inloggen om uw bestelgeschiedenis te bekijken."
   },
   "cart": {
     "title": "Winkelwagen",
