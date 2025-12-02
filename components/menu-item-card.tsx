@@ -54,7 +54,7 @@ export function MenuItemCard({
     <Link
       href={`/menu/${slug}`}
       className={cn(
-        "group bg-card overflow-hidden transition-all duration-200 hover:opacity-90 cursor-pointer block border border-border",
+        "group bg-card overflow-hidden transition-all duration-200 hover:opacity-90 dark:hover:opacity-95 cursor-pointer block border border-border hover:border-accent/50 dark:hover:border-accent/30",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -96,25 +96,25 @@ export function MenuItemCard({
         <button
           onClick={handleWishlistClick}
           className={cn(
-            "absolute top-3 right-3 p-2 rounded-full bg-card/90 backdrop-blur-sm transition-colors",
-            "hover:bg-card focus:outline-none",
-            isWishlistActive && "bg-accent/20"
+            "absolute top-3 right-3 p-2 rounded-full bg-card/95 dark:bg-card/90 backdrop-blur-sm transition-all",
+            "hover:bg-card dark:hover:bg-card/95 focus:outline-none hover:scale-110",
+            isWishlistActive && "bg-accent/20 dark:bg-accent/30"
           )}
           aria-label={isWishlistActive ? "Remove from wishlist" : "Add to wishlist"}
         >
           <Heart
             className={cn(
-              "w-4 h-4 transition-colors",
+              "w-4 h-4 transition-all",
               isWishlistActive
                 ? "fill-accent text-accent"
-                : "text-text-secondary"
+                : "text-text-secondary hover:text-accent"
             )}
           />
         </button>
 
         {/* Order 48h Label */}
         <div className="absolute bottom-3 left-3">
-          <span className="px-2 py-1 bg-card/90 backdrop-blur-sm rounded text-xs font-normal text-text-secondary">
+          <span className="px-2 py-1 bg-card/95 dark:bg-card/90 backdrop-blur-sm rounded text-xs font-normal text-text-secondary border border-border/50">
             {t("order48h")}
           </span>
         </div>

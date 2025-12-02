@@ -51,7 +51,7 @@ export function Hero({
                 <Button
                   size="lg"
                   variant="accent"
-                  className="text-xs px-6 py-3 border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background transition-all tracking-widest uppercase rounded-none"
+                  className="text-xs px-6 py-3 border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background dark:hover:bg-foreground dark:hover:text-background transition-all duration-200 tracking-widest uppercase rounded-none"
                 >
                   {displayCtaText}
                 </Button>

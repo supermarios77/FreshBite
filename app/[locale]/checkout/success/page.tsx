@@ -54,9 +54,9 @@ export default function CheckoutSuccessPage() {
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl py-16 lg:py-24">
-        <div className="bg-card rounded-xl lg:rounded-2xl shadow-soft border border-border p-8 lg:p-12 text-center space-y-6">
+        <div className="bg-card rounded-xl lg:rounded-2xl shadow-soft border border-border p-8 lg:p-12 text-center space-y-6 transition-all">
           <div className="flex justify-center">
-            <div className="w-20 h-20 rounded-full bg-accent/20 flex items-center justify-center">
+            <div className="w-20 h-20 rounded-full bg-accent/20 dark:bg-accent/30 flex items-center justify-center transition-colors">
               <CheckCircle className="w-12 h-12 text-accent" />
             </div>
           </div>
