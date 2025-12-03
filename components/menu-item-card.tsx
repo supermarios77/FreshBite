@@ -235,15 +235,11 @@ export function MenuItemCard({
 
         {/* Actions Row */}
         <div className="flex items-center justify-between pt-2 gap-3">
-          {/* View Details Link */}
-          <Link
-            href={`/menu/${slug}`}
-            onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-2 text-xs sm:text-sm text-text-secondary group-hover:text-accent transition-colors"
-          >
+          {/* View Details Text (card is already a link) */}
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-text-secondary group-hover:text-accent transition-colors">
             <span className="tracking-wide uppercase">{t("viewDetails")}</span>
             <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
+          </div>
 
           {/* Quick Add to Cart Button */}
           <button
