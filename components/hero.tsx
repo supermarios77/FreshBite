@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { smoothScrollToAnchor } from "@/lib/utils/smooth-scroll";
 
 interface HeroProps {
   headline?: string;
@@ -18,7 +19,7 @@ export function Hero({
   headline,
   subheadline,
   ctaText,
-  ctaHref = "/menu",
+  ctaHref = "/#menu",
   imageSrc = "/placeholder-dish.png",
   imageAlt,
 }: HeroProps = {}) {
@@ -47,15 +48,43 @@ export function Hero({
 
             {/* Simple CTA */}
             <div className="pt-2 sm:pt-4">
-              <Link href={ctaHref}>
-                <Button
-                  size="lg"
-                  variant="accent"
-                  className="text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-4 border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background dark:hover:bg-foreground dark:hover:text-background transition-all duration-200 tracking-widest uppercase rounded-none"
+              {ctaHref.includes("#") ? (
+                <a
+                  href={ctaHref}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (ctaHref.startsWith("/")) {
+                      const [path, hash] = ctaHref.split("#");
+                      if (typeof window !== "undefined" && window.location.pathname !== path) {
+                        window.location.href = ctaHref;
+                        setTimeout(() => smoothScrollToAnchor(ctaHref), 100);
+                      } else {
+                        smoothScrollToAnchor(ctaHref);
+                      }
+                    } else {
+                      smoothScrollToAnchor(ctaHref);
+                    }
+                  }}
                 >
-                  {displayCtaText}
-                </Button>
-              </Link>
+                  <Button
+                    size="lg"
+                    variant="accent"
+                    className="text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-4 border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background dark:hover:bg-foreground dark:hover:text-background transition-all duration-200 tracking-widest uppercase rounded-none"
+                  >
+                    {displayCtaText}
+                  </Button>
+                </a>
+              ) : (
+                <Link href={ctaHref}>
+                  <Button
+                    size="lg"
+                    variant="accent"
+                    className="text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-4 border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background dark:hover:bg-foreground dark:hover:text-background transition-all duration-200 tracking-widest uppercase rounded-none"
+                  >
+                    {displayCtaText}
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
 

@@ -7,6 +7,7 @@ import { LocaleSwitcher } from "./locale-switcher";
 import { ThemeSwitcher } from "./theme-switcher";
 import { CartBadge } from "./cart-badge";
 import { useState } from "react";
+import { smoothScrollToAnchor } from "@/lib/utils/smooth-scroll";
 
 export function Navbar() {
   const t = useTranslations("common");
@@ -18,6 +19,7 @@ export function Navbar() {
     { href: "/order", label: t("order") },
     { href: "/contact", label: t("contact") },
   ];
+
 
   return (
     <nav className="border-b border-border sticky top-0 z-50 backdrop-blur-md bg-background/95 dark:bg-background/90 transition-colors">
@@ -33,15 +35,43 @@ export function Navbar() {
 
           {/* Desktop Navigation Links - Center */}
           <div className="hidden lg:flex items-center gap-8 xl:gap-12">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-foreground hover:text-text-secondary transition-colors text-xs font-normal tracking-widest uppercase"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              if (link.href.includes("#")) {
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (link.href.startsWith("/")) {
+                        // Navigate to page first if needed
+                        const [path, hash] = link.href.split("#");
+                        if (window.location.pathname !== path) {
+                          window.location.href = link.href;
+                          setTimeout(() => smoothScrollToAnchor(link.href), 100);
+                        } else {
+                          smoothScrollToAnchor(link.href);
+                        }
+                      } else {
+                        smoothScrollToAnchor(link.href);
+                      }
+                    }}
+                    className="text-foreground hover:text-text-secondary transition-colors text-xs font-normal tracking-widest uppercase"
+                  >
+                    {link.label}
+                  </a>
+                );
+              }
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-foreground hover:text-text-secondary transition-colors text-xs font-normal tracking-widest uppercase"
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right Side Actions */}
@@ -95,16 +125,44 @@ export function Navbar() {
         {isMobileMenuOpen && (
           <div className="lg:hidden pb-4 border-t border-border mt-4 pt-4 animate-in slide-in-from-top-2">
             <div className="flex flex-col gap-3">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-foreground hover:text-text-secondary transition-colors text-xs font-normal tracking-widest uppercase py-2 px-1"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                if (link.href.includes("#")) {
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsMobileMenuOpen(false);
+                        if (link.href.startsWith("/")) {
+                          const [path, hash] = link.href.split("#");
+                          if (window.location.pathname !== path) {
+                            window.location.href = link.href;
+                            setTimeout(() => smoothScrollToAnchor(link.href), 100);
+                          } else {
+                            smoothScrollToAnchor(link.href);
+                          }
+                        } else {
+                          smoothScrollToAnchor(link.href);
+                        }
+                      }}
+                      className="text-foreground hover:text-text-secondary transition-colors text-xs font-normal tracking-widest uppercase py-2 px-1"
+                    >
+                      {link.label}
+                    </a>
+                  );
+                }
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-foreground hover:text-text-secondary transition-colors text-xs font-normal tracking-widest uppercase py-2 px-1"
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
               <div className="pt-3 border-t border-border space-y-3">
                 <div className="flex items-center justify-between py-1">
                   <span className="text-xs sm:text-sm text-text-secondary">{t("theme")}</span>
