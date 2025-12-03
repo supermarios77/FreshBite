@@ -38,7 +38,7 @@ export function CartItemSkeleton() {
   return (
     <div className="bg-card rounded-xl border-2 border-border p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-        <Skeleton className="w-full sm:w-28 lg:w-32 h-28 lg:h-32 rounded-lg flex-shrink-0" />
+        <Skeleton className="w-full sm:w-28 lg:w-32 h-28 lg:h-32 rounded-lg shrink-0" />
         <div className="flex-1 space-y-3">
           <Skeleton className="h-6 w-3/4" />
           <Skeleton className="h-4 w-24" />
