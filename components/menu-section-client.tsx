@@ -68,70 +68,33 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
           </div>
 
           {/* Filter Bar */}
-          <div className="flex items-center gap-3 relative">
-            <div className="relative">
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="px-6 py-2 border-2 border-foreground bg-transparent text-foreground font-normal text-xs hover:bg-foreground hover:text-background transition-all tracking-widest uppercase flex items-center gap-2"
-              >
-                {selectedCategory ? selectedCategory.name : t("filter")}
-                <ChevronDown className={`w-3 h-3 transition-transform ${isFilterOpen ? "rotate-180" : ""}`} />
-              </button>
-
-              {/* Filter Dropdown */}
-              {isFilterOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-10"
-                    onClick={() => setIsFilterOpen(false)}
-                  />
-                  <div className="absolute top-full left-0 mt-2 bg-card border border-border shadow-soft z-20 min-w-[200px]">
-                    <div className="p-2">
-                      <button
-                        onClick={() => {
-                          setSelectedCategoryId(null);
-                          setIsFilterOpen(false);
-                        }}
-                        className={`w-full text-left px-4 py-2 text-xs tracking-wide uppercase transition-colors ${
-                          selectedCategoryId === null
-                            ? "bg-foreground text-background"
-                            : "text-foreground hover:bg-secondary"
-                        }`}
-                      >
-                        {t("allCategories")}
-                      </button>
-                      {categories.map((category) => (
-                        <button
-                          key={category.id}
-                          onClick={() => {
-                            setSelectedCategoryId(category.id);
-                            setIsFilterOpen(false);
-                          }}
-                          className={`w-full text-left px-4 py-2 text-xs tracking-wide uppercase transition-colors ${
-                            selectedCategoryId === category.id
-                              ? "bg-foreground text-background"
-                              : "text-foreground hover:bg-secondary"
-                          }`}
-                        >
-                          {category.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Clear filter button */}
-            {selectedCategoryId && (
+          <div className="flex flex-col gap-4">
+            {/* Category Filter Buttons */}
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => setSelectedCategoryId(null)}
-                className="p-2 text-text-secondary hover:text-foreground transition-colors"
-                aria-label="Clear filter"
+                className={`px-4 py-2 border-2 font-normal text-xs tracking-widest uppercase transition-all ${
+                  selectedCategoryId === null
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+                }`}
               >
-                <X className="w-4 h-4" />
+                {t("allCategories")}
               </button>
-            )}
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategoryId(category.id)}
+                  className={`px-4 py-2 border-2 font-normal text-xs tracking-widest uppercase transition-all ${
+                    selectedCategoryId === category.id
+                      ? "bg-foreground text-background border-foreground"
+                      : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
