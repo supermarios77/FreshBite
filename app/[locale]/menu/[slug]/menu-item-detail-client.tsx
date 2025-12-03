@@ -81,9 +81,9 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl py-8 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Left Column - Image */}
-          <div className="relative w-full flex items-center justify-center">
+          <div className="relative w-full flex justify-center lg:justify-start">
             <div className="relative w-full max-w-lg">
               <Image
                 src={dish.imageUrl || "/placeholder-dish.png"}
