@@ -14,12 +14,12 @@ export default async function ContactPage({
     <div className="bg-background min-h-screen">
       {/* Hero Section */}
       <section className="border-b border-border">
-        <div className="container mx-auto px-8 py-16 lg:py-24 max-w-4xl">
-          <div className="text-center space-y-6">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-normal text-foreground tracking-widest uppercase">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 max-w-4xl">
+          <div className="text-center space-y-4 sm:space-y-6">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-normal text-foreground tracking-widest uppercase">
               {t("title")}
             </h1>
-            <p className="text-base text-text-secondary leading-relaxed max-w-2xl mx-auto tracking-wide">
+            <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-2xl mx-auto tracking-wide">
               {t("subtitle")}
             </p>
           </div>
@@ -28,8 +28,8 @@ export default async function ContactPage({
 
       {/* Contact Information & Form Section */}
       <section>
-        <div className="container mx-auto px-8 py-16 lg:py-24 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
             {/* Left Column - Contact Information */}
             <div className="space-y-8">
               <div>
@@ -113,8 +113,8 @@ export default async function ContactPage({
             </div>
 
             {/* Right Column - Contact Form */}
-            <div className="bg-card border-2 border-border p-6 lg:p-8">
-              <h2 className="text-2xl sm:text-3xl font-normal text-foreground tracking-widest uppercase mb-6">
+            <div className="bg-card border-2 border-border p-5 sm:p-6 lg:p-8 shadow-soft">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-normal text-foreground tracking-widest uppercase mb-5 sm:mb-6">
                 {t("sendMessage")}
               </h2>
               <ContactForm />

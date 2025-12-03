@@ -194,16 +194,16 @@ export default function CheckoutPage() {
 
   return (
     <div className="bg-background min-h-screen">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 lg:py-12">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 lg:mb-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 sm:py-10 lg:py-12">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-normal text-foreground mb-6 sm:mb-8 lg:mb-12 tracking-widest uppercase">
           {t("title")}
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 xl:gap-16">
           {/* Left: Customer Details Form */}
           <div className="space-y-6 lg:space-y-8">
             <div>
-              <h2 className="text-xl lg:text-2xl font-semibold text-foreground mb-6">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-normal text-foreground mb-5 sm:mb-6 tracking-widest uppercase">
                 {t("deliveryInformation")}
               </h2>
 
@@ -224,7 +224,7 @@ export default function CheckoutPage() {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
                       placeholder="John"
                     />
                   </div>
@@ -242,7 +242,7 @@ export default function CheckoutPage() {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
                       placeholder="Doe"
                     />
                   </div>
@@ -263,7 +263,7 @@ export default function CheckoutPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
                     placeholder="john.doe@example.com"
                   />
                 </div>
@@ -283,7 +283,7 @@ export default function CheckoutPage() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
                     placeholder="+32 123 456 789"
                   />
                 </div>
@@ -303,7 +303,7 @@ export default function CheckoutPage() {
                     value={formData.address}
                     onChange={handleInputChange}
                     required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
                     placeholder="Rue de la Paix 123"
                   />
                 </div>
@@ -324,7 +324,7 @@ export default function CheckoutPage() {
                       value={formData.city}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
                       placeholder="Brussels"
                     />
                   </div>
@@ -342,7 +342,7 @@ export default function CheckoutPage() {
                       value={formData.postalCode}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
                       placeholder="1000"
                     />
                   </div>
@@ -363,7 +363,7 @@ export default function CheckoutPage() {
                     value={formData.country}
                     onChange={handleInputChange}
                     required
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
                   />
                 </div>
 
@@ -381,7 +381,7 @@ export default function CheckoutPage() {
                     value={formData.deliveryInstructions}
                     onChange={handleInputChange}
                     rows={3}
-                    className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all resize-none text-sm tracking-wide"
                     placeholder="Any special delivery instructions..."
                   />
                 </div>
