@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter, Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
+import { FormField } from "@/components/form-field";
 import { CheckoutSummary } from "@/components/checkout-summary";
 
 interface CartItem {
@@ -31,7 +32,43 @@ export default function CheckoutPage() {
     createAccount: false, // Optional account creation
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Validation functions
+  const validateField = (name: string, value: string): string => {
+    switch (name) {
+      case "firstName":
+        if (!value.trim()) return t("firstNameError");
+        if (value.trim().length < 2) return "First name must be at least 2 characters";
+        return "";
+      case "lastName":
+        if (!value.trim()) return t("lastNameError");
+        if (value.trim().length < 2) return "Last name must be at least 2 characters";
+        return "";
+      case "email":
+        if (!value.trim()) return t("emailError");
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) return t("emailError");
+        return "";
+      case "phone":
+        if (!value.trim()) return t("phoneError");
+        const phoneRegex = /^[\d\s\+\-\(\)]+$/;
+        if (!phoneRegex.test(value) || value.replace(/\D/g, "").length < 8) {
+          return t("phoneError");
+        }
+        return "";
+      default:
+        return "";
+    }
+  };
+
+  const handleBlur = (name: string) => {
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const error = validateField(name, formData[name as keyof typeof formData] as string);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
 
   // Fetch cart on mount
   useEffect(() => {
@@ -61,10 +98,17 @@ export default function CheckoutPage() {
   ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
+    
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    // Validate on change if field has been touched
+    if (touched[name]) {
+      const error = type === "checkbox" ? "" : validateField(name, value);
+      setErrors((prev) => ({ ...prev, [name]: error }));
+    }
   };
 
   const handleRemoveItem = async (id: string) => {
@@ -100,9 +144,31 @@ export default function CheckoutPage() {
   };
 
   const handleProceedToPayment = async () => {
-    // Validate required fields
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+    // Mark all fields as touched
+    const allTouched = {
+      firstName: true,
+      lastName: true,
+      email: true,
+      phone: true,
+    };
+    setTouched(allTouched);
+
+    // Validate all fields
+    const newErrors: Record<string, string> = {};
+    Object.keys(formData).forEach((key) => {
+      if (key !== "createAccount") {
+        const error = validateField(key, formData[key as keyof typeof formData] as string);
+        if (error) newErrors[key] = error;
+      }
+    });
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    if (Object.keys(newErrors).length > 0) {
       addToast(t("fillRequiredFields"), "error");
+      // Scroll to first error
+      const firstErrorField = Object.keys(newErrors)[0];
+      document.getElementById(firstErrorField)?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
 
@@ -199,86 +265,70 @@ export default function CheckoutPage() {
                 {t("customerInformation")}
               </h2>
 
-              <form className="space-y-5">
+              <form className="space-y-6" noValidate>
                 {/* Name Fields */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label
-                      htmlFor="firstName"
-                      className="block text-sm font-medium text-foreground mb-2"
-                    >
-                      {t("firstName")}
-                    </label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
-                      placeholder="John"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="lastName"
-                      className="block text-sm font-medium text-foreground mb-2"
-                    >
-                      {t("lastName")}
-                    </label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
-                      placeholder="Doe"
-                    />
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormField
+                    label={t("firstName")}
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    onBlur={() => handleBlur("firstName")}
+                    placeholder="John"
+                    required
+                    error={touched.firstName ? errors.firstName : undefined}
+                    helperText={t("firstNameHelper")}
+                    isValid={!errors.firstName && formData.firstName.length > 0}
+                  />
+                  <FormField
+                    label={t("lastName")}
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    onBlur={() => handleBlur("lastName")}
+                    placeholder="Doe"
+                    required
+                    error={touched.lastName ? errors.lastName : undefined}
+                    helperText={t("lastNameHelper")}
+                    isValid={!errors.lastName && formData.lastName.length > 0}
+                  />
                 </div>
 
                 {/* Email */}
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-foreground mb-2"
-                  >
-                    {t("email")}
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
-                    placeholder="john.doe@example.com"
-                  />
-                </div>
+                <FormField
+                  label={t("email")}
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur("email")}
+                  placeholder="john.doe@example.com"
+                  required
+                  error={touched.email ? errors.email : undefined}
+                  helperText={t("emailHelper")}
+                  isValid={!errors.email && formData.email.length > 0}
+                />
 
                 {/* Phone */}
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-foreground mb-2"
-                  >
-                    {t("phone")}
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground focus:border-foreground transition-all text-sm tracking-wide"
-                    placeholder="+32 123 456 789"
-                  />
-                </div>
+                <FormField
+                  label={t("phone")}
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur("phone")}
+                  placeholder="+32 123 456 789"
+                  required
+                  error={touched.phone ? errors.phone : undefined}
+                  helperText={t("phoneHelper")}
+                  isValid={!errors.phone && formData.phone.length > 0}
+                />
 
                 {/* Pickup Information Notice */}
                 <div className="bg-secondary/50 border-2 border-border p-4 rounded-lg">
