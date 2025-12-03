@@ -4,10 +4,21 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { getMetadata } from "@/lib/metadata";
+import type { Metadata } from "next";
 import "../globals.css";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return getMetadata({ locale });
 }
 
 export default async function LocaleLayout({
@@ -27,12 +38,15 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || "https://freshbite.be"}/${locale}`} />
+      </head>
       <body className="antialiased bg-background text-foreground">
         <ThemeProvider>
           <NextIntlClientProvider messages={messages}>
             <div className="min-h-screen flex flex-col">
               <Navbar />
-              <main className="flex-1">{children}</main>
+              <main className="flex-1" id="main-content">{children}</main>
             </div>
           </NextIntlClientProvider>
         </ThemeProvider>

@@ -1,5 +1,20 @@
 import { Hero } from "@/components/hero";
 import { MenuSection } from "@/components/menu-section";
+import { getMetadata } from "@/lib/metadata";
+import { getOrganizationStructuredData } from "@/lib/structured-data";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return getMetadata({
+    locale,
+    path: "",
+  });
+}
 
 export default async function HomePage({
   params,
@@ -7,11 +22,21 @@ export default async function HomePage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const organizationStructuredData = getOrganizationStructuredData(locale);
+
   return (
-    <main>
-      <Hero />
-      <MenuSection locale={locale} />
-    </main>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationStructuredData),
+        }}
+      />
+      <main>
+        <Hero />
+        <MenuSection locale={locale} />
+      </main>
+    </>
   );
 }
 

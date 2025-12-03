@@ -1,6 +1,27 @@
 import { getTranslations } from "next-intl/server";
 import { ContactForm } from "./contact-form";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { getMetadata } from "@/lib/metadata";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return getMetadata({
+    locale,
+    title: "Contact Us",
+    description:
+      locale === "nl"
+        ? "Neem contact met ons op voor vragen over uw bestelling"
+        : locale === "fr"
+        ? "Contactez-nous pour toute question concernant votre commande"
+        : "Contact us for questions about your order",
+    path: "/contact",
+  });
+}
 
 export default async function ContactPage({
   params,

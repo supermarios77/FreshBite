@@ -1,4 +1,25 @@
 import { redirect } from "@/i18n/routing";
+import { getMetadata } from "@/lib/metadata";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return getMetadata({
+    locale,
+    title: "Menu",
+    description:
+      locale === "nl"
+        ? "Bekijk ons volledige menu met heerlijke diepvriesmaaltijden"
+        : locale === "fr"
+        ? "Découvrez notre menu complet de plats surgelés délicieux"
+        : "Browse our complete menu of delicious frozen meals",
+    path: "/menu",
+  });
+}
 
 export default async function MenuPage({
   params,
