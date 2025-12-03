@@ -167,10 +167,10 @@ export async function addToCart(item: Omit<CartItem, "id">): Promise<CartItem[]>
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + 30);
 
-      // Check if cart exists to determine if we need to create or update
+      // Check if cart exists to get the ID for updates
       const { data: existingCart, error: checkError } = await supabase
         .from("cart_sessions")
-        .select("id")
+        .select("id, created_at")
         .eq("session_id", sessionId)
         .single();
 
@@ -181,7 +181,15 @@ export async function addToCart(item: Omit<CartItem, "id">): Promise<CartItem[]>
         updated_at: now.toISOString(),
       };
 
-      if (!existingCart || checkError?.code === "PGRST116") {
+      if (existingCart && !checkError) {
+        // Update existing cart - include the ID
+        cartDataToSave.id = existingCart.id;
+        // Keep the original created_at if it exists
+        if (existingCart.created_at) {
+          cartDataToSave.created_at = existingCart.created_at;
+        }
+      } else {
+        // Create new cart - generate new ID
         cartDataToSave.id = `cart_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
         cartDataToSave.created_at = now.toISOString();
       }
