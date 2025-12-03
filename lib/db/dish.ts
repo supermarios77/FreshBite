@@ -42,6 +42,7 @@ export async function getDishes(params: GetDishesParams = {}) {
           ? dish.descriptionNl
           : dish.descriptionFr,
       price: dish.price,
+      pricingModel: dish.pricingModel,
       imageUrl: dish.imageUrl,
       rating: dish.rating || 0,
       allergens: dish.allergens,

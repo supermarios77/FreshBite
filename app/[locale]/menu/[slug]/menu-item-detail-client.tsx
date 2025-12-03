@@ -12,6 +12,7 @@ interface Dish {
   name: string;
   description?: string | null;
   price: number;
+  pricingModel?: "FIXED" | "PER_PIECE";
   imageUrl?: string | null;
   quantity?: string | null;
   weight?: string | null;
@@ -129,6 +130,11 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
             {/* Price */}
             <div className="text-3xl lg:text-4xl font-normal text-foreground tracking-widest">
               €{dish.price.toFixed(2)}
+              {dish.pricingModel === "PER_PIECE" && (
+                <span className="text-lg lg:text-xl font-normal text-text-secondary ml-2">
+                  per piece
+                </span>
+              )}
             </div>
 
             {/* Quantity and Weight */}

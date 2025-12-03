@@ -58,6 +58,7 @@ model Dish {
   descriptionNl String?  @db.Text
   descriptionFr String?  @db.Text
   price         Float
+  pricingModel  PricingModel @default(FIXED)
   imageUrl      String?
   categoryId    String?
   rating        Float?   @default(0)
@@ -107,6 +108,11 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   CANCELLED
+}
+
+enum PricingModel {
+  FIXED
+  PER_PIECE
 }
 
 model OrderItem {

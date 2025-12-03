@@ -15,6 +15,7 @@ interface Dish {
   slug: string;
   name: string;
   price: number;
+  pricingModel?: "FIXED" | "PER_PIECE";
   imageUrl?: string | null;
   rating: number;
   category?: {
@@ -106,6 +107,7 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
                 slug={dish.slug}
                 name={dish.name}
                 price={dish.price}
+                pricingModel={dish.pricingModel}
                 imageSrc={dish.imageUrl || "/placeholder-dish.png"}
                 imageAlt={dish.name}
                 rating={dish.rating || 0}

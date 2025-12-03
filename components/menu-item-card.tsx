@@ -12,6 +12,7 @@ interface MenuItemCardProps {
   slug: string;
   name: string;
   price: number;
+  pricingModel?: "FIXED" | "PER_PIECE";
   imageSrc?: string;
   imageAlt?: string;
   rating?: number;
@@ -25,6 +26,7 @@ export function MenuItemCard({
   slug,
   name,
   price,
+  pricingModel = "FIXED",
   imageSrc,
   imageAlt,
   rating = 0,
@@ -177,6 +179,11 @@ export function MenuItemCard({
           <div className="text-right">
             <span className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">
               €{price.toFixed(2)}
+              {pricingModel === "PER_PIECE" && (
+                <span className="text-xs sm:text-sm font-normal text-text-secondary ml-1">
+                  /piece
+                </span>
+              )}
             </span>
           </div>
         </div>

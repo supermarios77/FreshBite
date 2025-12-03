@@ -25,6 +25,7 @@ interface Dish {
   descriptionNl?: string | null;
   descriptionFr?: string | null;
   price: number;
+  pricingModel?: "FIXED" | "PER_PIECE";
   imageUrl?: string | null;
   categoryId?: string | null;
   rating?: number | null;
@@ -59,6 +60,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
     descriptionNl: dish?.descriptionNl || "",
     descriptionFr: dish?.descriptionFr || "",
     price: dish?.price || 0,
+    pricingModel: dish?.pricingModel || "FIXED",
     categoryId: dish?.categoryId || "",
     rating: dish?.rating || 0,
     quantity: dish?.quantity || "",
@@ -79,6 +81,7 @@ export function DishForm({ dish, categories }: DishFormProps) {
         descriptionNl: dish.descriptionNl || "",
         descriptionFr: dish.descriptionFr || "",
         price: dish.price || 0,
+        pricingModel: dish.pricingModel || "FIXED",
         categoryId: dish.categoryId || "",
         rating: dish.rating || 0,
         quantity: dish.quantity || "",
@@ -357,8 +360,8 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </div>
         </div>
 
-        {/* Price, Category, Rating */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Price, Pricing Model, Category, Rating */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
               {t("price")}
@@ -373,6 +376,20 @@ export function DishForm({ dish, categories }: DishFormProps) {
               required
               className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              {t("pricingModel")}
+            </label>
+            <select
+              name="pricingModel"
+              value={formData.pricingModel}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+            >
+              <option value="FIXED">{t("pricingModelFixed")}</option>
+              <option value="PER_PIECE">{t("pricingModelPerPiece")}</option>
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">

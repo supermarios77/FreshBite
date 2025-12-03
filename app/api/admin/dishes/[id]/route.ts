@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateSlug } from "@/lib/utils";
-import { sanitizeError, logError, ValidationError, NotFoundError } from "@/lib/errors"; "@/lib/utils";
+import { sanitizeError, logError, ValidationError, NotFoundError } from "@/lib/errors";
 
 // Use Node.js runtime for Prisma compatibility
 export const runtime = "nodejs";
@@ -24,6 +24,7 @@ export async function PUT(
       descriptionNl,
       descriptionFr,
       price,
+      pricingModel,
       imageUrl,
       categoryId,
       rating,
@@ -71,6 +72,7 @@ export async function PUT(
         descriptionNl,
         descriptionFr,
         price: parseFloat(price),
+        pricingModel: pricingModel || "FIXED",
         imageUrl: imageUrl || null,
         categoryId: categoryId || null,
         rating: rating ? parseFloat(rating) : 0,
