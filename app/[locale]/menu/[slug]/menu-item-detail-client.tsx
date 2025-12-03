@@ -62,7 +62,6 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
         addToast(error.error || t("failedToAdd") || "Failed to add to cart", "error");
       }
     } catch (error) {
-      console.error("Error adding to cart:", error);
       addToast(t("failedToAdd") || "Failed to add to cart. Please try again.", "error");
     } finally {
       setIsLoading(false);

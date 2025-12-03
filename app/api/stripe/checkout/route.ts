@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { createAccountForUser } from "@/lib/auth/create-account";
 import { sendOrderConfirmationEmail } from "@/lib/email/order-confirmation";
 import { sanitizeError, logError, ValidationError } from "@/lib/errors";
+import { rateLimiters } from "@/lib/rate-limit";
 
 // Use Node.js runtime for Prisma compatibility
 export const runtime = "nodejs";
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
         finalUserId = accountResult.userId;
         console.log(`Account created for ${customerInfo.email}, userId: ${finalUserId}`);
       } catch (error: any) {
-        console.error("Failed to create account:", error);
+        logger.error("Failed to create account:", error);
         // Continue with order creation even if account creation fails
         // The order will still be created with temp-user-id
       }
@@ -113,7 +114,7 @@ export async function POST(req: NextRequest) {
           locale,
         });
       } catch (error: any) {
-        console.error("Failed to send order confirmation email:", error);
+        logger.error("Failed to send order confirmation email:", error);
         // Don't fail the checkout if email fails
       }
     }
@@ -180,13 +181,14 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: session.url, orderId: order.id });
-  } catch (error) {
-    logError(error, { operation: "checkout" });
-    const sanitized = sanitizeError(error);
-    return NextResponse.json(
-      { error: sanitized.message, code: sanitized.code },
-      { status: sanitized.statusCode }
-    );
-  }
+    } catch (error) {
+      logError(error, { operation: "checkout" });
+      const sanitized = sanitizeError(error);
+      return NextResponse.json(
+        { error: sanitized.message, code: sanitized.code },
+        { status: sanitized.statusCode }
+      );
+    }
+  });
 }
 

@@ -69,15 +69,15 @@ export async function POST(req: Request) {
 
         if (orderId) {
           await updateOrderStatus(orderId, "PAID" as OrderStatus, session.id);
-          console.log(`Order ${orderId} marked as paid`);
+          // Order marked as paid
         } else {
           // Fallback: try to find order by session ID
           const order = await getOrderByStripeSessionId(session.id);
           if (order) {
             await updateOrderStatus(order.id, "PAID" as OrderStatus, session.id);
-            console.log(`Order ${order.id} marked as paid (found by session ID)`);
+            // Order marked as paid (found by session ID)
           } else {
-            console.warn(`Order not found for session ${session.id}`);
+            logger.warn(`Order not found for session ${session.id}`);
           }
         }
         break;
@@ -94,7 +94,7 @@ export async function POST(req: Request) {
       }
 
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        // Unhandled event type - log for monitoring
     }
 
     return NextResponse.json({ received: true });

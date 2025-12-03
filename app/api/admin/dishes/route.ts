@@ -3,12 +3,14 @@ import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateSlug } from "@/lib/utils";
 import { sanitizeError, logError, ValidationError } from "@/lib/errors";
+import { rateLimiters } from "@/lib/rate-limit";
 
 // Use Node.js runtime for Prisma compatibility
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
-  try {
+  return rateLimiters.strict(req, async () => {
+    try {
     await requireAdmin();
   } catch (error) {
     logError(error, { operation: "createDish", reason: "auth" });

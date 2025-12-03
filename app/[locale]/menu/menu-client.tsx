@@ -22,7 +22,7 @@ export function MenuClient({ dishes, locale }: MenuClientProps) {
 
   const handleWishlistToggle = (id: string) => {
     // TODO: Integrate with Supabase to update wishlist
-    console.log("Toggle wishlist for item:", id);
+    // Wishlist toggle - handled by state management
   };
 
   return (

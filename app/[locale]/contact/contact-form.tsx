@@ -35,9 +35,8 @@ export function ContactForm() {
     setSubmitStatus({ type: null, message: "" });
 
     try {
-      // For now, just log the form data
-      // In production, you would send this to an API endpoint
-      console.log("Contact form submission:", formData);
+      // TODO: In production, send this to an API endpoint
+      // For now, just simulate API call
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));

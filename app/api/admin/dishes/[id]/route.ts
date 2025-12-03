@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateSlug } from "@/lib/utils";
 import { sanitizeError, logError, ValidationError, NotFoundError } from "@/lib/errors";
+import { rateLimiters } from "@/lib/rate-limit";
 
 // Use Node.js runtime for Prisma compatibility
 export const runtime = "nodejs";
@@ -12,7 +13,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  try {
+  return rateLimiters.strict(req, async () => {
+    try {
     await requireAdmin();
 
     const body = await req.json();
@@ -85,14 +87,15 @@ export async function PUT(
     });
 
     return NextResponse.json(dish);
-  } catch (error) {
-    logError(error, { operation: "updateDish", dishId: id });
-    const sanitized = sanitizeError(error);
-    return NextResponse.json(
-      { error: sanitized.message, code: sanitized.code },
-      { status: sanitized.statusCode }
-    );
-  }
+    } catch (error) {
+      logError(error, { operation: "updateDish", dishId: id });
+      const sanitized = sanitizeError(error);
+      return NextResponse.json(
+        { error: sanitized.message, code: sanitized.code },
+        { status: sanitized.statusCode }
+      );
+    }
+  });
 }
 
 export async function DELETE(
@@ -100,7 +103,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  try {
+  return rateLimiters.strict(req, async () => {
+    try {
     await requireAdmin();
   } catch (error) {
     logError(error, { operation: "deleteDish", reason: "auth" });
@@ -118,14 +122,15 @@ export async function DELETE(
     });
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    logError(error, { operation: "deleteDish", dishId: id });
-    const sanitized = sanitizeError(error);
-    return NextResponse.json(
-      { error: sanitized.message, code: sanitized.code },
-      { status: sanitized.statusCode }
-    );
-  }
+    } catch (error) {
+      logError(error, { operation: "deleteDish", dishId: id });
+      const sanitized = sanitizeError(error);
+      return NextResponse.json(
+        { error: sanitized.message, code: sanitized.code },
+        { status: sanitized.statusCode }
+      );
+    }
+  });
 }
 
 export async function PATCH(
@@ -133,7 +138,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  try {
+  return rateLimiters.strict(req, async () => {
+    try {
     await requireAdmin();
 
     const body = await req.json();
@@ -147,13 +153,14 @@ export async function PATCH(
     });
 
     return NextResponse.json(dish);
-  } catch (error) {
-    logError(error, { operation: "updateDishStatus", dishId: id });
-    const sanitized = sanitizeError(error);
-    return NextResponse.json(
-      { error: sanitized.message, code: sanitized.code },
-      { status: sanitized.statusCode }
-    );
-  }
+    } catch (error) {
+      logError(error, { operation: "updateDishStatus", dishId: id });
+      const sanitized = sanitizeError(error);
+      return NextResponse.json(
+        { error: sanitized.message, code: sanitized.code },
+        { status: sanitized.statusCode }
+      );
+    }
+  });
 }
 

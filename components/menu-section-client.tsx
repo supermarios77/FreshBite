@@ -37,7 +37,7 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
 
   const handleWishlistToggle = (id: string) => {
     // TODO: Integrate with Supabase to update wishlist
-    console.log("Toggle wishlist for item:", id);
+    // Wishlist toggle handled by parent component
   };
 
   // Filter dishes by selected category

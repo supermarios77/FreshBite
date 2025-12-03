@@ -8,6 +8,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { getMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
 import "../globals.css";
+import "@/lib/env"; // Validate environment variables on startup
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

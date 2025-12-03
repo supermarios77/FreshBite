@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/auth";
 import { sanitizeError, logError } from "@/lib/errors";
+import { rateLimiters } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
 
 // Use Node.js runtime for Supabase server client compatibility
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
-  try {
+  return rateLimiters.upload(req, async () => {
+    try {
     await requireAdmin();
 
     const formData = await req.formData();
@@ -48,7 +51,7 @@ export async function POST(req: NextRequest) {
       });
 
     if (uploadError) {
-      console.error("Upload error:", uploadError);
+      logger.error("Upload error:", uploadError);
       // Provide more detailed error message
       return NextResponse.json(
         { error: uploadError.message || "Failed to upload image. Make sure the 'dish-images' bucket exists in Supabase Storage." },
@@ -62,13 +65,14 @@ export async function POST(req: NextRequest) {
     } = supabase.storage.from("dish-images").getPublicUrl(filePath);
 
     return NextResponse.json({ url: publicUrl, path: filePath });
-  } catch (error) {
-    logError(error, { operation: "uploadImage" });
-    const sanitized = sanitizeError(error);
-    return NextResponse.json(
-      { error: sanitized.message, code: sanitized.code },
-      { status: sanitized.statusCode }
-    );
-  }
+    } catch (error) {
+      logError(error, { operation: "uploadImage" });
+      const sanitized = sanitizeError(error);
+      return NextResponse.json(
+        { error: sanitized.message, code: sanitized.code },
+        { status: sanitized.statusCode }
+      );
+    }
+  });
 }
 
