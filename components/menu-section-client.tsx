@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { MenuItemCard } from "@/components/menu-item-card";
+import { MenuCardSkeleton } from "@/components/skeleton";
 import { useTranslations } from "next-intl";
 
 interface Category {
@@ -105,19 +106,19 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {filteredDishes.map((dish) => (
-              <MenuItemCard
-                key={dish.id}
-                id={dish.id}
-                slug={dish.slug}
-                name={dish.name}
-                price={dish.price}
-                imageSrc={dish.imageUrl || "/placeholder-dish.png"}
-                imageAlt={dish.name}
-                rating={dish.rating || 0}
-                isWishlisted={false}
-                onWishlistToggle={handleWishlistToggle}
-                onOrderClick={handleOrderClick}
-              />
+              <Suspense key={dish.id} fallback={<MenuCardSkeleton />}>
+                <MenuItemCard
+                  id={dish.id}
+                  slug={dish.slug}
+                  name={dish.name}
+                  price={dish.price}
+                  imageSrc={dish.imageUrl || "/placeholder-dish.png"}
+                  imageAlt={dish.name}
+                  rating={dish.rating || 0}
+                  isWishlisted={false}
+                  onWishlistToggle={handleWishlistToggle}
+                />
+              </Suspense>
             ))}
           </div>
         )}

@@ -48,6 +48,10 @@ export default function CartPage() {
   };
 
   const handleRemoveItem = async (id: string) => {
+    // Optimistic update - remove from UI immediately
+    const previousItems = [...cartItems];
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+
     try {
       const response = await fetch(`/api/cart?itemId=${id}`, {
         method: "DELETE",
@@ -59,14 +63,16 @@ export default function CartPage() {
         // Force a refresh to ensure state is synced
         await fetchCart();
       } else {
+        // Rollback on error
+        setCartItems(previousItems);
         const errorData = await response.json();
         console.error("Error removing item:", errorData);
-        // Still refresh cart to get current state
         await fetchCart();
       }
     } catch (error) {
       console.error("Error removing item:", error);
-      // Refresh cart even on error to get current state
+      // Rollback on error
+      setCartItems(previousItems);
       await fetchCart();
     }
   };
@@ -76,6 +82,15 @@ export default function CartPage() {
       handleRemoveItem(id);
       return;
     }
+    
+    // Optimistic update - update UI immediately
+    const previousItems = [...cartItems];
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
+    );
+
     try {
       const response = await fetch("/api/cart", {
         method: "PUT",
@@ -83,13 +98,19 @@ export default function CartPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ itemId: id, quantity: newQuantity }),
+        cache: "no-store",
       });
       if (response.ok) {
         const data = await response.json();
         setCartItems(data.cart || []);
+      } else {
+        // Rollback on error
+        setCartItems(previousItems);
       }
     } catch (error) {
       console.error("Error updating quantity:", error);
+      // Rollback on error
+      setCartItems(previousItems);
     }
   };
 
@@ -102,10 +123,41 @@ export default function CartPage() {
 
   if (isLoading) {
     return (
-      <div className="bg-background min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-text-secondary">{t("loading")}</p>
+      <div className="bg-background min-h-screen">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 sm:py-10 lg:py-12">
+          <div className="mb-8 sm:mb-10 lg:mb-12">
+            <div className="h-10 w-48 bg-secondary animate-pulse rounded mb-2" />
+            <div className="h-5 w-32 bg-secondary animate-pulse rounded" />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-card rounded-xl border-2 border-border p-4 sm:p-6 lg:p-8">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                    <div className="w-full sm:w-28 lg:w-32 h-28 lg:h-32 bg-secondary animate-pulse rounded-lg flex-shrink-0" />
+                    <div className="flex-1 space-y-3">
+                      <div className="h-6 w-3/4 bg-secondary animate-pulse rounded" />
+                      <div className="h-4 w-24 bg-secondary animate-pulse rounded" />
+                      <div className="flex items-center gap-4">
+                        <div className="h-10 w-32 bg-secondary animate-pulse rounded-lg" />
+                        <div className="h-6 w-20 bg-secondary animate-pulse rounded" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="lg:sticky lg:top-8 lg:self-start">
+              <div className="bg-card rounded-xl border-2 border-border p-5 sm:p-6 lg:p-8 space-y-4">
+                <div className="h-6 w-32 bg-secondary animate-pulse rounded" />
+                <div className="space-y-3 border-b border-border pb-4">
+                  <div className="h-5 w-full bg-secondary animate-pulse rounded" />
+                  <div className="h-5 w-full bg-secondary animate-pulse rounded" />
+                </div>
+                <div className="h-8 w-full bg-secondary animate-pulse rounded" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

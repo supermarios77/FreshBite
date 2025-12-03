@@ -223,10 +223,32 @@ export default function CheckoutPage() {
 
   if (isLoading) {
     return (
-      <div className="bg-background min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-text-secondary">Loading...</p>
+      <div className="bg-background min-h-screen">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 sm:py-10 lg:py-12">
+          <div className="h-10 w-48 bg-secondary animate-pulse rounded mb-8" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 xl:gap-16">
+            <div className="space-y-6">
+              <div className="h-6 w-32 bg-secondary animate-pulse rounded mb-6" />
+              <div className="space-y-5">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="space-y-2">
+                    <div className="h-5 w-24 bg-secondary animate-pulse rounded" />
+                    <div className="h-12 w-full bg-secondary animate-pulse rounded-lg" />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="lg:sticky lg:top-8 lg:self-start">
+              <div className="bg-card rounded-xl border-2 border-border p-5 sm:p-6 lg:p-8 space-y-4">
+                <div className="h-6 w-32 bg-secondary animate-pulse rounded" />
+                <div className="space-y-3 border-b border-border pb-4">
+                  <div className="h-5 w-full bg-secondary animate-pulse rounded" />
+                  <div className="h-5 w-full bg-secondary animate-pulse rounded" />
+                </div>
+                <div className="h-12 w-full bg-secondary animate-pulse rounded" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
