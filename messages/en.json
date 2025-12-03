@@ -27,7 +27,11 @@
     "order48h": "Order 48h in advance",
     "viewDetails": "View Details",
     "perPiece": "per piece",
-    "perPortion": "per portion"
+    "perPortion": "per portion",
+    "searchPlaceholder": "Search dishes, ingredients...",
+    "clearSearch": "Clear search",
+    "searchResults": "{count, plural, =1 {Found {count} result for '{query}'} other {Found {count} results for '{query}'}}",
+    "noSearchResults": "No dishes found for '{query}'. Try a different search term."
   },
   "checkout": {
     "title": "Checkout",

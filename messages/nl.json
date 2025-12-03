@@ -27,7 +27,11 @@
     "order48h": "Bestel 48u van tevoren",
     "viewDetails": "Bekijk Details",
     "perPiece": "per stuk",
-    "perPortion": "per portie"
+    "perPortion": "per portie",
+    "searchPlaceholder": "Zoek gerechten, ingrediënten...",
+    "clearSearch": "Zoekopdracht wissen",
+    "searchResults": "{count, plural, =1 {{count} resultaat gevonden voor '{query}'} other {{count} resultaten gevonden voor '{query}'}}",
+    "noSearchResults": "Geen gerechten gevonden voor '{query}'. Probeer een andere zoekterm."
   },
   "checkout": {
     "title": "Afrekenen",

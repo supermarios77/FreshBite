@@ -27,7 +27,11 @@
     "order48h": "Commander 48h à l'avance",
     "viewDetails": "Voir les Détails",
     "perPiece": "par pièce",
-    "perPortion": "par portion"
+    "perPortion": "par portion",
+    "searchPlaceholder": "Rechercher des plats, ingrédients...",
+    "clearSearch": "Effacer la recherche",
+    "searchResults": "{count, plural, =1 {{count} résultat trouvé pour '{query}'} other {{count} résultats trouvés pour '{query}'}}",
+    "noSearchResults": "Aucun plat trouvé pour '{query}'. Essayez un autre terme de recherche."
   },
   "checkout": {
     "title": "Paiement",

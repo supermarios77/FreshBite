@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MenuItemCard } from "@/components/menu-item-card";
 import { useTranslations } from "next-intl";
 import { useDebounce } from "@/lib/hooks/use-debounce";
+import { Search, X } from "lucide-react";
 
 interface Category {
   id: string;
@@ -15,10 +16,13 @@ interface Dish {
   id: string;
   slug: string;
   name: string;
+  description?: string | null;
   price: number;
   pricingModel?: "FIXED" | "PER_PIECE";
   imageUrl?: string | null;
   rating: number;
+  ingredients?: string[];
+  allergens?: string[];
   category?: {
     id: string;
     name: string;
@@ -35,7 +39,11 @@ interface MenuSectionClientProps {
 export function MenuSectionClient({ dishes, categories, locale }: MenuSectionClientProps) {
   const t = useTranslations("menu");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Debounce search query for better performance
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
   const handleWishlistToggle = (id: string) => {
     // TODO: Integrate with Supabase to update wishlist
@@ -49,10 +57,44 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
-  // Filter dishes by selected category
-  const filteredDishes = selectedCategoryId
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    setIsTransitioning(true);
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setIsTransitioning(true);
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
+
+  // Filter dishes by category and search query
+  let filteredDishes = selectedCategoryId
     ? dishes.filter((dish) => dish.category?.id === selectedCategoryId)
     : dishes;
+
+  // Apply search filter
+  if (debouncedSearchQuery.trim()) {
+    const query = debouncedSearchQuery.toLowerCase().trim();
+    filteredDishes = filteredDishes.filter((dish) => {
+      // Search in name
+      const nameMatch = dish.name.toLowerCase().includes(query);
+      
+      // Search in description
+      const descriptionMatch = dish.description?.toLowerCase().includes(query) || false;
+      
+      // Search in ingredients
+      const ingredientsMatch = dish.ingredients?.some((ingredient) =>
+        ingredient.toLowerCase().includes(query)
+      ) || false;
+      
+      // Search in category name
+      const categoryMatch = dish.category?.name.toLowerCase().includes(query) || false;
+
+      return nameMatch || descriptionMatch || ingredientsMatch || categoryMatch;
+    });
+  }
 
   return (
     <section id="menu" className="bg-background py-12 sm:py-16 lg:py-20">
@@ -68,6 +110,40 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
                 {t("itemsAvailable", { count: filteredDishes.length })}
               </p>
             </div>
+          </div>
+
+          {/* Search Bar */}
+          <div className="mb-6">
+            <div className="relative max-w-md">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-text-secondary" />
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                placeholder={t("searchPlaceholder")}
+                className="w-full pl-10 pr-10 py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground text-sm sm:text-base tracking-wide"
+                aria-label={t("searchPlaceholder")}
+              />
+              {searchQuery && (
+                <button
+                  onClick={clearSearch}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-text-secondary hover:text-foreground transition-colors"
+                  aria-label={t("clearSearch")}
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
+            </div>
+            {debouncedSearchQuery.trim() && (
+              <p className="mt-2 text-xs sm:text-sm text-text-secondary tracking-wide">
+                {t("searchResults", { 
+                  count: filteredDishes.length, 
+                  query: debouncedSearchQuery 
+                })}
+              </p>
+            )}
           </div>
 
           {/* Category Filter Buttons */}
@@ -102,10 +178,20 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
         {filteredDishes.length === 0 ? (
           <div className={`text-center py-12 sm:py-16 lg:py-20 transition-opacity duration-300 ${isTransitioning ? "opacity-50" : "opacity-100"}`}>
             <p className="text-text-secondary text-sm sm:text-base tracking-wide">
-              {selectedCategoryId
+              {debouncedSearchQuery.trim()
+                ? t("noSearchResults", { query: debouncedSearchQuery })
+                : selectedCategoryId
                 ? t("noDishesInCategory")
                 : "No dishes available yet. Check back soon!"}
             </p>
+            {debouncedSearchQuery.trim() && (
+              <button
+                onClick={clearSearch}
+                className="mt-4 px-4 py-2 border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all text-xs tracking-widest uppercase"
+              >
+                {t("clearSearch")}
+              </button>
+            )}
           </div>
         ) : (
           <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 transition-opacity duration-300 ${isTransitioning ? "opacity-50" : "opacity-100"}`}>
