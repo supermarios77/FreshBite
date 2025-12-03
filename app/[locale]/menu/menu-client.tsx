@@ -25,11 +25,6 @@ export function MenuClient({ dishes, locale }: MenuClientProps) {
     console.log("Toggle wishlist for item:", id);
   };
 
-  const handleOrderClick = (id: string) => {
-    // TODO: Navigate to order page or add to cart
-    console.log("Order item:", id);
-  };
-
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 lg:py-12">
@@ -73,7 +68,6 @@ export function MenuClient({ dishes, locale }: MenuClientProps) {
                 rating={dish.rating || 0}
                 isWishlisted={false}
                 onWishlistToggle={handleWishlistToggle}
-                onOrderClick={handleOrderClick}
               />
             ))}
           </div>
