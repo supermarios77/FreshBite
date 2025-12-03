@@ -59,14 +59,15 @@ export function Hero({
             </div>
           </div>
 
-          {/* Right Column - Image - simpler presentation */}
-          <div className="relative w-full aspect-square max-w-md mx-auto lg:max-w-none order-1 lg:order-2">
-            <div className="relative w-full h-full overflow-hidden bg-secondary border-2 border-border shadow-soft">
+          {/* Right Column - Image - circular presentation */}
+          <div className="relative w-full flex items-center justify-center max-w-md mx-auto lg:max-w-lg order-1 lg:order-2">
+            <div className="relative w-full">
               <Image
                 src={imageSrc || "/placeholder-dish.png"}
                 alt={displayImageAlt}
-                fill
-                className="object-cover"
+                width={500}
+                height={500}
+                className="w-full h-auto object-contain"
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 500px"
               />

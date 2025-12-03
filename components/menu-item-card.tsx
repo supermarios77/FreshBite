@@ -57,17 +57,20 @@ export function MenuItemCard({
       aria-label={`View details for ${name}`}
     >
       {/* Image Container */}
-      <div className="relative w-full aspect-square overflow-hidden">
+      <div className="relative w-full flex items-center justify-center p-4 sm:p-6">
         {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={imageAlt || name}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-          />
+          <div className="relative w-full max-w-xs mx-auto">
+            <Image
+              src={imageSrc}
+              alt={imageAlt || name}
+              width={400}
+              height={400}
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-110"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 400px"
+            />
+          </div>
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+          <div className="w-full max-w-xs mx-auto flex items-center justify-center">
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-accent/20 flex items-center justify-center">
                 <svg
@@ -92,7 +95,7 @@ export function MenuItemCard({
         <button
           onClick={handleWishlistClick}
           className={cn(
-            "absolute top-3 right-3 p-2 rounded-full bg-card/95 dark:bg-card/90 backdrop-blur-sm transition-all",
+            "absolute top-4 right-4 p-2 rounded-full bg-card/95 dark:bg-card/90 backdrop-blur-sm transition-all z-10",
             "hover:bg-card dark:hover:bg-card/95 focus:outline-none hover:scale-110",
             isWishlistActive && "bg-accent/20 dark:bg-accent/30"
           )}
@@ -109,7 +112,7 @@ export function MenuItemCard({
         </button>
 
         {/* Order 48h Label */}
-        <div className="absolute bottom-3 left-3">
+        <div className="absolute bottom-4 left-4">
           <span className="px-2 py-1 bg-card/95 dark:bg-card/90 backdrop-blur-sm rounded text-xs font-normal text-text-secondary border border-border/50">
             {t("order48h")}
           </span>

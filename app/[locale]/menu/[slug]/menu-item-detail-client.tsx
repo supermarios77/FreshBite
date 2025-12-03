@@ -83,13 +83,14 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl py-8 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column - Image */}
-          <div className="relative w-full aspect-square">
-            <div className="relative w-full h-full overflow-hidden bg-secondary border-2 border-foreground">
+          <div className="relative w-full flex items-center justify-center">
+            <div className="relative w-full max-w-lg">
               <Image
                 src={dish.imageUrl || "/placeholder-dish.png"}
                 alt={dish.name}
-                fill
-                className="object-cover"
+                width={600}
+                height={600}
+                className="w-full h-auto object-contain"
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
