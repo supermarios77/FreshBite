@@ -39,19 +39,20 @@ postgresql://postgres:[PASSWORD]@db.hswosgybsmkugpdgwwvl.supabase.co:5432/postgr
 
 **Converted pooler connection:**
 ```
-postgresql://postgres.hswosgybsmkugpdgwwvl:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&prepared_statements=false&sslmode=require
+postgresql://postgres.hswosgybsmkugpdgwwvl:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&sslmode=require
 ```
 
 **Changes:**
 - `postgres` → `postgres.hswosgybsmkugpdgwwvl` (add project ref to username)
 - `db.hswosgybsmkugpdgwwvl.supabase.co:5432` → `aws-0-[REGION].pooler.supabase.com:6543` (use pooler)
-- Add `?pgbouncer=true&connection_limit=1&prepared_statements=false&sslmode=require` parameters
+- Add `?pgbouncer=true&connection_limit=1&sslmode=require` parameters
 
 **Why these parameters?**
-- `pgbouncer=true`: Tells Prisma we're using pgBouncer
-- `connection_limit=1`: Limits connections per query
-- `prepared_statements=false`: **CRITICAL** - Disables prepared statements which pgBouncer doesn't support
+- `pgbouncer=true`: **CRITICAL** - Tells Prisma to disable prepared statements (required for pgBouncer transaction mode)
+- `connection_limit=1`: Limits connections per query (helps with serverless environments)
 - This fixes the "prepared statement already exists" error
+
+**Note:** The `pgbouncer=true` parameter is the correct way to disable prepared statements in Prisma. Do not use `prepared_statements=false` as it's not a valid parameter.
 
 **⚠️ Important:** Replace `[REGION]` with your actual region (e.g., `eu-central-1`, `us-east-1`, etc.)
 **Better:** Just get it from Supabase Dashboard - it's guaranteed to be correct!
