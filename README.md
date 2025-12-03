@@ -79,6 +79,59 @@ bun run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Production Deployment
+
+### Pre-Deployment Checklist
+
+See [PRODUCTION_CHECKLIST.md](./PRODUCTION_CHECKLIST.md) for a comprehensive production readiness checklist.
+
+### Key Production Features
+
+- ✅ **SEO Optimized** - Full metadata, sitemap, robots.txt, structured data
+- ✅ **Security Hardened** - Security headers, input validation, error sanitization
+- ✅ **Performance Optimized** - Image optimization, compression, code splitting
+- ✅ **Accessibility** - ARIA labels, keyboard navigation, semantic HTML
+- ✅ **Error Handling** - Comprehensive error boundaries and logging
+- ✅ **Multi-language** - Full i18n support with locale-specific SEO
+
+### Environment Variables for Production
+
+Ensure all environment variables are set in your deployment platform (Vercel):
+
+```bash
+# Required
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+DATABASE_URL=your_database_url
+NEXT_PUBLIC_APP_URL=https://yourdomain.com
+
+# Stripe (for payments)
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret
+
+# Optional - Pickup Address Configuration
+PICKUP_ADDRESS_STREET=Your Street Address
+PICKUP_ADDRESS_CITY=Brussels
+PICKUP_ADDRESS_POSTAL_CODE=1000
+PICKUP_ADDRESS_COUNTRY=Belgium
+PICKUP_ADDRESS_PHONE=+32 12 34 56 789
+PICKUP_HOURS=Monday - Friday: 9:00 - 18:00
+```
+
+### Deployment to Vercel
+
+1. Connect your GitHub repository to Vercel
+2. Configure all environment variables in Vercel dashboard
+3. Deploy - Vercel will automatically build and deploy
+
+The project is configured for optimal Vercel deployment with:
+- Automatic Prisma client generation
+- Serverless function optimization
+- Database connection pooling
+- Image optimization
+
 ## Project Structure
 
 ```
