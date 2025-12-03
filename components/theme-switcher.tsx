@@ -31,7 +31,13 @@ export function ThemeSwitcher() {
       variant="ghost"
       size="icon"
       onClick={handleToggle}
-      className="relative h-10 w-10 rounded-full overflow-visible border-2 border-border hover:border-foreground/30 transition-all duration-300 group"
+      className={`relative h-10 w-10 rounded-full overflow-visible border-2 transition-all duration-300 group ${
+        isAnimating
+          ? theme === "light"
+            ? "border-amber-400/50 scale-105"
+            : "border-blue-400/50 scale-105"
+          : "border-border hover:border-foreground/30"
+      }`}
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       {/* Elegant ripple effect */}
@@ -78,45 +84,32 @@ export function ThemeSwitcher() {
         )}
       </div>
 
-      {/* Icon container with smooth 3D flip effect */}
-      <div
-        className={`relative w-full h-full flex items-center justify-center transition-transform duration-700 ${
-          isAnimating ? "rotate-y-180" : "rotate-y-0"
-        }`}
-        style={{
-          transformStyle: "preserve-3d",
-        }}
-      >
-        {/* Sun icon - elegant fade and scale */}
+      {/* Icon container with elegant smooth transitions */}
+      <div className="relative w-full h-full flex items-center justify-center">
+        {/* Sun icon - elegant fade, scale, and rotation */}
         <Sun
-          className={`absolute h-5 w-5 transition-all duration-700 ${
+          className={`absolute h-5 w-5 transition-all duration-700 ease-in-out ${
             theme === "light"
               ? "rotate-0 scale-100 opacity-100"
-              : "rotate-90 scale-0 opacity-0"
+              : "rotate-180 scale-0 opacity-0"
           } ${
             isAnimating && theme === "light"
-              ? "drop-shadow-[0_0_12px_rgba(251,191,36,0.9)]"
+              ? "drop-shadow-[0_0_12px_rgba(251,191,36,0.9)] brightness-110"
               : ""
           }`}
-          style={{
-            transform: theme === "light" ? "rotate(0deg)" : "rotate(90deg)",
-          }}
         />
         
-        {/* Moon icon - elegant fade and scale */}
+        {/* Moon icon - elegant fade, scale, and rotation */}
         <Moon
-          className={`absolute h-5 w-5 transition-all duration-700 ${
+          className={`absolute h-5 w-5 transition-all duration-700 ease-in-out ${
             theme === "dark"
               ? "rotate-0 scale-100 opacity-100"
-              : "-rotate-90 scale-0 opacity-0"
+              : "-rotate-180 scale-0 opacity-0"
           } ${
             isAnimating && theme === "dark"
-              ? "drop-shadow-[0_0_12px_rgba(96,165,250,0.9)]"
+              ? "drop-shadow-[0_0_12px_rgba(96,165,250,0.9)] brightness-110"
               : ""
           }`}
-          style={{
-            transform: theme === "dark" ? "rotate(0deg)" : "rotate(-90deg)",
-          }}
         />
       </div>
 
