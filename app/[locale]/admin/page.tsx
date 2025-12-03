@@ -8,6 +8,7 @@ export default async function AdminPage({
 }) {
   const { locale } = await params;
   await requireAdmin(locale);
-  redirect({ href: `/${locale}/admin/dishes`, locale });
+  // Use relative path since we're already in /admin route
+  redirect({ href: "dishes", locale });
 }
 
