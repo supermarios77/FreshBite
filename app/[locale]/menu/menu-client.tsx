@@ -20,11 +20,6 @@ interface MenuClientProps {
 export function MenuClient({ dishes, locale }: MenuClientProps) {
   const t = useTranslations("menu");
 
-  const handleWishlistToggle = (id: string) => {
-    // TODO: Integrate with Supabase to update wishlist
-    // Wishlist toggle - handled by state management
-  };
-
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 lg:py-12">
@@ -66,8 +61,6 @@ export function MenuClient({ dishes, locale }: MenuClientProps) {
                 imageSrc={dish.imageUrl || "/placeholder-dish.png"}
                 imageAlt={dish.name}
                 rating={dish.rating || 0}
-                isWishlisted={false}
-                onWishlistToggle={handleWishlistToggle}
               />
             ))}
           </div>
