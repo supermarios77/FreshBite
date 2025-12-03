@@ -35,6 +35,11 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
 
   const handleAddToCart = async () => {
     setIsLoading(true);
+    
+    // Optimistic update: immediately trigger cart badge update
+    // The actual API call will sync the real state
+    window.dispatchEvent(new CustomEvent("cartUpdated"));
+    
     try {
       const response = await fetch("/api/cart", {
         method: "POST",
@@ -55,14 +60,18 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
         addToast(t("addedToCart") || "Added to cart!", "success");
         // Reset quantity
         setQuantity(1);
-        // Trigger cart badge update
+        // Trigger cart badge update again to ensure sync
         window.dispatchEvent(new CustomEvent("cartUpdated"));
       } else {
         const error = await response.json();
         addToast(error.error || t("failedToAdd") || "Failed to add to cart", "error");
+        // Re-trigger update to revert optimistic change
+        window.dispatchEvent(new CustomEvent("cartUpdated"));
       }
     } catch (error) {
       addToast(t("failedToAdd") || "Failed to add to cart. Please try again.", "error");
+      // Re-trigger update to revert optimistic change
+      window.dispatchEvent(new CustomEvent("cartUpdated"));
     } finally {
       setIsLoading(false);
     }
