@@ -23,7 +23,7 @@ export default async function AdminDishesPage({
         </div>
         <Link
           href="/admin/dishes/new"
-          className="px-6 py-3 rounded-lg bg-accent text-foreground font-medium hover:bg-accent/90 transition-colors shadow-soft"
+          className="px-6 py-3 rounded-lg bg-foreground text-background font-medium hover:bg-foreground/90 transition-colors shadow-soft"
         >
           {t("addNew")}
         </Link>
