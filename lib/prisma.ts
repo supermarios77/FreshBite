@@ -12,10 +12,14 @@ if (databaseUrl && databaseUrl.includes("supabase.co")) {
   // Check if it's already a pooler URL
   const isPoolerUrl = databaseUrl.includes("pooler.supabase.com") || databaseUrl.includes(":6543");
   
-  if (!isPoolerUrl && process.env.NODE_ENV === "production") {
+  // Use pooler URL in production (required for serverless) or if USE_POOLER env var is set
+  const shouldUsePooler = process.env.NODE_ENV === "production" || process.env.USE_POOLER === "true";
+  
+  if (!isPoolerUrl && shouldUsePooler) {
     // For serverless (Vercel), we MUST use the connection pooler
     // Direct connections (port 5432) get closed between function invocations
     // Pooler connections (port 6543) are designed for serverless
+    // Also useful in development if direct connection is blocked
     
     // Try to convert direct connection to pooler URL
     // Direct: postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
@@ -37,6 +41,9 @@ if (databaseUrl && databaseUrl.includes("supabase.co")) {
     } else {
       console.warn("[Prisma] Could not auto-convert to pooler URL. Please use pooler URL from Supabase Dashboard.");
     }
+  } else if (!isPoolerUrl && process.env.NODE_ENV === "development") {
+    // In development, log a warning if direct connection might fail
+    console.log("[Prisma] Using direct connection (port 5432). If connection fails, set USE_POOLER=true to use pooler.");
   }
   
   // Ensure pooler URLs have required parameters (required for pgBouncer)
