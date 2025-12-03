@@ -37,16 +37,25 @@ async function updatePricingModels() {
     }
 
     // Update all other dishes to FIXED if they don't have pricingModel set
-    const updated = await prisma.dish.updateMany({
-      where: {
-        pricingModel: null,
-      },
-      data: {
-        pricingModel: "FIXED",
-      },
+    // Note: Prisma doesn't allow null in enum where clauses, so we need to find dishes differently
+    const allDishes = await prisma.dish.findMany({
+      select: { id: true, pricingModel: true },
     });
-
-    console.log(`✅ Updated ${updated.count} dishes to FIXED (default)`);
+    
+    const dishesToUpdate = allDishes.filter(d => d.pricingModel === null);
+    
+    if (dishesToUpdate.length > 0) {
+      // Update each dish individually since we can't use null in updateMany for enums
+      for (const dish of dishesToUpdate) {
+        await prisma.dish.update({
+          where: { id: dish.id },
+          data: { pricingModel: "FIXED" },
+        });
+      }
+      console.log(`✅ Updated ${dishesToUpdate.length} dishes to FIXED (default)`);
+    } else {
+      console.log("ℹ️  No dishes with null pricingModel found");
+    }
     console.log("\n🎉 Pricing models updated successfully!");
   } catch (error) {
     console.error("❌ Error updating pricing models:", error);

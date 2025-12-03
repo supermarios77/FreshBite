@@ -39,8 +39,11 @@ export function MenuItemCard({
   
   // Debug: Log pricingModel to console (remove in production)
   if (process.env.NODE_ENV === "development") {
-    console.log(`[MenuItemCard] ${name}: pricingModel =`, pricingModel, typeof pricingModel);
+    console.log(`[MenuItemCard] ${name}: pricingModel =`, pricingModel, `(type: ${typeof pricingModel})`);
   }
+  
+  // Ensure pricingModel is a string for comparison
+  const pricingModelStr = String(pricingModel || "FIXED").toUpperCase();
 
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -186,7 +189,7 @@ export function MenuItemCard({
               €{price.toFixed(2)}
             </span>
             <div className="text-xs sm:text-sm font-normal text-text-secondary mt-0.5">
-              {pricingModel === "PER_PIECE" ? t("perPiece") : t("perPortion")}
+              {pricingModelStr === "PER_PIECE" ? t("perPiece") : t("perPortion")}
             </div>
           </div>
         </div>
