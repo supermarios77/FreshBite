@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { MenuItemCard } from "@/components/menu-item-card";
 import { useTranslations } from "next-intl";
 import { useDebounce } from "@/lib/hooks/use-debounce";
-import { Search, X, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Search, X, ArrowUpDown } from "lucide-react";
 
 interface Category {
   id: string;
@@ -39,10 +39,11 @@ interface MenuSectionClientProps {
   locale: string;
 }
 
-export function MenuSectionClient({ dishes, categories, locale }: MenuSectionClientProps) {
+export function MenuSectionClient({ dishes, categories }: MenuSectionClientProps) {
   const t = useTranslations("menu");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState<SortOption>("newest");
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Debounce search query for better performance
