@@ -116,33 +116,100 @@ export async function saveCart(items: CartItem[]): Promise<void> {
 }
 
 export async function addToCart(item: Omit<CartItem, "id">): Promise<CartItem[]> {
-  const currentCart = await getCart();
+  const supabase = await createClient();
+  const sessionId = await getOrCreateSessionId();
+  
+  // Use a retry mechanism to handle race conditions
+  let retries = 3;
+  let lastError: Error | null = null;
 
-  // Check if item already exists (same dishId and size)
-  const existingItemIndex = currentCart.findIndex(
-    (cartItem) => cartItem.dishId === item.dishId && cartItem.size === item.size
-  );
+  while (retries > 0) {
+    try {
+      // Fetch current cart fresh from database to avoid race conditions
+      const { data: cartData, error: fetchError } = await supabase
+        .from("cart_sessions")
+        .select("items")
+        .eq("session_id", sessionId)
+        .single();
 
-  let updatedCart: CartItem[];
+      if (fetchError && fetchError.code !== "PGRST116") {
+        // PGRST116 = no rows returned, which is fine
+        throw new Error(`Failed to fetch cart: ${fetchError.message}`);
+      }
 
-  if (existingItemIndex >= 0) {
-    // Update quantity of existing item
-    updatedCart = [...currentCart];
-    updatedCart[existingItemIndex] = {
-      ...updatedCart[existingItemIndex],
-      quantity: updatedCart[existingItemIndex].quantity + item.quantity,
-    };
-  } else {
-    // Add new item with unique ID
-    const newItem: CartItem = {
-      ...item,
-      id: `${item.dishId}-${item.size || "default"}-${Date.now()}`,
-    };
-    updatedCart = [...currentCart, newItem];
+      const currentCart: CartItem[] = (cartData?.items as CartItem[]) || [];
+
+      // Check if item already exists (same dishId and size)
+      const existingItemIndex = currentCart.findIndex(
+        (cartItem) => cartItem.dishId === item.dishId && cartItem.size === item.size
+      );
+
+      let updatedCart: CartItem[];
+
+      if (existingItemIndex >= 0) {
+        // Update quantity of existing item
+        updatedCart = [...currentCart];
+        updatedCart[existingItemIndex] = {
+          ...updatedCart[existingItemIndex],
+          quantity: updatedCart[existingItemIndex].quantity + item.quantity,
+        };
+      } else {
+        // Add new item with unique ID
+        const newItem: CartItem = {
+          ...item,
+          id: `${item.dishId}-${item.size || "default"}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+        };
+        updatedCart = [...currentCart, newItem];
+      }
+
+      // Save cart atomically
+      const now = new Date();
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      // Check if cart exists to determine if we need to create or update
+      const { data: existingCart, error: checkError } = await supabase
+        .from("cart_sessions")
+        .select("id")
+        .eq("session_id", sessionId)
+        .single();
+
+      const cartDataToSave: any = {
+        session_id: sessionId,
+        items: updatedCart,
+        expires_at: expiresAt.toISOString(),
+        updated_at: now.toISOString(),
+      };
+
+      if (!existingCart || checkError?.code === "PGRST116") {
+        cartDataToSave.id = `cart_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+        cartDataToSave.created_at = now.toISOString();
+      }
+
+      // Upsert with conflict handling
+      const { error: saveError } = await supabase
+        .from("cart_sessions")
+        .upsert(cartDataToSave, {
+          onConflict: "session_id",
+        });
+
+      if (saveError) {
+        throw new Error(`Failed to save cart: ${saveError.message}`);
+      }
+
+      return updatedCart;
+    } catch (error) {
+      lastError = error as Error;
+      retries--;
+      if (retries > 0) {
+        // Wait a bit before retrying (exponential backoff)
+        await new Promise((resolve) => setTimeout(resolve, 100 * (4 - retries)));
+      }
+    }
   }
 
-  await saveCart(updatedCart);
-  return updatedCart;
+  // If all retries failed, throw the last error
+  throw lastError || new Error("Failed to add item to cart after retries");
 }
 
 export async function updateCartItemQuantity(
