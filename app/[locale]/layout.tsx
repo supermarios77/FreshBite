@@ -51,7 +51,7 @@ export default async function LocaleLayout({
               <NavigationProgress />
               <div className="min-h-screen flex flex-col">
                 <Navbar />
-                <main className="flex-1" id="main-content">{children}</main>
+                <main className="flex-1 animate-in fade-in duration-300" id="main-content">{children}</main>
               </div>
             </NextIntlClientProvider>
           </ToastProvider>
