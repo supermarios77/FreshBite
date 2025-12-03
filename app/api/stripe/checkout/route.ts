@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
           phone: customerInfo.phone,
         });
         finalUserId = accountResult.userId;
-        console.log(`Account created for ${customerInfo.email}, userId: ${finalUserId}`);
+        logger.log(`Account created for ${customerInfo.email}, userId: ${finalUserId}`);
       } catch (error: any) {
         logger.error("Failed to create account:", error);
         // Continue with order creation even if account creation fails
