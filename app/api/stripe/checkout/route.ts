@@ -166,7 +166,7 @@ export async function POST(req: NextRequest) {
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: items.map((item) => {
-          const dish = dishes.find((d) => d.id === item.dishId);
+          const dish = dishesWithDetails.find((d) => d.id === item.dishId);
           const name =
             locale === "en"
               ? dish?.nameEn
