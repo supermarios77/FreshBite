@@ -38,7 +38,12 @@
     "sortPriceDesc": "Prix: Décroissant",
     "sortRating": "Mieux noté",
     "sortNameAsc": "Nom: A-Z",
-    "sortNameDesc": "Nom: Z-A"
+    "sortNameDesc": "Nom: Z-A",
+    "addToCart": "Ajouter au Panier",
+    "add": "Ajouter",
+    "adding": "Ajout...",
+    "addedToCart": "Ajouté au panier!",
+    "failedToAdd": "Échec de l'ajout au panier"
   },
   "checkout": {
     "title": "Paiement",

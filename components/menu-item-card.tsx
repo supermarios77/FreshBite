@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Heart, ArrowRight } from "lucide-react";
+import { Heart, ArrowRight, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 interface MenuItemCardProps {
   id: string;
@@ -35,21 +36,59 @@ export function MenuItemCard({
   className,
 }: MenuItemCardProps) {
   const t = useTranslations("menu");
+  const { addToast } = useToast();
   const [isWishlistActive, setIsWishlistActive] = useState(isWishlisted);
-  
-  // Debug: Log pricingModel to console (remove in production)
-  if (process.env.NODE_ENV === "development") {
-    console.log(`[MenuItemCard] ${name}: pricingModel =`, pricingModel, `(type: ${typeof pricingModel})`);
-  }
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   
   // Ensure pricingModel is a string for comparison
   const pricingModelStr = String(pricingModel || "FIXED").toUpperCase();
 
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     const newState = !isWishlistActive;
     setIsWishlistActive(newState);
     onWishlistToggle?.(id);
+  };
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    setIsAddingToCart(true);
+    
+    // Optimistic update: immediately trigger cart badge update
+    window.dispatchEvent(new CustomEvent("cartUpdated"));
+    
+    try {
+      const response = await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          dishId: id,
+          name,
+          price,
+          quantity: 1,
+          imageSrc,
+        }),
+      });
+
+      if (response.ok) {
+        addToast(t("addedToCart") || "Added to cart!", "success");
+        window.dispatchEvent(new CustomEvent("cartUpdated"));
+      } else {
+        const error = await response.json();
+        addToast(error.error || t("failedToAdd") || "Failed to add to cart", "error");
+        window.dispatchEvent(new CustomEvent("cartUpdated"));
+      }
+    } catch (error) {
+      addToast(t("failedToAdd") || "Failed to add to cart. Please try again.", "error");
+      window.dispatchEvent(new CustomEvent("cartUpdated"));
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   // Calculate star display (0-5 stars)
@@ -194,10 +233,43 @@ export function MenuItemCard({
           </div>
         </div>
 
-        {/* View Details Link */}
-        <div className="flex items-center gap-2 pt-2 text-xs sm:text-sm text-text-secondary group-hover:text-accent transition-colors">
-          <span className="tracking-wide uppercase">{t("viewDetails")}</span>
-          <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
+        {/* Actions Row */}
+        <div className="flex items-center justify-between pt-2 gap-3">
+          {/* View Details Link */}
+          <Link
+            href={`/menu/${slug}`}
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-2 text-xs sm:text-sm text-text-secondary group-hover:text-accent transition-colors"
+          >
+            <span className="tracking-wide uppercase">{t("viewDetails")}</span>
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+
+          {/* Quick Add to Cart Button */}
+          <button
+            onClick={handleAddToCart}
+            disabled={isAddingToCart}
+            className={cn(
+              "flex items-center gap-2 px-3 sm:px-4 py-2 border-2 border-foreground bg-foreground text-background",
+              "hover:bg-foreground/90 transition-all duration-200 text-xs tracking-widest uppercase",
+              "disabled:opacity-50 disabled:cursor-not-allowed",
+              "focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2"
+            )}
+            aria-label={t("addToCart") || "Add to cart"}
+          >
+            {isAddingToCart ? (
+              <span className="flex items-center gap-2">
+                <span className="animate-spin">⏳</span>
+                <span className="hidden sm:inline">{t("adding") || "Adding..."}</span>
+              </span>
+            ) : (
+              <>
+                <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">{t("addToCart") || "Add"}</span>
+                <span className="sm:hidden">{t("add") || "Add"}</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
     </Link>
