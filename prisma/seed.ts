@@ -33,6 +33,7 @@ async function main() {
         descriptionNl: "Knapperige driehoekige pasteitjes gevuld met gekruide aardappelen en erwten, geserveerd met muntchutney.",
         descriptionFr: "Pâtisseries triangulaires croustillantes farcies de pommes de terre épicées et de pois, servies avec chutney à la menthe.",
         price: 8.50,
+        pricingModel: "FIXED",
         rating: 4.7,
         quantity: "6 pieces",
         weight: "300g",
@@ -74,10 +75,11 @@ async function main() {
         descriptionEn: "Crispy golden spring rolls filled with fresh vegetables, served with sweet and sour dipping sauce.",
         descriptionNl: "Knapperige gouden loempia's gevuld met verse groenten, geserveerd met zoetzure dipsaus.",
         descriptionFr: "Rouleaux de printemps dorés et croustillants farcis de légumes frais, servis avec une sauce aigre-douce.",
-        price: 7.50,
+        price: 1.50,
+        pricingModel: "PER_PIECE",
         rating: 4.5,
-        quantity: "8 pieces",
-        weight: "400g",
+        quantity: "1 piece",
+        weight: "50g",
         allergens: ["Gluten", "Wheat", "Soy"],
         ingredients: [
           "Spring roll wrappers",
@@ -100,8 +102,8 @@ async function main() {
   }
 
   console.log("\n🎉 Database seeded successfully!");
-  console.log(`   - ${samosas.nameEn} (€${samosas.price})`);
-  console.log(`   - ${springRolls.nameEn} (€${springRolls.price})`);
+  console.log(`   - ${samosas.nameEn} (€${samosas.price} - ${samosas.pricingModel})`);
+  console.log(`   - ${springRolls.nameEn} (€${springRolls.price} - ${springRolls.pricingModel})`);
 }
 
 main()
