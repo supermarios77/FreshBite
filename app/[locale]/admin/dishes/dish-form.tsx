@@ -198,10 +198,11 @@ export function DishForm({ dish, categories }: DishFormProps) {
       }
 
       // Use router.push with proper locale handling
+      addToast(dish ? "Dish updated successfully" : "Dish created successfully", "success");
       router.push("/admin/dishes");
     } catch (error: any) {
       console.error("Error saving dish:", error);
-      alert(error.message || "Failed to save dish. Please try again.");
+      addToast(error.message || "Failed to save dish. Please try again.", "error");
       setIsSubmitting(false);
     }
   };
