@@ -26,7 +26,7 @@ export function MenuItemCard({
   slug,
   name,
   price,
-  pricingModel,
+  pricingModel = "FIXED",
   imageSrc,
   imageAlt,
   rating = 0,
@@ -36,6 +36,11 @@ export function MenuItemCard({
 }: MenuItemCardProps) {
   const t = useTranslations("menu");
   const [isWishlistActive, setIsWishlistActive] = useState(isWishlisted);
+  
+  // Debug: Log pricingModel to console (remove in production)
+  if (process.env.NODE_ENV === "development") {
+    console.log(`[MenuItemCard] ${name}: pricingModel =`, pricingModel, typeof pricingModel);
+  }
 
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.stopPropagation();
