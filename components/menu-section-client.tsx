@@ -138,7 +138,7 @@ export function MenuSectionClient({ dishes, categories }: MenuSectionClientProps
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header Section */}
         <div className="mb-8 sm:mb-10 lg:mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
             <div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-normal text-foreground mb-2 tracking-widest uppercase">
                 {t("title")}
@@ -149,12 +149,12 @@ export function MenuSectionClient({ dishes, categories }: MenuSectionClientProps
             </div>
           </div>
 
-          {/* Search, Sort, and Filters - All in one line on desktop */}
-          <div className="space-y-4 lg:space-y-0">
-            {/* Mobile: Stacked layout */}
-            <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6">
+          {/* Controls Section - Clean and organized */}
+          <div className="space-y-6">
+            {/* Search and Sort Row - One line on desktop */}
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               {/* Search Bar */}
-              <div className="flex-1 lg:flex-initial lg:min-w-[280px] lg:max-w-md">
+              <div className="flex-1 w-full sm:max-w-md">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Search className="h-5 w-5 text-text-secondary" />
@@ -164,7 +164,7 @@ export function MenuSectionClient({ dishes, categories }: MenuSectionClientProps
                     value={searchQuery}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     placeholder={t("searchPlaceholder")}
-                    className="w-full pl-10 pr-10 py-2.5 lg:py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground text-sm sm:text-base tracking-wide"
+                    className="w-full pl-10 pr-10 py-3 border-2 border-foreground bg-background text-foreground placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-foreground text-sm sm:text-base tracking-wide"
                     aria-label={t("searchPlaceholder")}
                   />
                   {searchQuery && (
@@ -177,19 +177,28 @@ export function MenuSectionClient({ dishes, categories }: MenuSectionClientProps
                     </button>
                   )}
                 </div>
+                {/* Search Results Message */}
+                {debouncedSearchQuery.trim() && (
+                  <p className="mt-2 text-xs text-text-secondary tracking-wide">
+                    {t("searchResults", { 
+                      count: filteredAndSortedDishes.length, 
+                      query: debouncedSearchQuery 
+                    })}
+                  </p>
+                )}
               </div>
 
               {/* Sort Dropdown */}
-              <div className="flex items-center gap-2 lg:shrink-0">
-                <label htmlFor="sort-select" className="text-xs sm:text-sm text-text-secondary tracking-wide uppercase whitespace-nowrap">
-                  {t("sortBy")}:
+              <div className="flex items-center gap-3 sm:shrink-0">
+                <label htmlFor="sort-select" className="text-xs sm:text-sm text-text-secondary tracking-wide uppercase whitespace-nowrap hidden sm:block">
+                  {t("sortBy")}
                 </label>
                 <div className="relative">
                   <select
                     id="sort-select"
                     value={sortOption}
                     onChange={(e) => handleSortChange(e.target.value as SortOption)}
-                    className="appearance-none pl-3 pr-8 py-2.5 lg:py-3 border-2 border-foreground bg-background text-foreground text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-foreground cursor-pointer min-w-[160px]"
+                    className="appearance-none pl-4 pr-10 py-3 border-2 border-foreground bg-background text-foreground text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-foreground cursor-pointer min-w-[180px] sm:min-w-[200px]"
                     aria-label={t("sortBy")}
                   >
                     <option value="newest">{t("sortNewest")}</option>
@@ -199,48 +208,43 @@ export function MenuSectionClient({ dishes, categories }: MenuSectionClientProps
                     <option value="name-asc">{t("sortNameAsc")}</option>
                     <option value="name-desc">{t("sortNameDesc")}</option>
                   </select>
-                  <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <ArrowUpDown className="h-4 w-4 text-text-secondary" />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Search Results Message */}
-            {debouncedSearchQuery.trim() && (
-              <p className="text-xs sm:text-sm text-text-secondary tracking-wide lg:mt-2">
-                {t("searchResults", { 
-                  count: filteredAndSortedDishes.length, 
-                  query: debouncedSearchQuery 
-                })}
-              </p>
-            )}
-
-            {/* Category Filter Buttons */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <button
-              onClick={() => handleCategoryChange(null)}
-              className={`px-3 sm:px-4 py-2 border-2 font-normal text-xs tracking-widest uppercase transition-all duration-200 ${
-                selectedCategoryId === null
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
-              }`}
-            >
-              {t("allCategories")}
-            </button>
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => handleCategoryChange(category.id)}
-                className={`px-3 sm:px-4 py-2 border-2 font-normal text-xs tracking-widest uppercase transition-all duration-200 ${
-                  selectedCategoryId === category.id
-                    ? "bg-foreground text-background border-foreground"
-                    : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
+            {/* Category Filter Buttons - Clean row */}
+            <div className="border-t border-border pt-6">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span className="text-xs sm:text-sm text-text-secondary tracking-wide uppercase mr-1 hidden sm:inline">
+                  {t("filter")}:
+                </span>
+                <button
+                  onClick={() => handleCategoryChange(null)}
+                  className={`px-4 py-2.5 border-2 font-normal text-xs tracking-widest uppercase transition-all duration-200 ${
+                    selectedCategoryId === null
+                      ? "bg-foreground text-background border-foreground"
+                      : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+                  }`}
+                >
+                  {t("allCategories")}
+                </button>
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryChange(category.id)}
+                    className={`px-4 py-2.5 border-2 font-normal text-xs tracking-widest uppercase transition-all duration-200 ${
+                      selectedCategoryId === category.id
+                        ? "bg-foreground text-background border-foreground"
+                        : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
