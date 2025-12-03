@@ -14,17 +14,17 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen bg-background">
       {session && (
-        <div className="border-b border-border">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-foreground">Admin Panel</h1>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-text-secondary">{session.user.email}</span>
+        <div className="border-b border-border bg-card/50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 max-w-7xl">
+            <h1 className="text-xl sm:text-2xl font-normal text-foreground tracking-widest uppercase">Admin Panel</h1>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <span className="text-xs sm:text-sm text-text-secondary tracking-wide">{session.user.email}</span>
               <AdminLogoutButton />
             </div>
           </div>
         </div>
       )}
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 max-w-7xl">
         {children}
       </main>
     </div>

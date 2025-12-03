@@ -15,15 +15,15 @@ export default async function AdminDishesPage({
   const dishes = await getDishes({ isActive: undefined }); // Get all dishes
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-foreground">{t("title")}</h2>
-          <p className="text-text-secondary mt-1">{t("subtitle")}</p>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-normal text-foreground tracking-widest uppercase">{t("title")}</h2>
+          <p className="text-xs sm:text-sm text-text-secondary mt-1 sm:mt-2 tracking-wide">{t("subtitle")}</p>
         </div>
         <Link
           href="/admin/dishes/new"
-          className="px-6 py-3 rounded-lg bg-foreground text-background font-medium hover:bg-foreground/90 transition-colors shadow-soft"
+          className="px-4 sm:px-6 py-2 sm:py-3 border-2 border-foreground bg-foreground text-background font-normal text-xs tracking-widest uppercase hover:bg-foreground/90 transition-colors shadow-soft inline-block text-center"
         >
           {t("addNew")}
         </Link>
