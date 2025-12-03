@@ -50,13 +50,13 @@ export async function POST(req: NextRequest) {
 
       // Validate that all dishIds exist in the database
       const dishIds = items.map((item) => item.dishId);
-      const dishes = await prisma.dish.findMany({
+      const dishesForValidation = await prisma.dish.findMany({
         where: { id: { in: dishIds } },
         select: { id: true, isActive: true },
       });
 
       // Check if all dishes exist
-      const foundDishIds = new Set(dishes.map((d) => d.id));
+      const foundDishIds = new Set(dishesForValidation.map((d) => d.id));
       const missingDishIds = dishIds.filter((id) => !foundDishIds.has(id));
       
       if (missingDishIds.length > 0) {
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Check if any dishes are inactive
-      const inactiveDishes = dishes.filter((d) => !d.isActive);
+      const inactiveDishes = dishesForValidation.filter((d) => !d.isActive);
       if (inactiveDishes.length > 0) {
         logger.error(`Inactive dishes in cart: ${inactiveDishes.map((d) => d.id).join(", ")}`);
         throw new ValidationError(
