@@ -21,6 +21,14 @@ export function smoothScrollToAnchor(href: string) {
 }
 
 /**
+ * Check if we're on the home page (root or locale root)
+ */
+function isHomePage(pathname: string): boolean {
+  // Home page is either "/" or "/{locale}" or "/{locale}/"
+  return pathname === "/" || /^\/[a-z]{2}\/?$/.test(pathname);
+}
+
+/**
  * Hook to handle smooth scrolling on mount if URL has hash
  */
 export function useSmoothScrollOnMount() {

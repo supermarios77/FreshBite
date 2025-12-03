@@ -55,11 +55,22 @@ export function Hero({
                     e.preventDefault();
                     if (ctaHref.startsWith("/")) {
                       const [path, hash] = ctaHref.split("#");
-                      if (typeof window !== "undefined" && window.location.pathname !== path) {
-                        window.location.href = ctaHref;
-                        setTimeout(() => smoothScrollToAnchor(ctaHref), 100);
-                      } else {
-                        smoothScrollToAnchor(ctaHref);
+                      if (typeof window !== "undefined") {
+                        const currentPath = window.location.pathname;
+                        
+                        // Check if we're on home page (root or locale root)
+                        const isHome = currentPath === "/" || /^\/[a-z]{2}\/?$/.test(currentPath);
+                        
+                        // If path is "/" and we're on home page, just scroll
+                        // Otherwise, only navigate if we're on a different page
+                        if (path === "/" && isHome) {
+                          smoothScrollToAnchor(ctaHref);
+                        } else if (currentPath !== path && !isHome) {
+                          window.location.href = ctaHref;
+                          setTimeout(() => smoothScrollToAnchor(ctaHref), 100);
+                        } else {
+                          smoothScrollToAnchor(ctaHref);
+                        }
                       }
                     } else {
                       smoothScrollToAnchor(ctaHref);
