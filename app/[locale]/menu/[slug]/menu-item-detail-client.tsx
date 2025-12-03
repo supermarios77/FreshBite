@@ -84,7 +84,7 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column - Image */}
           <div className="relative w-full aspect-square">
-            <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-2 border-foreground shadow-2xl shadow-amber-200/30 dark:shadow-amber-900/20">
+            <div className="relative w-full h-full overflow-hidden bg-secondary border-2 border-foreground">
               <Image
                 src={dish.imageUrl || "/placeholder-dish.png"}
                 alt={dish.name}
@@ -93,9 +93,6 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              {/* Warm appetizing overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-400/10 via-transparent to-orange-400/10" />
             </div>
           </div>
 
