@@ -29,9 +29,9 @@ if (databaseUrl && databaseUrl.includes("supabase.co")) {
       const region = process.env.SUPABASE_REGION || "eu-central-1";
       
       // Convert to pooler URL
-      // Use ?pgbouncer=true&connection_limit=1 to disable prepared statements
+      // Use ?pgbouncer=true&connection_limit=1&prepared_statements=false to disable prepared statements
       // This is required for pgBouncer in transaction mode
-      finalDatabaseUrl = `postgresql://${user}.${projectRef}:${password}@aws-0-${region}.pooler.supabase.com:6543/${database}?pgbouncer=true&connection_limit=1&sslmode=require`;
+      finalDatabaseUrl = `postgresql://${user}.${projectRef}:${password}@aws-0-${region}.pooler.supabase.com:6543/${database}?pgbouncer=true&connection_limit=1&prepared_statements=false&sslmode=require`;
       console.log(`[Prisma] Converted direct connection to pooler URL (region: ${region})`);
       console.log(`[Prisma] IMPORTANT: If this fails, get the exact pooler URL from Supabase Dashboard → Settings → Database → Connection Pooling`);
     } else {
@@ -39,12 +39,26 @@ if (databaseUrl && databaseUrl.includes("supabase.co")) {
     }
   }
   
-  // Ensure pooler URLs have connection_limit=1 (required for pgBouncer)
+  // Ensure pooler URLs have required parameters (required for pgBouncer)
   if (finalDatabaseUrl && (finalDatabaseUrl.includes("pgbouncer=true") || finalDatabaseUrl.includes("pooler.supabase.com"))) {
-    if (!finalDatabaseUrl.includes("connection_limit=")) {
-      const separator = finalDatabaseUrl.includes("?") ? "&" : "?";
-      finalDatabaseUrl = `${finalDatabaseUrl}${separator}connection_limit=1`;
-      console.log("[Prisma] Added connection_limit=1 to pooler URL (required for pgBouncer)");
+    const separator = finalDatabaseUrl.includes("?") ? "&" : "?";
+    let needsUpdate = false;
+    let updatedUrl = finalDatabaseUrl;
+    
+    if (!updatedUrl.includes("connection_limit=")) {
+      updatedUrl = `${updatedUrl}${separator}connection_limit=1`;
+      needsUpdate = true;
+    }
+    
+    if (!updatedUrl.includes("prepared_statements=")) {
+      const newSeparator = updatedUrl.includes("?") ? "&" : "?";
+      updatedUrl = `${updatedUrl}${newSeparator}prepared_statements=false`;
+      needsUpdate = true;
+    }
+    
+    if (needsUpdate) {
+      finalDatabaseUrl = updatedUrl;
+      console.log("[Prisma] Added required parameters to pooler URL (connection_limit=1, prepared_statements=false)");
     }
   }
   
