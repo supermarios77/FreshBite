@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { MenuItemCard } from "@/components/menu-item-card";
 import { useTranslations } from "next-intl";
-import { ChevronDown, X } from "lucide-react";
 
 interface Category {
   id: string;
@@ -34,7 +33,6 @@ interface MenuSectionClientProps {
 export function MenuSectionClient({ dishes, categories, locale }: MenuSectionClientProps) {
   const t = useTranslations("menu");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const handleWishlistToggle = (id: string) => {
     // TODO: Integrate with Supabase to update wishlist
@@ -51,25 +49,24 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
     ? dishes.filter((dish) => dish.category?.id === selectedCategoryId)
     : dishes;
 
-  const selectedCategory = categories.find((cat) => cat.id === selectedCategoryId);
-
   return (
     <section id="menu" className="bg-background py-16">
       <div className="container mx-auto px-8 max-w-7xl">
         {/* Header Section */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 lg:mb-12">
-          <div>
-            <h2 className="text-xl font-normal text-foreground mb-2 tracking-widest uppercase">
-              {t("title")}
-            </h2>
-            <p className="text-xs text-text-secondary tracking-wide">
-              {t("itemsAvailable", { count: filteredDishes.length })}
-            </p>
+        <div className="mb-8 lg:mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+            <div>
+              <h2 className="text-xl font-normal text-foreground mb-2 tracking-widest uppercase">
+                {t("title")}
+              </h2>
+              <p className="text-xs text-text-secondary tracking-wide">
+                {t("itemsAvailable", { count: filteredDishes.length })}
+              </p>
+            </div>
           </div>
 
-          {/* Filter Bar */}
-          <div className="flex flex-col gap-4">
-            {/* Category Filter Buttons */}
+          {/* Category Filter Buttons */}
+          {categories.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => setSelectedCategoryId(null)}
@@ -95,7 +92,7 @@ export function MenuSectionClient({ dishes, categories, locale }: MenuSectionCli
                 </button>
               ))}
             </div>
-          </div>
+          )}
         </div>
 
         {/* Menu Grid */}
