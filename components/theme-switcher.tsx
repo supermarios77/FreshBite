@@ -23,7 +23,7 @@ export function ThemeSwitcher() {
     // Reset animation after it completes
     setTimeout(() => {
       setIsAnimating(false);
-    }, 600);
+    }, 800);
   };
 
   return (
@@ -31,35 +31,46 @@ export function ThemeSwitcher() {
       variant="ghost"
       size="icon"
       onClick={handleToggle}
-      className={`relative h-9 w-9 rounded-lg overflow-hidden transition-all duration-300 ${
-        isAnimating ? "scale-110 rotate-180" : "scale-100 rotate-0"
-      }`}
+      className="relative h-10 w-10 rounded-full overflow-visible border-2 border-border hover:border-foreground/30 transition-all duration-300 group"
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
-      {/* Animated background glow */}
+      {/* Elegant ripple effect */}
       <div
-        className={`absolute inset-0 rounded-lg transition-all duration-500 ${
+        className={`absolute inset-0 rounded-full transition-all duration-700 ${
           theme === "light"
-            ? "bg-gradient-to-br from-amber-400/20 to-orange-500/20"
-            : "bg-gradient-to-br from-blue-400/20 to-purple-500/20"
-        } ${isAnimating ? "opacity-100 scale-150" : "opacity-0 scale-100"}`}
+            ? "bg-gradient-to-br from-amber-200/30 via-orange-200/20 to-yellow-200/30"
+            : "bg-gradient-to-br from-blue-200/30 via-indigo-200/20 to-purple-200/30"
+        } ${
+          isAnimating ? "scale-150 opacity-100" : "scale-100 opacity-0"
+        }`}
       />
-      
-      {/* Particle effect container */}
-      <div className="absolute inset-0 pointer-events-none">
+
+      {/* Outer glow ring */}
+      <div
+        className={`absolute -inset-1 rounded-full transition-all duration-700 ${
+          theme === "light"
+            ? "bg-gradient-to-br from-amber-400/40 to-orange-500/40"
+            : "bg-gradient-to-br from-blue-400/40 to-purple-500/40"
+        } ${
+          isAnimating ? "opacity-100 blur-sm" : "opacity-0 blur-none"
+        }`}
+      />
+
+      {/* Elegant particle effect - fewer, larger particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-visible">
         {isAnimating && (
           <>
-            {[...Array(6)].map((_, i) => (
+            {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className={`absolute w-1 h-1 rounded-full ${
+                className={`absolute w-1.5 h-1.5 rounded-full ${
                   theme === "light" ? "bg-amber-400" : "bg-blue-400"
                 }`}
                 style={{
                   left: "50%",
                   top: "50%",
-                  transform: `translate(-50%, -50%) rotate(${i * 60}deg) translateY(-20px)`,
-                  animation: `particle-${i} 0.6s ease-out forwards`,
+                  transform: `translate(-50%, -50%) rotate(${i * 90}deg) translateY(-24px)`,
+                  animation: `elegant-particle-${i} 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards`,
                 }}
               />
             ))}
@@ -67,27 +78,51 @@ export function ThemeSwitcher() {
         )}
       </div>
 
-      {/* Icons with enhanced animations */}
-      <Sun
-        className={`h-5 w-5 absolute transition-all duration-500 ${
-          theme === "light"
-            ? "rotate-0 scale-100 opacity-100"
-            : "rotate-180 scale-0 opacity-0"
-        } ${isAnimating ? "drop-shadow-lg" : ""}`}
+      {/* Icon container with smooth 3D flip effect */}
+      <div
+        className={`relative w-full h-full flex items-center justify-center transition-transform duration-700 ${
+          isAnimating ? "rotate-y-180" : "rotate-y-0"
+        }`}
         style={{
-          filter: isAnimating && theme === "light" ? "drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))" : "none",
+          transformStyle: "preserve-3d",
         }}
-      />
-      <Moon
-        className={`h-5 w-5 absolute transition-all duration-500 ${
-          theme === "dark"
-            ? "rotate-0 scale-100 opacity-100"
-            : "-rotate-180 scale-0 opacity-0"
-        } ${isAnimating ? "drop-shadow-lg" : ""}`}
-        style={{
-          filter: isAnimating && theme === "dark" ? "drop-shadow(0 0 8px rgba(96, 165, 250, 0.8))" : "none",
-        }}
-      />
+      >
+        {/* Sun icon - elegant fade and scale */}
+        <Sun
+          className={`absolute h-5 w-5 transition-all duration-700 ${
+            theme === "light"
+              ? "rotate-0 scale-100 opacity-100"
+              : "rotate-90 scale-0 opacity-0"
+          } ${
+            isAnimating && theme === "light"
+              ? "drop-shadow-[0_0_12px_rgba(251,191,36,0.9)]"
+              : ""
+          }`}
+          style={{
+            transform: theme === "light" ? "rotate(0deg)" : "rotate(90deg)",
+          }}
+        />
+        
+        {/* Moon icon - elegant fade and scale */}
+        <Moon
+          className={`absolute h-5 w-5 transition-all duration-700 ${
+            theme === "dark"
+              ? "rotate-0 scale-100 opacity-100"
+              : "-rotate-90 scale-0 opacity-0"
+          } ${
+            isAnimating && theme === "dark"
+              ? "drop-shadow-[0_0_12px_rgba(96,165,250,0.9)]"
+              : ""
+          }`}
+          style={{
+            transform: theme === "dark" ? "rotate(0deg)" : "rotate(-90deg)",
+          }}
+        />
+      </div>
+
+      {/* Subtle hover effect */}
+      <div className="absolute inset-0 rounded-full bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
       <span className="sr-only">Toggle theme</span>
     </Button>
   );
