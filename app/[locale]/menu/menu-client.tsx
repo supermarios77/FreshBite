@@ -68,7 +68,7 @@ export function MenuClient({ dishes, locale }: MenuClientProps) {
                 slug={dish.slug}
                 name={dish.name}
                 price={dish.price}
-                imageSrc={dish.imageUrl || "/placeholder-dish.jpg"}
+                imageSrc={dish.imageUrl || "/placeholder-dish.png"}
                 imageAlt={dish.name}
                 rating={dish.rating || 0}
                 isWishlisted={false}

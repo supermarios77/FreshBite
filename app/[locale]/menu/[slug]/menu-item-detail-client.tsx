@@ -86,7 +86,7 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
           <div className="relative w-full aspect-square">
             <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-2 border-foreground shadow-2xl shadow-amber-200/30 dark:shadow-amber-900/20">
               <Image
-                src={dish.imageUrl || "/placeholder-dish.jpg"}
+                src={dish.imageUrl || "/placeholder-dish.png"}
                 alt={dish.name}
                 fill
                 className="object-cover"
@@ -129,7 +129,7 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
             )}
 
             {/* Price */}
-            <div className="text-4xl lg:text-5xl font-bold text-amber-600 dark:text-amber-400 tracking-widest">
+            <div className="text-3xl lg:text-4xl font-normal text-foreground tracking-widest">
               €{dish.price.toFixed(2)}
             </div>
 
@@ -226,7 +226,7 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
                 disabled={isLoading}
                 variant="default"
                 size="lg"
-                className="w-full text-sm sm:text-base tracking-widest uppercase border-2 border-amber-600 dark:border-amber-400 bg-amber-600 dark:bg-amber-500 text-white hover:bg-amber-700 dark:hover:bg-amber-600 shadow-lg shadow-amber-200/30 dark:shadow-amber-900/30 hover:shadow-xl hover:shadow-amber-300/40 dark:hover:shadow-amber-800/40 transition-all duration-300 hover:scale-[1.02]"
+                className="w-full text-xs tracking-widest uppercase border-2 border-foreground bg-foreground text-background hover:bg-foreground/90"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
