@@ -71,6 +71,7 @@ model Dish {
   updatedAt     DateTime @updatedAt
   
   category      Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  variants      DishVariant[]
   orderItems    OrderItem[]
   
   @@map("dishes")
@@ -119,15 +120,38 @@ model OrderItem {
   id        String   @id @default(cuid())
   orderId   String
   dishId    String
+  variantId String?  // Optional variant ID
   quantity  Int
   price     Float
-  size      String?  // e.g., "Regular", "Large"
+  size      String?  // e.g., "Regular", "Large" (deprecated, use variantId instead)
   createdAt DateTime @default(now())
   
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   dish      Dish     @relation(fields: [dishId], references: [id])
+  variant   DishVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
   
   @@map("order_items")
+}
+
+model DishVariant {
+  id          String   @id @default(cuid())
+  dishId     String
+  name       String   // e.g., "Aloo", "Chicken", "Mince"
+  nameEn     String
+  nameNl     String
+  nameFr     String
+  imageUrl   String?  // Optional variant-specific image (falls back to dish image)
+  price      Float?   // Optional variant-specific price (falls back to dish price)
+  isActive   Boolean  @default(true)
+  sortOrder  Int      @default(0) // For ordering variants
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  dish       Dish      @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+  
+  @@map("dish_variants")
+  @@index([dishId])
 }
 
 model CartSession {

@@ -5,9 +5,10 @@ export interface CreateOrderData {
   userId: string;
   items: {
     dishId: string;
+    variantId?: string;
     quantity: number;
     price: number;
-    size?: string;
+    size?: string; // Deprecated, use variantId instead
   }[];
   totalAmount: number;
   deliveryInfo?: {
@@ -41,6 +42,7 @@ export async function createOrder(data: CreateOrderData) {
       items: {
         create: data.items.map((item) => ({
           dishId: item.dishId,
+          variantId: item.variantId || null,
           quantity: item.quantity,
           price: item.price,
           size: item.size,

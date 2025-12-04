@@ -18,6 +18,10 @@ export async function getDishes(params: GetDishesParams = {}) {
       },
       include: {
         category: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { sortOrder: "asc" },
+        },
       },
       orderBy: {
         createdAt: "desc",
@@ -30,7 +34,7 @@ export async function getDishes(params: GetDishesParams = {}) {
       console.log(`[getDishes] Found ${dishes.length} dishes from database`);
     }
 
-    // Map to include localized names
+    // Map to include localized names and variants
     return dishes.map((dish) => ({
       id: dish.id,
       slug: dish.slug,
@@ -47,6 +51,16 @@ export async function getDishes(params: GetDishesParams = {}) {
       rating: dish.rating || 0,
       allergens: dish.allergens,
       ingredients: dish.ingredients,
+      variants: dish.variants.map((variant) => ({
+        id: variant.id,
+        name: locale === "en" ? variant.nameEn : locale === "nl" ? variant.nameNl : variant.nameFr,
+        nameEn: variant.nameEn,
+        nameNl: variant.nameNl,
+        nameFr: variant.nameFr,
+        imageUrl: variant.imageUrl,
+        price: variant.price,
+        isActive: variant.isActive,
+      })),
       category: dish.category
         ? {
             id: dish.category.id,
@@ -134,6 +148,10 @@ export async function getDishBySlug(slug: string, locale: "en" | "nl" | "fr" = "
     where: { slug },
     include: {
       category: true,
+      variants: {
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+      },
     },
   });
 
@@ -159,12 +177,23 @@ export async function getDishBySlug(slug: string, locale: "en" | "nl" | "fr" = "
     descriptionNl: dish.descriptionNl,
     descriptionFr: dish.descriptionFr,
     price: dish.price,
+    pricingModel: dish.pricingModel,
     imageUrl: dish.imageUrl,
     rating: dish.rating || 0,
     quantity: dish.quantity,
     weight: dish.weight,
     allergens: dish.allergens,
     ingredients: dish.ingredients,
+    variants: dish.variants.map((variant) => ({
+      id: variant.id,
+      name: locale === "en" ? variant.nameEn : locale === "nl" ? variant.nameNl : variant.nameFr,
+      nameEn: variant.nameEn,
+      nameNl: variant.nameNl,
+      nameFr: variant.nameFr,
+      imageUrl: variant.imageUrl,
+      price: variant.price,
+      isActive: variant.isActive,
+    })),
     categoryId: dish.categoryId,
     category: dish.category
       ? {

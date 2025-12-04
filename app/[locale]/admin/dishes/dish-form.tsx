@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
+import { VariantManager } from "@/components/admin/variant-manager";
 
 interface Category {
   id: string;
@@ -503,6 +504,11 @@ export function DishForm({ dish, categories }: DishFormProps) {
           </label>
         </div>
       </div>
+
+      {/* Variant Management - Only show when editing existing dish */}
+      {dish?.id && (
+        <VariantManager dishId={dish.id} />
+      )}
 
       {/* Actions */}
       <div className="flex items-center gap-4">

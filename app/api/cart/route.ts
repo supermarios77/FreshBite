@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { dishId, name, price, quantity, imageSrc, size } = body;
+    const { dishId, name, price, quantity, imageSrc, size, variantId, variantName } = body;
 
     if (!dishId || !name || price === undefined || !quantity) {
       throw new ValidationError("Missing required fields: dishId, name, price, and quantity are required");
@@ -57,6 +57,8 @@ export async function POST(req: NextRequest) {
       quantity: parseInt(quantity),
       imageSrc,
       size,
+      variantId,
+      variantName,
     });
 
     return NextResponse.json({ cart, success: true });

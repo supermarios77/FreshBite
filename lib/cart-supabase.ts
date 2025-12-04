@@ -6,11 +6,13 @@ import { cookies } from "next/headers";
 export interface CartItem {
   id: string;
   dishId: string;
+  variantId?: string; // Optional variant ID
+  variantName?: string; // Optional variant name for display
   name: string;
   price: number;
   quantity: number;
   imageSrc?: string;
-  size?: string;
+  size?: string; // Deprecated, use variantId instead
 }
 
 const CART_COOKIE_NAME = "freshbite-cart-session";
@@ -145,9 +147,12 @@ export async function addToCart(item: Omit<CartItem, "id">): Promise<CartItem[]>
 
       const currentCart: CartItem[] = (cartData?.items as CartItem[]) || [];
 
-      // Check if item already exists (same dishId and size)
+      // Check if item already exists (same dishId and variantId)
       const existingItemIndex = currentCart.findIndex(
-        (cartItem) => cartItem.dishId === item.dishId && cartItem.size === item.size
+        (cartItem) => 
+          cartItem.dishId === item.dishId && 
+          cartItem.variantId === item.variantId &&
+          (!item.variantId || cartItem.variantId === item.variantId)
       );
 
       let updatedCart: CartItem[];
@@ -163,7 +168,7 @@ export async function addToCart(item: Omit<CartItem, "id">): Promise<CartItem[]>
         // Add new item with unique ID
         const newItem: CartItem = {
           ...item,
-          id: `${item.dishId}-${item.size || "default"}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+          id: `${item.dishId}-${item.variantId || "default"}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         };
         updatedCart = [...currentCart, newItem];
       }

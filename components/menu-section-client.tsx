@@ -276,6 +276,7 @@ export function MenuSectionClient({ dishes, categories }: MenuSectionClientProps
                 imageSrc={dish.imageUrl || "/placeholder-dish.png"}
                 imageAlt={dish.name}
                 rating={dish.rating || 0}
+                variants={dish.variants || []}
               />
             ))}
           </div>

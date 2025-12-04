@@ -7,6 +7,18 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/toast";
+import { VariantPopup } from "./variant-popup";
+
+interface Variant {
+  id: string;
+  name: string;
+  nameEn: string;
+  nameNl: string;
+  nameFr: string;
+  imageUrl?: string | null;
+  price?: number | null;
+  isActive: boolean;
+}
 
 interface MenuItemCardProps {
   id: string;
@@ -17,6 +29,7 @@ interface MenuItemCardProps {
   imageSrc?: string;
   imageAlt?: string;
   rating?: number;
+  variants?: Variant[];
   className?: string;
 }
 
@@ -29,20 +42,33 @@ export function MenuItemCard({
   imageSrc,
   imageAlt,
   rating = 0,
+  variants = [],
   className,
 }: MenuItemCardProps) {
   const t = useTranslations("menu");
   const { addToast } = useToast();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [showVariantPopup, setShowVariantPopup] = useState(false);
   
   // Ensure pricingModel is a string for comparison
   const pricingModelStr = String(pricingModel || "FIXED").toUpperCase();
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent, variant?: Variant) => {
     e.stopPropagation();
     e.preventDefault();
     
+    // If dish has variants and no variant selected, show popup
+    if (variants.length > 0 && !variant) {
+      setShowVariantPopup(true);
+      return;
+    }
+    
     setIsAddingToCart(true);
+    
+    // Use variant price if available, otherwise use dish price
+    const finalPrice = variant?.price ?? price;
+    const finalImageSrc = variant?.imageUrl || imageSrc;
+    const displayName = variant ? `${name} (${variant.name})` : name;
     
     // Optimistic update: immediately trigger cart badge update
     window.dispatchEvent(new CustomEvent("cartUpdated"));
@@ -55,10 +81,12 @@ export function MenuItemCard({
         },
         body: JSON.stringify({
           dishId: id,
-          name,
-          price,
+          name: displayName,
+          price: finalPrice,
           quantity: 1,
-          imageSrc,
+          imageSrc: finalImageSrc,
+          variantId: variant?.id,
+          variantName: variant?.name,
         }),
       });
 
@@ -78,20 +106,30 @@ export function MenuItemCard({
     }
   };
 
+  const handleVariantSelect = (variant: Variant) => {
+    // Create a synthetic event for handleAddToCart
+    const syntheticEvent = {
+      stopPropagation: () => {},
+      preventDefault: () => {},
+    } as React.MouseEvent;
+    handleAddToCart(syntheticEvent, variant);
+  };
+
   // Calculate star display (0-5 stars)
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
   return (
-    <Link
-      href={`/menu/${slug}`}
-      className={cn(
-        "group bg-card overflow-hidden transition-all duration-300 cursor-pointer block border border-border hover:border-accent/50 dark:hover:border-accent/30 hover:shadow-lg hover:-translate-y-1",
-        className
-      )}
-      aria-label={`View details and add ${name} to cart`}
-    >
+    <>
+      <Link
+        href={`/menu/${slug}`}
+        className={cn(
+          "group bg-card overflow-hidden transition-all duration-300 cursor-pointer block border border-border hover:border-accent/50 dark:hover:border-accent/30 hover:shadow-lg hover:-translate-y-1",
+          className
+        )}
+        aria-label={`View details and add ${name} to cart`}
+      >
       {/* Image Container */}
       <div className="relative w-full flex items-center justify-center p-4 sm:p-6">
         {imageSrc ? (
@@ -231,6 +269,20 @@ export function MenuItemCard({
         </div>
       </div>
     </Link>
+
+    {/* Variant Popup */}
+    {variants.length > 0 && (
+      <VariantPopup
+        isOpen={showVariantPopup}
+        onClose={() => setShowVariantPopup(false)}
+        dishName={name}
+        dishImage={imageSrc}
+        variants={variants}
+        basePrice={price}
+        onSelect={handleVariantSelect}
+      />
+    )}
+    </>
   );
 }
 

@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
       }: {
         items: Array<{
           dishId: string;
+          variantId?: string;
           quantity: number;
           price: number;
           size?: string;

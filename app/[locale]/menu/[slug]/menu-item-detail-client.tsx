@@ -6,6 +6,18 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { VariantSelector } from "@/components/variant-selector";
+
+interface Variant {
+  id: string;
+  name: string;
+  nameEn: string;
+  nameNl: string;
+  nameFr: string;
+  imageUrl?: string | null;
+  price?: number | null;
+  isActive: boolean;
+}
 
 interface Dish {
   id: string;
@@ -19,6 +31,7 @@ interface Dish {
   allergens: string[];
   ingredients: string[];
   rating: number;
+  variants?: Variant[];
 }
 
 interface MenuItemDetailClientProps {
@@ -30,15 +43,34 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
   const { addToast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
+    dish.variants && dish.variants.length > 0 ? null : null
+  );
 
-  const totalPrice = dish.price * quantity;
+  // Determine current price (variant price or dish price)
+  const currentPrice = selectedVariant?.price ?? dish.price;
+  const currentImageUrl = selectedVariant?.imageUrl || dish.imageUrl;
+  const totalPrice = currentPrice * quantity;
+
+  // Require variant selection if variants exist
+  const canAddToCart = !dish.variants || dish.variants.length === 0 || selectedVariant !== null;
 
   const handleAddToCart = async () => {
+    if (!canAddToCart) {
+      addToast("Please select a flavor", "error");
+      return;
+    }
+
     setIsLoading(true);
     
     // Optimistic update: immediately trigger cart badge update
     // The actual API call will sync the real state
     window.dispatchEvent(new CustomEvent("cartUpdated"));
+    
+    // Build display name with variant if selected
+    const displayName = selectedVariant 
+      ? `${dish.name} (${selectedVariant.name})`
+      : dish.name;
     
     try {
       const response = await fetch("/api/cart", {
@@ -48,10 +80,12 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
         },
         body: JSON.stringify({
           dishId: dish.id,
-          name: dish.name,
-          price: dish.price,
+          name: displayName,
+          price: currentPrice,
           quantity,
-          imageSrc: dish.imageUrl,
+          imageSrc: currentImageUrl,
+          variantId: selectedVariant?.id,
+          variantName: selectedVariant?.name,
         }),
       });
 
@@ -95,7 +129,7 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
           <div className="relative w-full flex justify-center lg:justify-start">
             <div className="relative w-full max-w-lg">
               <Image
-                src={dish.imageUrl || "/placeholder-dish.png"}
+                src={currentImageUrl || "/placeholder-dish.png"}
                 alt={dish.name}
                 width={600}
                 height={600}
@@ -137,13 +171,23 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
 
             {/* Price */}
             <div className="text-3xl lg:text-4xl font-normal text-foreground tracking-widest">
-              €{dish.price.toFixed(2)}
+              €{currentPrice.toFixed(2)}
               {dish.pricingModel === "PER_PIECE" && (
                 <span className="text-lg lg:text-xl font-normal text-text-secondary ml-2">
                   per piece
                 </span>
               )}
             </div>
+
+            {/* Variant Selector */}
+            {dish.variants && dish.variants.length > 0 && (
+              <VariantSelector
+                variants={dish.variants}
+                selectedVariantId={selectedVariant?.id}
+                onSelect={(variant) => setSelectedVariant(variant)}
+                basePrice={dish.price}
+              />
+            )}
 
             {/* Quantity and Weight */}
             {(dish.quantity || dish.weight) && (
@@ -235,10 +279,10 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
 
               <Button
                 onClick={handleAddToCart}
-                disabled={isLoading}
+                disabled={isLoading || !canAddToCart}
                 variant="default"
                 size="lg"
-                className="w-full text-xs tracking-widest uppercase border-2 border-foreground bg-foreground text-background hover:bg-foreground/90"
+                className="w-full text-xs tracking-widest uppercase border-2 border-foreground bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
