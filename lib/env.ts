@@ -12,10 +12,15 @@ const envConfig: EnvConfig = {
   required: [
     "DATABASE_URL",
     "NEXT_PUBLIC_SUPABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
   ],
   optional: {
+    // New Supabase API keys (preferred)
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY,
+    // Legacy Supabase API keys (fallback, deprecated Nov 2025)
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    // Other optional variables
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
@@ -41,8 +46,39 @@ export function validateEnv(): { valid: boolean; errors: string[] } {
     warnings.push("STRIPE_SECRET_KEY not set - payment processing will be in mock mode");
   }
   
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    warnings.push("SUPABASE_SERVICE_ROLE_KEY not set - some admin features may not work");
+  // Check for Supabase keys (new or legacy)
+  const hasPublishableKey = !!(
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+  const hasSecretKey = !!(
+    process.env.SUPABASE_SECRET_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+  
+  if (!hasPublishableKey) {
+    errors.push(
+      "Missing Supabase publishable key. Set NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (or NEXT_PUBLIC_SUPABASE_ANON_KEY for legacy)"
+    );
+  }
+  
+  if (!hasSecretKey) {
+    warnings.push(
+      "Missing Supabase secret key. Set SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY for legacy) - some admin features may not work"
+    );
+  }
+  
+  // Migration warning for legacy keys
+  if (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY && !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+    warnings.push(
+      "⚠️  Using legacy NEXT_PUBLIC_SUPABASE_ANON_KEY. Migrate to NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY before November 2025"
+    );
+  }
+  
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SUPABASE_SECRET_KEY) {
+    warnings.push(
+      "⚠️  Using legacy SUPABASE_SERVICE_ROLE_KEY. Migrate to SUPABASE_SECRET_KEY before November 2025"
+    );
   }
   
   if (warnings.length > 0 && process.env.NODE_ENV === "production") {

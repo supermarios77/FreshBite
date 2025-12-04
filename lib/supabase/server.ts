@@ -1,19 +1,21 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { getPublishableKey } from "./keys";
 
 export async function createClient() {
   const cookieStore = await cookies();
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!supabaseUrl) {
     throw new Error(
-      "Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+      "Missing Supabase environment variable: NEXT_PUBLIC_SUPABASE_URL"
     );
   }
 
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
+  const publishableKey = getPublishableKey();
+
+  return createServerClient(supabaseUrl, publishableKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll();

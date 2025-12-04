@@ -5,16 +5,16 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { prisma } from "@/lib/prisma";
+import { getSecretKey } from "@/lib/supabase/keys";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error("Missing Supabase environment variables");
+if (!SUPABASE_URL) {
+  throw new Error("Missing Supabase environment variable: NEXT_PUBLIC_SUPABASE_URL");
 }
 
-// Create admin client for user creation
-const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+// Create admin client for user creation using secret key (new or legacy)
+const supabaseAdmin = createClient(SUPABASE_URL, getSecretKey(), {
   auth: {
     autoRefreshToken: false,
     persistSession: false,

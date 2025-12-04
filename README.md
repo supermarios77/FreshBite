@@ -50,13 +50,17 @@ cp .env.example .env
 
 Required environment variables:
 - `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon key
-- `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key
+- **Supabase API Keys** (use new keys, legacy keys supported until Nov 2025):
+  - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` - New publishable key (format: `sb_publishable_...`)
+  - `SUPABASE_SECRET_KEY` - New secret key (format: `sb_secret_...`)
+  - *Legacy fallback*: `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY`
 - `DATABASE_URL` - Your Supabase Postgres connection string
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key
 - `STRIPE_SECRET_KEY` - Your Stripe secret key
 - `STRIPE_WEBHOOK_SECRET` - Your Stripe webhook secret
 - `NEXT_PUBLIC_APP_URL` - Your app URL (e.g., `http://localhost:3000`)
+
+> **📌 Supabase API Key Migration**: The codebase supports both new API keys (`sb_publishable_...` and `sb_secret_...`) and legacy keys (`anon` and `service_role`). Legacy keys will be deprecated in November 2025. [Learn more](https://github.com/orgs/supabase/discussions/29260)
 
 3. Set up the database:
 
@@ -101,8 +105,15 @@ Ensure all environment variables are set in your deployment platform (Vercel):
 ```bash
 # Required
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# Supabase API Keys (prefer new keys)
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+SUPABASE_SECRET_KEY=sb_secret_...
+
+# Legacy keys (supported until Nov 2025, fallback if new keys not set)
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+# SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
 DATABASE_URL=your_database_url
 NEXT_PUBLIC_APP_URL=https://yourdomain.com
 

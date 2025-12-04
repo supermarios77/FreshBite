@@ -7,18 +7,27 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { PrismaClient } from "@prisma/client";
+import { getSecretKey } from "../lib/supabase/keys";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  console.error("❌ Missing required environment variables:");
+if (!SUPABASE_URL) {
+  console.error("❌ Missing required environment variable:");
   console.error("   - NEXT_PUBLIC_SUPABASE_URL");
-  console.error("   - SUPABASE_SERVICE_ROLE_KEY");
   process.exit(1);
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+// Get secret key (new or legacy)
+let secretKey: string;
+try {
+  secretKey = getSecretKey();
+} catch (error: any) {
+  console.error("❌ Missing Supabase secret key:");
+  console.error("   Set SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY for legacy)");
+  process.exit(1);
+}
+
+const supabase = createClient(SUPABASE_URL, secretKey, {
   auth: {
     autoRefreshToken: false,
     persistSession: false,

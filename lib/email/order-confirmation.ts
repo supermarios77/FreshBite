@@ -5,9 +5,9 @@
  */
 
 import { createClient } from "@supabase/supabase-js";
+import { getSecretKey } from "@/lib/supabase/keys";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 interface OrderConfirmationData {
   orderId: string;
@@ -48,7 +48,16 @@ export async function sendOrderConfirmationEmail(
   }
 
   // In development/mock mode, log the email content
-  if (process.env.NODE_ENV === "development" || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  // Check if we have Supabase secret key (new or legacy)
+  let hasSecretKey = false;
+  try {
+    getSecretKey();
+    hasSecretKey = true;
+  } catch {
+    hasSecretKey = false;
+  }
+
+  if (process.env.NODE_ENV === "development" || !SUPABASE_URL || !hasSecretKey) {
     console.log("\n📧 ORDER CONFIRMATION EMAIL (Mock Mode)");
     console.log("==========================================");
     console.log(`To: ${email}`);
