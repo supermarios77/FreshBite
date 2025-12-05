@@ -27,21 +27,24 @@ export function CartBadge() {
       }
     };
 
+    // Fetch on mount
     fetchCartCount();
 
-    // Listen for cart update events
+    // Listen for cart update events (event-based updates are more efficient than polling)
     const handleCartUpdate = () => {
       fetchCartCount();
     };
 
     window.addEventListener("cartUpdated", handleCartUpdate);
 
-    // Refresh cart count when pathname changes (user navigates)
-    const interval = setInterval(fetchCartCount, 5000); // Poll every 5 seconds as fallback
+    // Also fetch when pathname changes (user navigates to different pages)
+    // This ensures the cart count is up-to-date after navigation
+    if (pathname) {
+      fetchCartCount();
+    }
 
     return () => {
       window.removeEventListener("cartUpdated", handleCartUpdate);
-      clearInterval(interval);
     };
   }, [pathname]);
 
