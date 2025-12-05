@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { ShoppingCart } from "lucide-react";
 import { LocaleSwitcher } from "./locale-switcher";
 import { ThemeSwitcher } from "./theme-switcher";
-import { CartBadge } from "./cart-badge";
+import { CartBadge } from "@/components/features/cart/cart-badge";
 import { useState } from "react";
 import { smoothScrollToAnchor } from "@/lib/utils/smooth-scroll";
 import Image from "next/image";
