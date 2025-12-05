@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "./theme-provider";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { playThemeSwitchSound } from "@/lib/utils/sound";
 import { useState } from "react";
 
