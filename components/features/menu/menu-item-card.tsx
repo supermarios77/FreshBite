@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { ArrowRight, Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/toast";
 import { VariantPopup } from "./variant-popup";
+import { Skeleton } from "@/components/shared/skeleton";
 
 interface Variant {
   id: string;
@@ -55,6 +56,15 @@ export function MenuItemCard({
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [showVariantPopup, setShowVariantPopup] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+  
+  // Reset loading state when image source changes
+  useEffect(() => {
+    if (imageSrc) {
+      setImageLoading(true);
+      setImageError(false);
+    }
+  }, [imageSrc]);
   
   // Ensure pricingModel is a string for comparison
   const pricingModelStr = String(pricingModel || "FIXED").toUpperCase();
@@ -140,15 +150,24 @@ export function MenuItemCard({
       <div className="relative w-full flex items-center justify-center pt-6 sm:pt-8 px-6 sm:px-8">
         {imageSrc && !imageError ? (
           <div className="relative w-full max-w-xs mx-auto aspect-square">
+            {imageLoading && (
+              <Skeleton className="absolute inset-0 w-full h-full rounded-full" />
+            )}
             <Image
               src={imageSrc}
               alt={imageAlt || name}
               width={400}
               height={400}
-              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+              className={`w-full h-full object-contain transition-transform duration-300 group-hover:scale-105 ${
+                imageLoading ? "opacity-0" : "opacity-100"
+              }`}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 400px"
               loading="lazy"
-              onError={() => setImageError(true)}
+              onLoad={() => setImageLoading(false)}
+              onError={() => {
+                setImageError(true);
+                setImageLoading(false);
+              }}
               unoptimized={imageSrc?.includes("supabase.co")}
             />
           </div>

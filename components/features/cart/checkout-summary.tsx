@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/shared/skeleton";
 
 interface CartItem {
   id: string;
@@ -23,6 +25,50 @@ interface CheckoutSummaryProps {
   onProceedToPayment?: () => void;
   isLoading?: boolean;
   className?: string;
+}
+
+function CartItemImage({ src, alt }: { src: string; alt: string }) {
+  const [imageLoading, setImageLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    if (src) {
+      setImageLoading(true);
+      setImageError(false);
+    }
+  }, [src]);
+
+  if (imageError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full bg-accent/20" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {imageLoading && (
+        <Skeleton className="absolute inset-0 w-full h-full" />
+      )}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className={`object-cover transition-opacity duration-300 ${
+          imageLoading ? "opacity-0" : "opacity-100"
+        }`}
+        sizes="96px"
+        loading="lazy"
+        onLoad={() => setImageLoading(false)}
+        onError={() => {
+          setImageError(true);
+          setImageLoading(false);
+        }}
+        unoptimized={src?.includes("supabase.co")}
+      />
+    </>
+  );
 }
 
 export function CheckoutSummary({

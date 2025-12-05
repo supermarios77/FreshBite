@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VariantSelector } from "./variant-selector";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/shared/skeleton";
 
 interface Variant {
   id: string;
@@ -39,6 +40,17 @@ export function VariantPopup({
 }: VariantPopupProps) {
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
   const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  const currentImageUrl = selectedVariant?.imageUrl || dishImage;
+
+  // Reset loading state when image URL changes
+  useEffect(() => {
+    if (currentImageUrl) {
+      setImageLoading(true);
+      setImageError(false);
+    }
+  }, [currentImageUrl]);
 
   if (!isOpen) return null;
 
@@ -72,14 +84,23 @@ export function VariantPopup({
         <div className="p-6 space-y-6">
           {dishImage && !imageError ? (
             <div className="relative w-full max-w-xs mx-auto aspect-square">
+              {imageLoading && (
+                <Skeleton className="absolute inset-0 w-full h-full rounded-lg" />
+              )}
               <Image
-                src={selectedVariant?.imageUrl || dishImage}
+                src={currentImageUrl || dishImage}
                 alt={dishName}
                 fill
-                className="object-contain rounded-lg"
+                className={`object-contain rounded-lg transition-opacity duration-300 ${
+                  imageLoading ? "opacity-0" : "opacity-100"
+                }`}
                 sizes="(max-width: 640px) 100vw, 400px"
-                onError={() => setImageError(true)}
-                unoptimized={(selectedVariant?.imageUrl || dishImage)?.includes("supabase.co")}
+                onLoad={() => setImageLoading(false)}
+                onError={() => {
+                  setImageError(true);
+                  setImageLoading(false);
+                }}
+                unoptimized={currentImageUrl?.includes("supabase.co")}
                 loading="lazy"
               />
             </div>

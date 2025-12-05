@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { VariantSelector } from "@/components/features/menu/variant-selector";
+import { Skeleton } from "@/components/shared/skeleton";
 
 interface Variant {
   id: string;
@@ -44,9 +45,18 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
     dish.variants && dish.variants.length > 0 ? null : null
   );
+
+  // Reset loading state when image URL changes
+  useEffect(() => {
+    if (currentImageUrl) {
+      setImageLoading(true);
+      setImageError(false);
+    }
+  }, [currentImageUrl]);
 
   // Determine current price (variant price or dish price)
   const currentPrice = selectedVariant?.price ?? dish.price;
@@ -130,17 +140,28 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
           <div className="relative w-full flex justify-center lg:justify-start">
             <div className="relative w-full max-w-lg">
               {currentImageUrl && !imageError ? (
-                <Image
-                  src={currentImageUrl}
-                  alt={dish.name}
-                  width={600}
-                  height={600}
-                  className="w-full h-auto object-contain"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  onError={() => setImageError(true)}
-                  unoptimized={currentImageUrl?.includes("supabase.co")}
-                />
+                <div className="relative w-full aspect-square">
+                  {imageLoading && (
+                    <Skeleton className="absolute inset-0 w-full h-full rounded-lg" />
+                  )}
+                  <Image
+                    src={currentImageUrl}
+                    alt={dish.name}
+                    width={600}
+                    height={600}
+                    className={`w-full h-auto object-contain transition-opacity duration-300 ${
+                      imageLoading ? "opacity-0" : "opacity-100"
+                    }`}
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => {
+                      setImageError(true);
+                      setImageLoading(false);
+                    }}
+                    unoptimized={currentImageUrl?.includes("supabase.co")}
+                  />
+                </div>
               ) : (
                 <div className="w-full aspect-square flex items-center justify-center bg-secondary/20">
                   <div className="w-24 h-24 rounded-full bg-secondary/50 flex items-center justify-center">
