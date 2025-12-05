@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   
   // Performance optimizations
-  swcMinify: true,
   reactStrictMode: true,
   
   // Experimental features for better performance
