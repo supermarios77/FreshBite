@@ -9,7 +9,7 @@ const defaultDescription = {
 };
 
 const defaultTitle = {
-  en: "Jobhi - Delicious Homemade Meals Delivered",
+  en: "Jobhi - Delicious Homemade Meals",
   nl: "Jobhi - Heerlijke Zelfgemaakte Maaltijden",
   fr: "Jobhi - Délicieux Plats Maison",
 };
