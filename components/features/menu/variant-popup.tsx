@@ -38,6 +38,7 @@ export function VariantPopup({
   onSelect,
 }: VariantPopupProps) {
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
+  const [imageError, setImageError] = useState(false);
 
   if (!isOpen) return null;
 
@@ -69,7 +70,7 @@ export function VariantPopup({
 
         {/* Content */}
         <div className="p-6 space-y-6">
-          {dishImage && (
+          {dishImage && !imageError ? (
             <div className="relative w-full max-w-xs mx-auto aspect-square">
               <Image
                 src={selectedVariant?.imageUrl || dishImage}
@@ -77,9 +78,30 @@ export function VariantPopup({
                 fill
                 className="object-contain rounded-lg"
                 sizes="(max-width: 640px) 100vw, 400px"
+                onError={() => setImageError(true)}
+                unoptimized={(selectedVariant?.imageUrl || dishImage)?.includes("supabase.co")}
+                loading="lazy"
               />
             </div>
-          )}
+          ) : dishImage ? (
+            <div className="w-full max-w-xs mx-auto aspect-square flex items-center justify-center bg-secondary/20 rounded-lg">
+              <div className="w-16 h-16 rounded-full bg-secondary/50 flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 text-text-secondary"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </div>
+            </div>
+          ) : null}
 
           <VariantSelector
             variants={variants}

@@ -83,6 +83,8 @@ export function CheckoutSummary({
                       fill
                       className="object-cover"
                       sizes="96px"
+                      loading="lazy"
+                      unoptimized={item.imageSrc?.includes("supabase.co")}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">

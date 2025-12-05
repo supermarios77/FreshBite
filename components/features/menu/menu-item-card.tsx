@@ -54,6 +54,7 @@ export function MenuItemCard({
   const { addToast } = useToast();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [showVariantPopup, setShowVariantPopup] = useState(false);
+  const [imageError, setImageError] = useState(false);
   
   // Ensure pricingModel is a string for comparison
   const pricingModelStr = String(pricingModel || "FIXED").toUpperCase();
@@ -137,7 +138,7 @@ export function MenuItemCard({
       >
       {/* Image Container */}
       <div className="relative w-full flex items-center justify-center pt-6 sm:pt-8 px-6 sm:px-8">
-        {imageSrc ? (
+        {imageSrc && !imageError ? (
           <div className="relative w-full max-w-xs mx-auto aspect-square">
             <Image
               src={imageSrc}
@@ -147,6 +148,8 @@ export function MenuItemCard({
               className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 400px"
               loading="lazy"
+              onError={() => setImageError(true)}
+              unoptimized={imageSrc?.includes("supabase.co")}
             />
           </div>
         ) : (

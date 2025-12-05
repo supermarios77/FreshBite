@@ -43,6 +43,7 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
   const { addToast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
     dish.variants && dish.variants.length > 0 ? null : null
   );
@@ -128,15 +129,37 @@ export function MenuItemDetailClient({ dish }: MenuItemDetailClientProps) {
           {/* Left Column - Image */}
           <div className="relative w-full flex justify-center lg:justify-start">
             <div className="relative w-full max-w-lg">
-              <Image
-                src={currentImageUrl || "/placeholder-dish.png"}
-                alt={dish.name}
-                width={600}
-                height={600}
-                className="w-full h-auto object-contain"
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
+              {currentImageUrl && !imageError ? (
+                <Image
+                  src={currentImageUrl}
+                  alt={dish.name}
+                  width={600}
+                  height={600}
+                  className="w-full h-auto object-contain"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  onError={() => setImageError(true)}
+                  unoptimized={currentImageUrl?.includes("supabase.co")}
+                />
+              ) : (
+                <div className="w-full aspect-square flex items-center justify-center bg-secondary/20">
+                  <div className="w-24 h-24 rounded-full bg-secondary/50 flex items-center justify-center">
+                    <svg
+                      className="w-12 h-12 text-text-secondary"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
