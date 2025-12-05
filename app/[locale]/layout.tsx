@@ -8,6 +8,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { NavigationProgress } from "@/components/navigation-progress";
 import { getMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
 import "../globals.css";
 import "@/lib/env"; // Validate environment variables on startup
 
@@ -52,6 +53,7 @@ export default async function LocaleLayout({
               <div className="min-h-screen flex flex-col">
                 <Navbar />
                 <main className="flex-1 animate-in fade-in duration-300" id="main-content">{children}</main>
+                <Analytics />
               </div>
             </NextIntlClientProvider>
           </ToastProvider>
