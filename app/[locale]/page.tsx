@@ -1,7 +1,7 @@
 import { Hero } from "@/components/features/menu/hero";
 import { MenuSection } from "@/components/features/menu/menu-section";
 import { getMetadata } from "@/lib/metadata";
-import { getOrganizationStructuredData } from "@/lib/structured-data";
+import { getOrganizationStructuredData, getLocalBusinessStructuredData } from "@/lib/structured-data";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -23,6 +23,7 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   const organizationStructuredData = getOrganizationStructuredData(locale);
+  const localBusinessStructuredData = getLocalBusinessStructuredData(locale);
 
   return (
     <>
@@ -30,6 +31,12 @@ export default async function HomePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(organizationStructuredData),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessStructuredData),
         }}
       />
       <main>

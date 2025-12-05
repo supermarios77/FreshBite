@@ -44,6 +44,41 @@ export interface BreadcrumbStructuredData {
   }>;
 }
 
+export interface LocalBusinessStructuredData {
+  "@context": string;
+  "@type": "LocalBusiness" | "FoodEstablishment";
+  name: string;
+  image?: string;
+  url: string;
+  telephone?: string;
+  address: {
+    "@type": "PostalAddress";
+    addressLocality: string;
+    addressRegion?: string;
+    addressCountry: string;
+    postalCode?: string;
+    streetAddress?: string;
+  };
+  geo?: {
+    "@type": "GeoCoordinates";
+    latitude: string;
+    longitude: string;
+  };
+  openingHoursSpecification?: Array<{
+    "@type": "OpeningHoursSpecification";
+    dayOfWeek: string[];
+    opens: string;
+    closes: string;
+  }>;
+  priceRange?: string;
+  servesCuisine?: string[];
+  acceptsReservations?: boolean;
+  areaServed?: {
+    "@type": "City";
+    name: string;
+  };
+}
+
 export function getOrganizationStructuredData(
   locale: string = "en"
 ): OrganizationStructuredData {
@@ -125,5 +160,95 @@ export function getBreadcrumbStructuredData(
       item: item.url,
     })),
   };
+}
+
+export function getLocalBusinessStructuredData(
+  locale: string = "en"
+): LocalBusinessStructuredData {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://jobhi.be";
+  const name = "Jobhi";
+  
+  // Get business details from environment variables (set these in your .env)
+  const address = process.env.BUSINESS_ADDRESS || "Brussels, Belgium";
+  const phone = process.env.BUSINESS_PHONE;
+  const latitude = process.env.BUSINESS_LATITUDE;
+  const longitude = process.env.BUSINESS_LONGITUDE;
+  const openingHours = process.env.BUSINESS_HOURS; // Format: "Mo-Fr 10:00-18:00"
+  
+  const addressParts = address.split(",").map(s => s.trim());
+  const city = addressParts[0] || "Brussels";
+  const country = addressParts[addressParts.length - 1] || "Belgium";
+  
+  const businessData: LocalBusinessStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FoodEstablishment",
+    name,
+    url: baseUrl,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: city,
+      addressCountry: country,
+    },
+    areaServed: {
+      "@type": "City",
+      name: "Brussels",
+    },
+    servesCuisine: ["Pakistani", "Indian", "Homemade"],
+    acceptsReservations: false, // Pickup orders only
+    priceRange: "€€",
+  };
+  
+  if (phone) {
+    businessData.telephone = phone;
+  }
+  
+  if (latitude && longitude) {
+    businessData.geo = {
+      "@type": "GeoCoordinates",
+      latitude,
+      longitude,
+    };
+  }
+  
+  if (openingHours) {
+    // Parse opening hours (simple format: "Mo-Fr 10:00-18:00")
+    // For now, add as a note - can be enhanced later
+    const hoursMatch = openingHours.match(/(\w+-\w+)\s+(\d{2}:\d{2})-(\d{2}:\d{2})/);
+    if (hoursMatch) {
+      const [, days, opens, closes] = hoursMatch;
+      const dayMap: Record<string, string> = {
+        "Mo": "Monday",
+        "Tu": "Tuesday",
+        "We": "Wednesday",
+        "Th": "Thursday",
+        "Fr": "Friday",
+        "Sa": "Saturday",
+        "Su": "Sunday",
+      };
+      
+      const [startDay, endDay] = days.split("-");
+      const dayRange: string[] = [];
+      const allDays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+      const startIdx = allDays.indexOf(startDay);
+      const endIdx = allDays.indexOf(endDay);
+      
+      if (startIdx !== -1 && endIdx !== -1) {
+        for (let i = startIdx; i <= endIdx; i++) {
+          dayRange.push(dayMap[allDays[i]]);
+        }
+      }
+      
+      if (dayRange.length > 0) {
+        businessData.openingHoursSpecification = [{
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: dayRange,
+          opens,
+          closes,
+        }];
+      }
+    }
+  }
+  
+  return businessData;
 }
 
